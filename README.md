@@ -3,7 +3,6 @@ Telnet Client for use with ANSI BBSes
 
 This Application is based on Nodespy Code ver1.10, written for Mystic BBS, By James Coyle. The original code released under GPL3, so the same applies here.
 
-The file contains all source code needed, in FreePascal. Also contains a bash script to compile the program from its directory/folder.
 
 Blocker Features:
 - Full ANSI Support for BBSes
@@ -23,6 +22,7 @@ Blocker Features:
 - AutoText
 - Music/Sounds
 - Script to download fresh BBS list from BBSIndex.
+- Use it as a DOOR program for linux BBSes
 
 Music/Sounds
 ---------
@@ -31,6 +31,13 @@ Play track music while viewing a BBS, see the Help section inside the app.
 Autotext
 ---------
 Autotext is a simple feature, for writing text to BBSes with too much lag. If there is too much lag in the connection, its very difficult to write text (correct mistakes, go back etc.) So with autotext, you write the text you want locally in a Form and then its sended, automatically to the BBS.
+
+DOOR
+---------
+To use it as a DOOR, in the command line specify the path and filename to the DOOR32.SYS file like:
+./blocker /home/my/path/door32.sys
+
+Make sure to configure properly all ACS levels in the configuration file (blocker.ini)
 
 Bugs
 -----
