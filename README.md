@@ -8,17 +8,25 @@ The file contains all source code needed, in FreePascal. Also contains a bash sc
 Blocker Features:
 - Full ANSI Support for BBSes
 - Macros
+- Insert any ASCII character with a dialog box
+- Quotes/Tags with a press of a button
 - Preview ANSI Files, locally
 - Convert ANSI Files to Mystic BBS, Pipe Format
 - Capture Current Screen, in ANSI
 - Capture ANSI Graphics while connected
 - ScrollBack
 - Capture ScrollBack Buffer
-- Up to 100 BBS Recods per Each PhoneBook File
+- Up to 600 BBS Recods per Each PhoneBook File
 - Open Infinite PhoneBook Files
 - Immidiate Address Dial
 - Import SyncTerm PhoneBook
 - AutoText
+- Music/Sounds
+- Script to download fresh BBS list from BBSIndex.
+
+Music/Sounds
+---------
+Play track music while viewing a BBS, see the Help section inside the app.
 
 Autotext
 ---------
@@ -27,4 +35,4 @@ Autotext is a simple feature, for writing text to BBSes with too much lag. If th
 Bugs
 -----
 - For the time being, IPv6 is not supported. If you have an IPv6 Address, convert it (if possible) to IPv4 and then enter it to connect.
-- ZModem Upload/Download is very buggy. Some times you will get a file, but others not. :(  Working on it... 
+- ZModem Upload/Download is not working!
