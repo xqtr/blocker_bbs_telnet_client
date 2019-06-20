@@ -1,7 +1,7 @@
 # blocker_bbs_telnet_client
 Telnet Client for use with ANSI BBSes
 
-This Application is based on Code written for Mystic BBS, By James Coyle. The original code released under GPL3, so the same applies here.
+This Application is based on Nodespy Code ver1.10, written for Mystic BBS, By James Coyle. The original code released under GPL3, so the same applies here.
 
 The file contains all source code needed, in FreePascal. Also contains a bash script to compile the program from its directory/folder.
 
