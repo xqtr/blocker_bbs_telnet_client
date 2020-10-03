@@ -1,24 +1,8 @@
-{
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-   
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-   
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-   MA 02110-1301, USA.
-   
-}
-
-
 Program Blocker;
 
+// page chat notification
+// user editor
+// split chat
 {$I M_OPS.PAS}
 
 Uses
@@ -66,6 +50,9 @@ Begin
     AutoZmodem := INI.ReadBool('General;', 'auto_zmodem', True);
     blocker_term.zmdn:= ini.readstring('general','zmodem_dn','');
     blocker_term.zmup:= ini.readstring('general','zmodem_up','');
+    
+    
+    
     pref.listlow := Ini.readinteger('List','Low',7);
     pref.listhi := Ini.readinteger('List','Hi',47);
     pref.tag := Ini.readinteger('List','tag',14);
@@ -104,6 +91,9 @@ Begin
        quotefile:=ini.readstring('general','quotefile','');
        bookfile:=ini.readstring('general','phonebook','');
        
+       downloadpath:=ini.readstring('general','download_path','');
+       uploadpath:=ini.readstring('general','upload_path','');
+       
        play:=ini.readstring('music','play','');
        stop:=ini.readstring('music','stop','');
      end;
@@ -119,6 +109,9 @@ var
 Begin
   
   ApplicationInit;
+  
+  
+  
   if paramstr(1)<>'' then s1:=paramstr(1);
   if paramstr(2)<>'' then s2:=paramstr(2);
   Terminal(paramstr(1),paramstr(2))

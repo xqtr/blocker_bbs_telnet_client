@@ -1,23 +1,23 @@
-
-{
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-   
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-   
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-   MA 02110-1301, USA.
-   
-}
-
-
+// ====================================================================
+// Mystic BBS Software               Copyright 1997-2013 By James Coyle
+// ====================================================================
+//
+// This file is part of Mystic BBS.
+//
+// Mystic BBS is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Mystic BBS is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Mystic BBS.  If not, see <http://www.gnu.org/licenses/>.
+//
+// ====================================================================
 Unit Blocker_Common;
 
 {$I M_OPS.PAS}
@@ -137,6 +137,10 @@ Begin
   SavedA     := Screen.TextAttr;
 
   MsgBox := TMenuBox.Create(TOutput(Screen));
+  
+  if length(str) > 74 then begin
+    str := copy(str,1,50)+'...'+copy(str,length(str)-20,20);
+  end;
 
   Len := (80 - (Length(Str) + 2)) DIV 2;
   Pos := 1;
@@ -227,9 +231,14 @@ Begin
   Box.FrameType := pref.MsgBox_FrameType;
   Box.Header    := ' ' + Header + ' ';
   Box.HeadAttr  := pref.MsgBox_HeadAttr;
-  Box.Box3D     := pref.MsgBox_Box3D;
-
-  Input.Attr     := pref.listhi;//15 + 2 * 16;
+  Box.HeadAttr   := pref.MsgBox_HeadAttr ;
+  Box.BoxAttr    := pref.MsgBox_BoxAttr  ;
+  Box.BoxAttr2   := pref.MsgBox_BoxAttr2 ;
+  Box.BoxAttr3   := pref.MsgBox_BoxAttr3 ;
+  Box.BoxAttr4   := pref.MsgBox_BoxAttr4 ;
+  Box.Box3D      := pref.MsgBox_Box3D ;
+  
+  Input.Attr     := pref.listhi;//15 + 3 * 16;
   Input.FillAttr := pref.listhi;//15 + 2 * 16;
   Input.LoChars  := #13#27;
 

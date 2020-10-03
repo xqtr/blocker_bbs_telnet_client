@@ -1,31 +1,10 @@
-{
-   This program is free software; you can redistribute it and/or modify
-   it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2 of the License, or
-   (at your option) any later version.
-   
-   This program is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-   GNU General Public License for more details.
-   
-   You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
-   MA 02110-1301, USA.
-   
-}
-
-
 Unit Blocker_Term;
 
 {$I M_OPS.PAS}
 
 
 Interface
-
 Uses m_Protocol_Queue;
-
 Type 
   Tsettings = Record
     ListLow : byte;
@@ -60,6 +39,8 @@ Type
     statusbar:string;
     quotefile:string;
     bookfile:string;
+    downloadpath:string;
+    uploadpath:string;
     
     play:string;
     stop:string;
@@ -69,7 +50,7 @@ Var
   Pref : Tsettings;
   Queue    : TProtocolQueue;
   BookFile : String;
-  Macro    : Array[0..9] of String[30];
+  Macro    : Array[0..9] of String[255];
   
   zmdn      : string;
   zmup      : string;
@@ -89,13 +70,10 @@ Uses
   m_DateTime,
   m_Strings,
   m_FileIO,
-  //m_IniReader,
   inifiles,
   m_QuickSort,
   m_io_Base,
   m_io_Sockets,
-  m_Protocol_Base,
-  //m_Protocol_Queue,
   m_Protocol_Zmodem,
   m_Input,
   m_Output,
@@ -104,6 +82,7 @@ Uses
   m_MenuForm,
   m_MenuInput,
   xdoor,
+  regexpr,
   m_ansi2pipe,
   unix,
   Classes,
@@ -143,6 +122,12 @@ const
   fieldy  = 6;
   
   max_records = 600;
+  
+  TransArray: array [1..2,1..17] of byte =
+     (
+      (14,15,17,19,19,25,30,35,40,45,50,55,59,60,61,61,61),
+      (14,14,14,14,13,13,13,13,13,13,13,13,13,13,13,13,12)
+      );
 
 Type
   PhoneRec = Record
@@ -166,6 +151,14 @@ Type
   End;
 
   PhoneBookRec = Array[1..max_records] of PhoneRec;
+  
+  RegExRec = Record
+    Name : String[30];
+    RX   : String[255];
+    cmd  : String[255];
+  End;
+  
+  
 
 Var
   IsBookLoaded : Boolean;
@@ -174,6 +167,8 @@ Var
   TotalQuotes : Integer;
   MusicPlaying : Boolean = false;
   MusicFound   : Boolean = false;
+  RegExList : Array[1..50] Of RegExRec;
+  TransIndex : Byte = 1;
   
 {$I blocker_ansiterm.pas}  
 
@@ -182,6 +177,305 @@ procedure StopMusic;
     if dropinfo.isDOOR then exit;
     fpsystem(pref.stop);
   end;
+  
+Procedure FindRegExs;
+type
+  match = record
+    text: string;
+    idx : byte; 
+  end;
+var
+  sl  : tstringlist;
+  x,y : byte;
+  img : TConsoleImageRec;
+  l   : string;
+  m   : match;
+  re  : tregexpr;
+  mm  : tmenulist;
+  found : boolean = false;
+  b   : boolean;
+  d   : word;
+  f   : word;
+  values : array[1..1000] of string[255];
+Begin
+{$H+}
+  Screen.GetScreenImage(1, 1, 79, Screen.ScreenSize, img);
+  mm := TMenuList.Create(TOutput(Screen));
+  
+  sl:=tstringlist.create;
+  sl.text:='';
+  for y:=1 to 25 do begin
+    l:='';
+    for x:=1 to 80 do
+      if (ord(img.Data[y][x].UnicodeChar)>31) and (ord(img.Data[y][x].UnicodeChar)<126) then
+        l:=l+img.Data[y][x].UnicodeChar;
+    sl.add(l);
+  end;
+  
+  re := TRegExpr.Create;
+  re.ModifierI := true; //case insensitive
+  for f:=0 to 1000 do values[f]:='';
+  f:=1;
+  //try
+    for y := 1 to 50 do begin
+      if RegExList[y].rx<>'' then begin
+        re.Expression := RegExList[y].rx;
+        if re.Exec(sl.text) then begin
+          found:=true;
+          repeat //alle gefundenen Ausdrücke in String speichern
+            if strStripB(re.match[0],' ')<>'' then begin
+                mm.add(strpadl(copy(re.Match[0],1,20),21,' ')+' '+chr(179)+' '+copy(RegExlist[y].Name,1,10),0,y,f);
+                values[f]:=re.Match[0];
+                f:=f+1;
+              end;
+          until not re.ExecNext;
+        
+        end;
+      end;
+    end;
+  {except
+    found:=false;
+    showmsgbox(0,'Error in RegEx!');
+  end;}
+  
+  re.free;
+  sl.free;
+  {$H-}
+  if found then begin
+    
+        
+    mm.AllowTag:=false;
+    mm.Box.Header    := ' RegEx Matches ';
+    mm.Box.HeadAttr  := pref.MsgBox_HeadAttr;//15 + 7 * 16;
+    mm.Box.BoxAttr    := pref.MsgBox_BoxAttr  ;
+    mm.Box.BoxAttr2   := pref.MsgBox_BoxAttr2 ;
+    mm.Box.BoxAttr3   := pref.MsgBox_BoxAttr3 ;
+    mm.Box.BoxAttr4   := pref.MsgBox_BoxAttr4 ;
+    mm.LoChars  := #27#13;
+    mm.HiChars  := #46;
+        
+    mm.Box.FrameType := 9;
+    mm.Box.Box3D     := true;
+    mm.PosBar        := true;
+    mm.box.ShadowAttr :=8;
+    
+    mm.HiAttr := pref.form_hi;//15+2*16;
+    mm.LoAttr := pref.form_lo;//0 + 7*16;
+    screen.writexypipe(1,25,7,79,'|15ALT-C/|11C|07opy to Clipboard   |15ENTER/|11L|07aunch');
+    mm.Open (40, 2, 79, 24);
+    
+    
+    
+      Case mm.ExitCode of
+        #13: Begin 
+                mm.get(mm.picked,l,b,d,f);
+                if regexlist[d].cmd='' then begin
+                  fpsystem('echo "'+values[f]+'" | xclip -selection c');
+                  showmsgbox(0,'Text copied to clipboard.');
+                end else begin
+                  screen.clearscreen;
+                  
+                  l:=strReplace(regexlist[d].cmd,'%P',justpath(paramstr(0)));
+                  l:=strReplace(l,'%M',values[f]);
+                  
+                  fpsystem(l);
+                  keyboard.readkey;
+                end;
+                
+              End;
+        #46 : Begin
+                mm.get(mm.picked,l,b,d,f);
+                fpsystem('echo "'+values[f]+'" | xclip -selection c');
+                //screen.writexy(1,1,14,values[f]+' '+stri2s(f));
+                showmsgbox(0,'Text copied to clipboard.');
+              End;
+        //#27: Break;
+    end;
+      
+    
+    mm.Box.Close;
+    
+  
+  end else showmsgbox(0,'No RegExs found...');
+  mm.destroy;
+  Screen.PutScreenImage(img);
+End;  
+  
+Procedure LoadRegEx;
+Var
+  Inifile : TIniFile;
+  i       : word;
+Begin
+  fillchar(regexlist,sizeof(regexlist),#0);
+  IniFile := TIniFile.Create(appdir+'blocker.ini');
+  Try
+    for i:=1 to 50 Do Begin
+      RegExList[i].Name := IniFile.ReadString('regex_'+StrI2S(i),'Name','');
+      RegExList[i].RX   := IniFile.ReadString('regex_'+StrI2S(i),'RegEx','');
+      RegExList[i].cmd  := IniFile.ReadString('regex_'+StrI2S(i),'Command','');
+    End;
+  Finally
+    IniFile.Free;
+  End;
+End;
+
+Procedure SaveRegEx;
+Var
+  Inifile : TIniFile;
+  i       : Word;
+Begin
+  IniFile := TIniFile.Create(appdir+'blocker.ini');
+  Try
+   for i:=1 to 50 Do begin
+      Inifile.writestring('regex_'+StrI2S(i),'Name',regexlist[i].name);
+      IniFile.writestring('regex_'+StrI2S(i),'RegEx',regexlist[i].rx);
+      IniFile.writestring('regex_'+StrI2S(i),'Command',regexlist[i].cmd);
+    End;
+  Finally
+    IniFile.Free;
+  End;
+End;
+
+Procedure regexp_edit;  // Regular Expressions List
+Var
+  mm : TMenuList;
+  j  : Byte;
+  picked : word;
+  
+  Procedure EditRegExEntry (Num: word);
+  Var
+    Box    : TMenuBox;
+    Form   : TMenuForm;
+    NewRec : RegExRec;
+    Image  : TConsoleImageRec;
+    oldx,oldy:byte;
+  Begin
+
+    if dropinfo.isdoor then if not isacs(pref.EditBookSec) then begin
+      ShowMsgBox(0,'You don''t have the priviliges, for this function!');
+      exit;
+    end;  
+    
+    NewRec := RegExList[Num];
+    Box    := TMenuBox.Create(TOutput(Screen));
+    Form   := TMenuForm.Create(TOutput(Screen));
+
+    Box.Header   := ' RegEx Editor ';
+    Box.FrameType  := pref.MsgBox_FrameType;
+    Box.HeadAttr   := pref.MsgBox_HeadAttr ;
+    Box.BoxAttr    := pref.MsgBox_BoxAttr  ;
+    Box.BoxAttr2   := pref.MsgBox_BoxAttr2 ;
+    Box.BoxAttr3   := pref.MsgBox_BoxAttr3 ;
+    Box.BoxAttr4   := pref.MsgBox_BoxAttr4 ;
+    Box.Box3D      := pref.MsgBox_Box3D ;
+    
+    oldx:=screen.cursorx;
+    oldy:=screen.cursory;
+    Screen.GetScreenImage(1, 1, 80, Screen.ScreenSize, Image);
+    
+    Box.Open (17, 8, 63, 15);
+    screen.writexy(19,14,8,'%M : Matched String // %P : Blocker path');
+    Form.HelpSize := 0;
+    
+    With Form do Begin
+      cLo          := pref.form_lo;
+      cHi          := pref.form_hi;
+      cData        := pref.form_data;
+      cLoKey       := pref.form_lokey;
+      cHiKey       := pref.form_hikey;
+      cField1      := pref.form_field1;
+      cField2      := pref.form_field2;
+    end;
+    
+    Form.AddStr  ('N', ' Name'   , 19, 10, 32, 10, 11, 30, 30, @NewRec.Name, '');
+    Form.AddStr  ('R', ' RegEx',   19, 11, 32, 11, 11, 30, 255, @NewRec.rx, '');
+    Form.AddStr  ('C', ' Command', 19, 12, 32, 12, 11, 30, 255, @NewRec.cmd, '');
+    
+    
+    Form.Execute;
+
+    If Form.Changed Then
+      If ShowMsgBox(1, 'Save changes?') Then Begin
+        RegExlist[Num] := NewRec;
+        SaveRegEx;
+      End;
+
+    Form.Free;
+
+    Box.Close;
+    Box.Free;
+    Screen.PutScreenImage(Image);
+    screen.cursorxy(oldx,oldy);
+  End;
+  
+  procedure reloadlist;
+  var
+   count:integer;
+   s:string;
+  begin
+    mm.Clear;
+    mm.picked:=0;
+    For Count := 1 to 50 Do begin
+      s:=strPadR(RegExList[Count].Name, 20, ' ') + ' ' +strPadR(RegExList[Count].RX, 30, ' ') + ' ' +strPadR(RegExList[Count].cmd, 30, ' ') + ' ';
+      mm.Add(s,0);
+    end;
+  end;
+
+Begin
+  LoadRegEx;
+  mm := TMenuList.Create(TOutput(Screen));
+      
+  mm.AllowTag:=false;
+  mm.Box.Header    := ' Regular Expressions ';
+  mm.Box.HeadAttr  := pref.MsgBox_HeadAttr;//15 + 7 * 16;
+  mm.Box.BoxAttr    := pref.MsgBox_BoxAttr  ;
+  mm.Box.BoxAttr2   := pref.MsgBox_BoxAttr2 ;
+  mm.Box.BoxAttr3   := pref.MsgBox_BoxAttr3 ;
+  mm.Box.BoxAttr4   := pref.MsgBox_BoxAttr4 ;
+  mm.LoChars  := #27;
+  mm.HiChars  := #18#83#44#46;
+  
+  mm.NoWindow := True;
+  mm.LoAttr   := pref.listlow;
+  mm.HiAttr   := pref.listhi;
+  mm.SearchA  := 7;
+  mm.Searchy  := 24;
+  mm.SearchX  := 33;
+      
+  mm.Box.FrameType := pref.MsgBox_FrameType;
+  mm.Box.Box3D     := true;
+  mm.PosBar        := true;
+  mm.box.ShadowAttr :=8;
+  
+  mm.HiAttr := pref.form_hi;//15+2*16;
+  mm.LoAttr := pref.form_lo;//0 + 7*16;
+  Repeat
+    mm.Picked := Picked;
+    reloadlist;
+    
+    Picked := mm.Picked;
+    drawmainansi;
+    
+    screen.writexy(38,6,11,' Regular Expressions                    ');
+    screen.writexypipe(1,25,7,80,'|15ESC/|11B|07ack   |15ALT-E/|11E|07dit   |15DEL/|11D|07elete   |15ALT-C/|11C|07lear');
+    screen.writexypipe(4,7,15,60,strPadR('Name', 22, ' ')+strPadR('RegEx', 31, ' ')+strPadR('Command', 30, ' '));
+    mm.Open(3, 7, 79, 24);
+    Case mm.ExitCode of
+      #18,#13: Begin  //alt-e  add
+              EditRegExEntry (mm.picked);
+            End;
+      #46 : If ShowMsgBox(1,'Clear List?') then mm.Clear;
+      #27: Break;
+      #83 : If ShowMsgBox(1, 'Delete this record?') Then Begin
+              fillchar(regexlist[mm.picked],sizeof(regexrec),' ');
+              mm .delete(mm.Picked); 
+            End;
+    End;
+  Until False;
+    
+  DrawMainAnsi;
+  SaveRegEx;
+End;
 
 Procedure LoadMacros;
 Var
@@ -332,14 +626,25 @@ End;
 Function GetNewRecord : PhoneRec;
 Begin
   FillChar (Result, SizeOf(PhoneRec), 0);
-  Result.StatusBar := True;
-  Result.Rating:=0;
-  Result.Music := False;
-  Result.LastCall  := 0;
-  Result.Added :=0;
-  Result.LastEdit  := 0;
-  Result.Validated  := 0;
-  Result.Calls     := '0';
+  
+  With Result Do Begin
+    Name      := chr(246);
+    Address   := '';
+    User      := '';
+    Password  := '';
+    StatusBar := False;
+    Music     := False;
+    Added     := 0;
+    LastCall  := 0;
+    LastEdit  := 0;
+    Calls     := '';
+    Rating    := 0;
+    Software  := '';
+    Sysop     := '';
+    Comment   := '';
+    Validated := 0;
+    Flags :='';
+  End;
 End;
 
 Procedure InitializeBook (Var Book: PhoneBookRec);
@@ -349,8 +654,8 @@ Begin
   For Count := 1 to max_records Do
     Book[Count] := GetNewRecord;
 
-  Book[1].Name    := 'Local Login';
-  Book[1].Address := 'localhost:' + strI2S(Config.INetTNPort);
+  //Book[1].Name    := 'Local Login';
+  //Book[1].Address := 'localhost:' + strI2S(Config.INetTNPort);
 End;
 
 Procedure WriteBook (Var Book: PhoneBookRec; Filename: String);
@@ -802,27 +1107,27 @@ Begin
 
           Case BarPos of
             (*
-            1 : Screen.WriteXY (58, 24 + Offset,  2, '°');
-            2 : Screen.WriteXY (59, 24 + Offset,  2, '±');
-            3 : Screen.WriteXY (60, 24 + Offset,  2, '²');
-            4 : Screen.WriteXY (61, 24 + Offset,  2, 'Û');
-            5 : Screen.WriteXY (62, 24 + Offset, 26, '°');
-            6 : Screen.WriteXY (63, 24 + Offset, 26, '±');
-            7 : Screen.WriteXY (64, 24 + Offset, 26, '²');
-            8 : Screen.WriteXY (65, 24 + Offset, 10, 'Û');
-            9 : Screen.WriteXY (66, 24 + Offset, 26, '±');
-            10: Screen.WriteXY (67, 24 + Offset, 26, '²');
+            1 : Screen.WriteXY (58, 24 + Offset,  3, '°');
+            2 : Screen.WriteXY (59, 24 + Offset,  3, '±');
+            3 : Screen.WriteXY (60, 24 + Offset,  3, '²');
+            4 : Screen.WriteXY (61, 24 + Offset,  3, 'Û');
+            5 : Screen.WriteXY (62, 24 + Offset, 27, '°');
+            6 : Screen.WriteXY (63, 24 + Offset, 27, '±');
+            7 : Screen.WriteXY (64, 24 + Offset, 27, '²');
+            8 : Screen.WriteXY (65, 24 + Offset, 11, 'Û');
+            9 : Screen.WriteXY (66, 24 + Offset, 27, '±');
+            10: Screen.WriteXY (67, 24 + Offset, 27, '²');
             *)
-            1 : Screen.WriteXY (58, 24 + Offset,  2, '²');
-            2 : Screen.WriteXY (59, 24 + Offset,  2, '²');
-            3 : Screen.WriteXY (60, 24 + Offset,  2, '²');
-            4 : Screen.WriteXY (61, 24 + Offset,  2, '²');
-            5 : Screen.WriteXY (62, 24 + Offset,  2, '²');
-            6 : Screen.WriteXY (63, 24 + Offset,  2, '²');
-            7 : Screen.WriteXY (64, 24 + Offset,  2, '²');
-            8 : Screen.WriteXY (65, 24 + Offset,  2, '²');
-            9 : Screen.WriteXY (66, 24 + Offset,  2, '²');
-            10: Screen.WriteXY (67, 24 + Offset,  2, '²');
+            1 : Screen.WriteXY (58, 24 + Offset, 11, '²');
+            2 : Screen.WriteXY (59, 24 + Offset, 11, '²');
+            3 : Screen.WriteXY (60, 24 + Offset, 11, '²');
+            4 : Screen.WriteXY (61, 24 + Offset, 11, '²');
+            5 : Screen.WriteXY (62, 24 + Offset, 11, '²');
+            6 : Screen.WriteXY (63, 24 + Offset, 11, '²');
+            7 : Screen.WriteXY (64, 24 + Offset, 11, '²');
+            8 : Screen.WriteXY (65, 24 + Offset, 11, '²');
+            9 : Screen.WriteXY (66, 24 + Offset, 11, '²');
+            10: Screen.WriteXY (67, 24 + Offset, 11, '²');
             
           End;
         Until BarPos = Per;
@@ -915,26 +1220,62 @@ Begin
   Result := Keyboard.KeyPressed and (KeyBoard.ReadKey = #27);
 End;
 
-Procedure ProtocolStatusUpdate (Starting, Ending, Status: RecProtocolStatus);
+Procedure UProtocolStatusUpdate (var Starting, Ending:boolean; Status: RecProtocolStatus);
 Var
   KBRate  : LongInt;
 Begin
-  Screen.WriteXY (19, 10, 113, strPadR(Status.FileName, 56, ' '));
-  Screen.WriteXY (19, 11, 113, strPadR(strComma(Status.FileSize), 15, ' '));
-  Screen.WriteXY (19, 12, 113, strPadR(strComma(Status.Position), 15, ' '));
-  Screen.WriteXY (64, 11, 113, strPadR(strI2S(Status.Errors), 3, ' '));
-
+  
+  Screen.WriteXY (25,  8, 11, strPadR(Status.FileName, 30, ' '));
+  Screen.WriteXY (25,  9, 11, strPadR(strComma(Status.FileSize), 15, ' '));
+  Screen.WriteXY (25, 10, 11, strPadR(strComma(Status.Position), 15, ' '));
+  Screen.WriteXY (51,  9, 11, strPadR(strI2S(Status.Errors), 3, ' '));
+  
+  Screen.WriteXY (51, 11, 11, strPadR(strI2S(Status.Count), 3, ' '));
+  
   KBRate := 0;
 
   If (TimerSeconds - Status.StartTime > 0) and (Status.Position > 0) Then
     KBRate := Round((Status.Position / (TimerSeconds - Status.StartTime)) / 1024);
 
-  Screen.WriteXY (64, 12, 113, strPadR(strI2S(KBRate) + ' k/sec', 12, ' '));
+  Screen.WriteXY (51, 10, 11, strPadR(strI2S(KBRate) + ' k/sec', 11, ' '));
   
-  Screen.WriteXY (64, 21, 113,'        --== __o');
-  Screen.WriteXY (64, 22, 113,'    --==  _ \<,_');
-  Screen.WriteXY (64, 23, 113,' --==    (*)/ (*)');
+  screen.writexy(transarray[1,transindex],transarray[2,transindex],8,Screen.ReadCharXY (transarray[1,transindex],transarray[2,transindex]));
+  screen.writexy(transarray[1,transindex-1],transarray[2,transindex-1],15,Screen.ReadCharXY (transarray[1,transindex-1],transarray[2,transindex-1]));
   
+  transindex := transindex - 1;
+  if transindex < 2 then begin
+    screen.writexy(transarray[1,transindex],transarray[2,transindex],8,Screen.ReadCharXY (transarray[1,transindex],transarray[2,transindex]));
+    transindex := 17;
+  end;
+  
+End;
+
+Procedure DProtocolStatusUpdate (var Starting, Ending:boolean; Status: RecProtocolStatus);
+Var
+  KBRate  : LongInt;
+Begin
+  
+  Screen.WriteXY (25,  8, 11, strPadR(Status.FileName, 30, ' '));
+  Screen.WriteXY (25,  9, 11, strPadR(strComma(Status.FileSize), 15, ' '));
+  Screen.WriteXY (25, 10, 11, strPadR(strComma(Status.Position), 15, ' '));
+  Screen.WriteXY (51,  9, 11, strPadR(strI2S(Status.Errors), 3, ' '));
+  
+  Screen.WriteXY (51, 11, 11, strPadR(strI2S(Status.Count), 3, ' '));
+  
+  KBRate := 0;
+
+  If (TimerSeconds - Status.StartTime > 0) and (Status.Position > 0) Then
+    KBRate := Round((Status.Position / (TimerSeconds - Status.StartTime)) / 1024);
+
+  Screen.WriteXY (51, 10, 11, strPadR(strI2S(KBRate) + ' k/sec', 11, ' '));
+  
+  screen.writexy(transarray[1,transindex+1],transarray[2,transindex+1],15,Screen.ReadCharXY (transarray[1,transindex+1],transarray[2,transindex+1]));
+  screen.writexy(transarray[1,transindex],transarray[2,transindex],8,Screen.ReadCharXY (transarray[1,transindex],transarray[2,transindex]));
+  transindex := transindex + 1;
+  if transindex >= 17 then begin
+    screen.writexy(transarray[1,transindex],transarray[2,transindex],8,Screen.ReadCharXY (transarray[1,transindex],transarray[2,transindex]));
+    transindex := 1;
+  end;
   
 End;
 
@@ -943,28 +1284,37 @@ Var
   Box : TMenuBox;
 Begin
   Box := TMenuBox.Create(TOutput(Screen));
-
-  Box.Open (6, 8, 76, 14);
-
+  Box.FrameType  := pref.MsgBox_FrameType;
+  Box.HeadAttr   := pref.MsgBox_HeadAttr ;
+  Box.BoxAttr    := pref.MsgBox_BoxAttr  ;
+  Box.BoxAttr2   := pref.MsgBox_BoxAttr2 ;
+  Box.BoxAttr3   := pref.MsgBox_BoxAttr3 ;
+  Box.BoxAttr4   := pref.MsgBox_BoxAttr4 ;
+  Box.Box3D      := pref.MsgBox_Box3D ;
   Box.Header := ' Zmodem File Transfer ';
+  Box.Open (6, 6, 76, 16);
+  
+screen.writexypipe(8,8,7,66,'|15|23Û|17ßßßßßßßß|16Û|07                                             |15|23Û|18ßßßßßßßß|16Û');
+screen.writexypipe(8,9,7,66,'|15Û|17 /bbs   |16Û|07                                             |15Û|18 /local |16Û');
+screen.writexypipe(8,10,7,66,'|15Û|17        |16Û|07                                             |15Û|18        |16Û');
+screen.writexypipe(8,11,7,66,'|15ß|23ßßßßßß|10þ|15ß|16ß|07                                             |15ß|23ßßßßßß|10þ|15ß|16ß');
+screen.writexypipe(8,12,7,66,'    |08ÜÜ|07                                                |08Ú|07    |08ÜÜ');
+screen.writexypipe(8,13,7,66,'  |08ß|07ß|15ßß|07ß|08ß|07   |08ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ|07  |08ß|07ß|15ßß|07ß|08ß');
+screen.writexypipe(8,14,7,66,'      |08ÀÄÄÄÄÙ');
 
-  (*
-  Screen.WriteXY (6,  8, 120, '+' + strRep('-', 69) + '+');
-  Screen.WriteXY (6,  9, 120, '+' + strRep(' ', 69) + '+');
-  Screen.WriteXY (6, 10, 120, '+' + strRep(' ', 69) + '+');
-  Screen.WriteXY (6, 11, 120, '+' + strRep(' ', 69) + '+');
-  Screen.WriteXY (6, 12, 120, '+' + strRep(' ', 69) + '+');
-  Screen.WriteXY (6, 13, 120, '+' + strRep(' ', 69) + '+');
-  Screen.WriteXY (6, 14, 120, '+' + strRep('-', 69) + '+');
-  *)
 
-  Screen.WriteXY ( 8, 10, 112, 'File Name:');
-  Screen.WriteXY (13, 11, 112, 'Size:');
-  Screen.WriteXY ( 9, 12, 112, 'Position:');
-  Screen.WriteXY (56, 11, 112, 'Errors:');
-  Screen.WriteXY (58, 12, 112, 'Rate:');
+  
 
+  Screen.WriteXY (19, 8, 3, 'File:');
+  Screen.WriteXY (19, 9, 3, 'Size:');
+  Screen.WriteXY (19, 10, 3, 'Pos.:');
+  Screen.WriteXY (43, 9, 3,  'Errors:');
+  Screen.WriteXY (43, 10, 3, 'Rate  :');
+  Screen.WriteXY (43, 11, 3, 'Count :');
+  //transindex := 1;
+  
   Box.Free;
+  
 End;
 
 Function GetUploadFileName(Header,mask: String) : String;
@@ -1214,73 +1564,72 @@ Begin
   Box.Free;
 End;
 
-Procedure DoZmodemDownload (Var Client: TIOBase);
+Procedure DoZmodemDownload (Var Client: TIOSocket);
 Var
   Zmodem : TProtocolZmodem;
   Image  : TConsoleImageRec;
-  Queue  : TProtocolQueue;
+  ZQueue  : TProtocolQueue;
+  
+  zh : ZHdrType;
+  st : longint;
 Begin
-  If Not DirExists(XferPath) Then Begin
+  If Not DirExists(pref.downloadpath) Then Begin
     ShowMsgBox (0, 'Download directory does not exist');
 
     Exit;
   End;
 
-  Queue  := TProtocolQueue.Create;
-  Zmodem := TProtocolZmodem.Create(Client, Queue);
+  ZQueue  := TProtocolQueue.Create;
+  Zmodem := TProtocolZmodem.Create(Client, ZQueue);
 
   Screen.GetScreenImage(1, 1, 80, Screen.ScreenSize, Image);
+  transindex := 1;
+  ProtocolStatusDraw;
 
-  //ProtocolStatusDraw;
-  DrawHelpAnsi;
-  
-  Screen.WriteXY ( 8, 10, 112, 'File Name:');
-  Screen.WriteXY (13, 11, 112, 'Size:');
-  Screen.WriteXY ( 9, 12, 112, 'Position:');
-  Screen.WriteXY (56, 11, 112, 'Errors:');
-  Screen.WriteXY (58, 12, 112, 'Rate:');
-
-  Zmodem.StatusProc  := @ProtocolStatusUpdate;
+  Zmodem.StatusProc  := @DProtocolStatusUpdate;
   Zmodem.AbortProc   := @ProtocolAbort;
-  Zmodem.ReceivePath := XferPath;
+  Zmodem.ReceivePath := pref.downloadpath;
   Zmodem.CurBufSize  := 8 * 1024;
 
-  Zmodem.QueueReceive;
+  Zmodem.QueueReceive;    
 
   Zmodem.Free;
-  Queue.Free;
-
-  Screen.PutScreenImage(Image);
+  ZQueue.Free;
+  
+  center('|11Download Complete!',14);
+  center('|03Press any key to continue...',15);
+  KeyBoard.ReadKey
+  //Screen.PutScreenImage(Image);
 End;
 
-Procedure DoZmodemUpload (Var Client: TIOBase);
+Procedure DoZmodemUpload (Var Client: TIOSocket);
 Var
   FileName : String;
   Zmodem   : TProtocolZmodem;
   Image    : TConsoleImageRec;
-  //Queue    : TProtocolQueue;
 Begin
-  //FileName := GetUploadFileName(' Upload File ');
-
-  If FileName = '' Then Exit;
-
-  //Queue  := TProtocolQueue.Create;
+  
   Zmodem := TProtocolZmodem.Create(Client, Queue);
 
   Screen.GetScreenImage(1, 1, 80, Screen.ScreenSize, Image);
-
+  transindex := 17;
   ProtocolStatusDraw;
 
-  Zmodem.StatusProc := @ProtocolStatusUpdate;
+  Zmodem.StatusProc := @UProtocolStatusUpdate;
   Zmodem.AbortProc  := @ProtocolAbort;
 
-  //Queue.Add(True, JustPath(FileName), JustFile(FileName), '');
-
-  Zmodem.QueueSend;
-
+  
+  If Queue.QSize = 0 Then Begin
+    ShowMsgBox(0,'Insert some files in the Queue first!');
+    Zmodem.DoAbortSequence;
+  end else
+    Zmodem.QueueSend;
   Zmodem.Free;
-  If ShowMsgBox(2,'Clear Queue?')=True then Queue.Clear;
-  //Queue.Free;
+    
+  If ShowMsgBox(1, 'Upload finished. Clear File Queue?') then begin
+    Queue.Clear;
+  end;
+  
 
   Screen.PutScreenImage(Image);
 End;
@@ -1408,16 +1757,16 @@ Begin
     cField2      := pref.form_field2;
   end;
 
-  Form.AddStr  ('1', '  F1', 19, 10, 25, 10,  5, 37, 40, @Macro[1], '');
-  Form.AddStr  ('2', '  F2', 19, 11, 25, 11,  5, 37, 40, @Macro[2], '');
-  Form.AddStr  ('3', '  F3', 19, 12, 25, 12,  5, 37, 40, @Macro[3], '');
-  Form.AddStr  ('4', '  F4', 19, 13, 25, 13,  5, 37, 40, @Macro[4], '');
-  Form.AddStr  ('5', '  F5', 19, 14, 25, 14,  5, 37, 40, @Macro[5], '');
-  Form.AddStr  ('6', '  F6', 19, 15, 25, 15,  5, 37, 40, @Macro[6], '');
-  Form.AddStr  ('7', '  F7', 19, 16, 25, 16,  5, 37, 40, @Macro[7], '');
-  Form.AddStr  ('8', '  F8', 19, 17, 25, 17,  5, 37, 40, @Macro[8], '');
-  Form.AddStr  ('9', '  F9', 19, 18, 25, 18,  5, 37, 40, @Macro[9], '');
-  Form.AddStr  ('0', ' F10', 19, 19, 25, 19,  5, 37, 40, @Macro[0], '');
+  Form.AddStr  ('1', '  F1', 19, 10, 25, 10,  5, 37, 255, @Macro[1], '');
+  Form.AddStr  ('2', '  F2', 19, 11, 25, 11,  5, 37, 255, @Macro[2], '');
+  Form.AddStr  ('3', '  F3', 19, 12, 25, 12,  5, 37, 255, @Macro[3], '');
+  Form.AddStr  ('4', '  F4', 19, 13, 25, 13,  5, 37, 255, @Macro[4], '');
+  Form.AddStr  ('5', '  F5', 19, 14, 25, 14,  5, 37, 255, @Macro[5], '');
+  Form.AddStr  ('6', '  F6', 19, 15, 25, 15,  5, 37, 255, @Macro[6], '');
+  Form.AddStr  ('7', '  F7', 19, 16, 25, 16,  5, 37, 255, @Macro[7], '');
+  Form.AddStr  ('8', '  F8', 19, 17, 25, 17,  5, 37, 255, @Macro[8], '');
+  Form.AddStr  ('9', '  F9', 19, 18, 25, 18,  5, 37, 255, @Macro[9], '');
+  Form.AddStr  ('0', ' F10', 19, 19, 25, 19,  5, 37, 255, @Macro[0], '');
 
   Form.Execute;
 
@@ -1506,23 +1855,11 @@ Begin
                 End;
             End;
       #46 : If ShowMsgBox(1,'Clear List?') then Queue.Clear;
-      #13 : If Queue.QData[List.Picked].FileName = '' Then
-              ShowMsgBox(0, 'Address is empty')
-            Else Begin
-              //Dial   := Book[List.Picked];
-              //Result := True;
-
-              Break;
-            End;
       #44 : Begin
                           Oldx:=Screen.Cursorx;
                           Oldy:=Screen.Cursory;
                           Screen.GetScreenImage(1, 1, 80, Screen.ScreenSize, Image);
                           DrawHelpAnsi;
-                          Screen.WriteXYPipe(25,12,7,49,'|15ALT-Z |08: |15Th|10is |02Scree|08n :P');
-                          Screen.WriteXYPipe(25,13,7,49,'|15ALT-A |08: |15Ad|10d F|02ile t|08o list');
-                          Screen.WriteXYPipe(25,14,7,49,'|15ALT-C |08: |15Cl|10ear|02 List');
-                          Screen.WriteXYPipe(25,15,7,49,'|15DEL   |08: |15De|10let|02e Fil|08e');
                           //Screen.WriteXYPipe(25,16,7,49,'|15ALT-L |08: |15Se|10nd |02Login|08 Info.');
                           //Screen.WriteXYPipe(25,17,7,49,'|15ALT-E |08: |15Ed|10it |02Phone|08book Entry');
                           //Screen.WriteXYPipe(25,18,7,49,'|15ALT-T |08: |15Tr|10ans|02fer F|08ile');
@@ -1532,10 +1869,9 @@ Begin
                           Screen.PutScreenImage(Image);
                           Screen.CursorXY(Oldx,Oldy);
             end;    
-      #27 : Break;
+      #27,#13 : Break;
       #83 : If ShowMsgBox(1, 'Delete this record?') Then Begin
               Queue.delete(List.Picked); 
-              
             End;
     End;
     Screen.WriteXYPipe(53,6,7,19,'|15T|07ota|08l |15F|07ile|08s:');
@@ -1558,6 +1894,10 @@ Var
   Count  : LongInt;  
   Tracks : Array[0..255] of string[40];
   MusicDir : string;
+  Oldx   : Byte;
+  Oldy   : Byte;
+  Image  : TConsoleImageRec;
+  ShowSB : Boolean;
   
   Function GetQuote(i:integer):string;
   var 
@@ -1628,6 +1968,19 @@ Var
       If (Str[i] = '|') Then Begin
         pipe:=copy(Str,i,3);
         Case Pipe[2] Of
+          'S' : Case Pipe[3] of
+                    'H' : Begin
+                            l:=copy(str,4,length(str));
+                            l:=strreplace(l,'|BD',appdir);
+                            If Showmsgbox(1,'Execute: '+l+'?') then begin
+                              screen.textattr:=7;
+                              screen.clearscreen;
+                              err:=fpsystem(l); 
+                              showmsgbox(0,'Script finished with status: '+stri2s(err));
+                              drawmainansi;
+                            end;
+                          End;
+                  End;
           'B' : Case Pipe[3] of
                   'D' : Client.WriteStr(Appdir);
                 End;
@@ -1769,7 +2122,7 @@ Var
     End;
     DrawStatus(false);
   End;
-  
+   
   Procedure SaveScreenNoDialog;
   Var
     OutFile: Text;
@@ -1822,8 +2175,8 @@ Var
   Procedure DoTransfers;
   Begin
     Case GetTransferType of
-      1 : DoZmodemDownload(TIOBase(Client));
-      2 : DoZmodemUpload(TIOBase(Client));
+      1 : DoZmodemDownload(Client);
+      2 : DoZmodemUpload(Client);
     End;
 
     DrawStatus(False);
@@ -1846,6 +2199,70 @@ Var
   Begin
     gc:=GetChar;
     if gc<>0 then screen.writechar(chr(gc));
+  end;
+  
+  procedure emoticons;
+  Var
+    ib:tmenulist;
+    Oldx,
+    Oldy   : Byte;
+    Image  : TConsoleImageRec;
+    ft     : text;
+    l      : string;
+    emo    : string;
+    emos   : array[1..1000] of string[30];
+    i      : word;
+  Begin
+    if not fileexist(appdir+'emoticons.txt') then begin
+      showmsgbox(0,'Emoticons file is not present.');
+      exit;
+    end;
+    Screen.GetScreenImage(1, 1, 80, Screen.ScreenSize, Image);
+    ib:=tmenulist.create(TOutput(Screen));
+    Oldx:=Screen.Cursorx;
+    Oldy:=Screen.Cursory;
+    Screen.GetScreenImage(1, 1, 80, Screen.ScreenSize, Image);
+    ib.AllowTag:=false;
+    ib.Box.Header    := ' Emoticons ';
+    ib.Box.HeadAttr  := pref.MsgBox_HeadAttr;//15 + 7 * 16;
+    ib.Box.BoxAttr    := pref.MsgBox_BoxAttr  ;
+    ib.Box.BoxAttr2   := pref.MsgBox_BoxAttr2 ;
+    ib.Box.BoxAttr3   := pref.MsgBox_BoxAttr3 ;
+    ib.Box.BoxAttr4   := pref.MsgBox_BoxAttr4 ;
+        
+    ib.Box.FrameType := 9;
+    ib.Box.Box3D     := true;
+    ib.PosBar        := True;
+    ib.box.ShadowAttr :=8;
+    
+    ib.HiAttr := pref.form_hi;//15+2*16;
+    ib.LoAttr := pref.form_lo;//0 + 7*16;
+    
+    assign(ft,appdir+'emoticons.txt');
+    reset(ft);
+    i:=1;
+    while not eof(ft) do begin
+      readln(ft,l);
+      emo := strwordget(1,l,' ');
+      emos[i]:=emo;
+      ib.add(strpadr(emo,12,' ') + chr(179)+ copy(l,pos(' ',l),length(l)),0,0,i);
+      i:=i+1;
+    end;    
+    close(ft);
+  
+    ib.Open (50, 3, 78, 23);
+    
+    
+    if ib.exitcode<>#27 then begin
+      client.writestr(emos[ib.picked]);
+    end;
+    
+    ib.Box.Close;
+    ib.destroy;
+    Screen.PutScreenImage(Image);
+    DrawStatus(false);
+    Screen.CursorXY(Oldx,Oldy);
+  
   end;
   
   Procedure InTermBox;
@@ -1877,16 +2294,20 @@ Var
 
     ib.Add('ALT-B // ScrollBack History', 0);
     ib.Add('ALT-H // Hang Up', 0);
-    ib.Add('ALT-S // Snapshot to ANSI (with dialog)', 0);
-    ib.Add('ALT-N // Snapshot to ANSI (no dialog)', 0);
+    ib.Add('ALT-A // Snapshot to ANSI (with dialog)', 0);
+    ib.Add('ALT-D // Snapshot to ANSI (no dialog)', 0);
     ib.Add('ALT-L // Send Login Credentials', 0);
     ib.Add('ALT-E // Edit PhoneBook Entry', 0);
     ib.Add('ALT-T // Transfer File', 0);
-    ib.Add('ALT-A // Insert ASCII Char.', 0);
+    ib.Add('ALT-C // Insert ASCII Char.', 0);
     ib.Add('ALT-W // Write AutoText', 0);//AutoWriteText(Client);
     ib.Add('ALT-P // Stop Music',0);
     ib.Add('ALT-M // Edit/View Macros',0);
-    ib.Add('ALT-Q // Toggle StatusBar',0);
+    ib.Add('ALT-Q // File Queue ',0);
+    ib.Add('CTR-S // StatusBar',0);
+    ib.add('ALT-R // Find Links/RegExs',0);
+    ib.add('      // Edit RegExs',0);
+    ib.add('CTR-E // Emoticons',0);
     ib.add('',0);
     ib.Add('Exit or Press ESC', 0);
 
@@ -1924,7 +2345,15 @@ Var
       9:AutoWriteText(Client);
       10: stopmusic;
       11:editmacros;
-      12: drawstatus(true);
+      12:filequeue;
+      13: begin
+            showsb := not showsb;
+            drawstatus(showsb);
+          end;
+      14: FindRegExs;
+      15: regexp_edit;
+      16: emoticons;
+      
       end;
     //Until ib.ExitCode = #27;
     ib.Box.Close;
@@ -2014,7 +2443,7 @@ Begin
     WriteBook(Book,BookFile);
 
     Dial := Book[Dial.Position];
-
+    ShowSB := Book[Dial.Position].StatusBar;
     Screen.TextAttr := 7;
     Screen.ClearScreen;
 
@@ -2046,11 +2475,12 @@ Begin
               Else Begin
                 Screen.BufFlush;
 
-                {Case Buffer[Count + 3] of
-                  //'0' : DoZmodemDownload(TIOBase(Client));
-                  '0' : fpsystem('/home/x/programming/Projects/blocker_term_v2/zmod.sh');
+                Case Buffer[Count + 3] of
+                  '0' : DoZmodemDownload(Client);
+                  //'0' : fpsystem('/home/x/programming/Projects/blocker_term_v2/zmod.sh');
                   //'1' : fpsystem(zmdn);
-                End;}
+                  '1' : DoZmodemUpload(Client);
+                End;
               End;
             End Else If (Buffer[Count] = #01) and (Count <= Res - 2) Then Begin
               If (Buffer[Count+1]=#1) and (Buffer[Count+2]=#1) then StopMusic else begin
@@ -2072,7 +2502,7 @@ Begin
           #00 : Begin
                 Ch := Keyboard.ReadKey;
                 Case Ch of
-                  KeyALTA  : DoASCIIChar;
+              KeyALTC : DoASCIIChar;
                   #25 : stopmusic;
                   #50 : EditMacros;
                   #59 : ExecuteMacro(1);
@@ -2085,7 +2515,8 @@ Begin
                   #66 : ExecuteMacro(8);
                   #67 : ExecuteMacro(9);
                   #68 : ExecuteMacro(0);
-                  #46 : Begin
+                  //#5  : emoticons; 
+                  KeyAltd: Begin
                           Screen.CaptureFile := not Screen.CaptureFile;
                           If Screen.CaptureFile Then Begin
                               Screen.CaptureFilename := GetSaveFileName(' Save Capture ',strReplace(Dial.Name,' ','_')+'.ans');
@@ -2098,15 +2529,15 @@ Begin
                   #44 : Begin
                           inTermBox;
                         end;    
-                  {#16 : Begin
+                  #16 : Begin
                           Oldx:=Screen.CursorX;
                           Oldy:=Screen.Cursory;
                           Screen.GetScreenImage(1, 1, 80, Screen.ScreenSize, Image);
                           FileQueue;
                           Screen.PutScreenImage(Image);
                           Screen.CursorXY(Oldx,Oldy);
-                        End;}
-                  #19 : DrawStatus(true);
+                        End;
+              KeyAltS : DrawStatus(true);
                   #18 : DoEditEntry;
                   #20 : DoTransfers;
                   #35 : Begin
@@ -2136,11 +2567,17 @@ Begin
                   #80 : Client.WriteStr(#27 + '[B');
                   #81 : Client.WriteStr(#27 + '[U');
                   #83 : Client.WriteStr(#127);
-              keyALTS : SaveScreen;
+              keyALTA : SaveScreen;
+              KeyALTR : FindRegExs;
                   #49 : SaveScreenNoDialog; //alt-n
               #17 : AutoWriteText(Client);
                 End;
-            end
+            end;
+        #5  : emoticons; 
+        #19 : begin
+                showsb := not showsb;
+                drawstatus(showsb);
+              end;
         Else
           Client.WriteBuf(Ch, 1);
 
@@ -2294,15 +2731,24 @@ Begin
   
   Box      := TMenuBox.Create(TOutput(Screen));
   Box.Header := ' Enter Address ';
-  Box.HeadAttr := 15 + 7 * 16;
-  Box.Open (15, 9, 65, 13);
+  Box.HeadAttr  := pref.MsgBox_HeadAttr;
+  Box.FrameType := pref.MsgBox_FrameType;
+  Box.BoxAttr    := pref.MsgBox_BoxAttr  ;
+  Box.BoxAttr2   := pref.MsgBox_BoxAttr2 ;
+  Box.BoxAttr3   := pref.MsgBox_BoxAttr3 ;
+  Box.BoxAttr4   := pref.MsgBox_BoxAttr4 ;
+  Box.Box3D     := True;
+  
+  
+  Box.Open (5, 9, 75, 13);
+  Screen.WriteXY(7,10,3,'Press CTRL+SHIFT+V to Paste from ClipBoard');
 
   InStr := TMenuInput.Create(TOutput(Screen));
   InStr.FillAttr := 15+0*16;
-  InStr.Attr := 15+2*16;
+  InStr.Attr := 15+3*16;
   InStr.LoChars := #13#27;
 
-  Str := InStr.GetStr(17, 11, 47, 255, 1, '');
+  Str := InStr.GetStr(7, 11, 67, 255, 1, '');
   Case InStr.ExitCode of
     #13: Begin
           With Dial Do Begin
@@ -2902,6 +3348,7 @@ Var
     j  : byte;
     i:integer;
     
+    
     Procedure GlobalMenu;
     var 
       gm : tmenulist;
@@ -2995,10 +3442,13 @@ Var
     mm.Add('Edit Macros', 0);
     mm.Add('Import SyncTerm Book', 0);
     mm.Add('Load PhoneBook', 0);
+    mm.add('New PhoneBook',0);
     mm.Add('Quick Dial', 0);
     mm.add('Fields Format',0);
     mm.add('Stop Music',0);
     mm.add('Global Commands...',0);
+    mm.add('Reg. Expressions',0);
+    //mm.add('find regex',0);
     mm.Add('Exit', 0);
 
     mm.box.Open (2, 2, 11, 5);
@@ -3007,7 +3457,7 @@ Var
     mm.box.Open (2, 2, 20, 10);
     waitms(100);
     mm.box.close;
-    mm.Open (2, 2, 27, 15);
+    mm.Open (2, 2, 27, 16);
     
     
     if mm.exitcode<>#27 then
@@ -3015,19 +3465,32 @@ Var
       1 : PreviewANSI;
       2 : ConvertANSI;
       3 : begin SortRecords(Book);reloadlist;end;
-      4 : EditMacros;
+      4 : begin loadmacros;EditMacros;end;
       5 : begin ImportSyncTerm;reloadlist;end;
       6 : begin LoadPhoneBook(Book, List);reloadlist;end;
-      7 : Begin
+      7 : begin
+            WriteBook(Book,BookFile);
+            BookFile := GetSaveFileName(' PhoneBook Filename ','new-phonebook.bbs');
+            If BookFile = '' Then Begin
+              ShowMsgBox(2,'No File Assigned');
+              Exit;
+            End;
+            InitializeBook (book);
+            WriteBook(Book,BookFile);
+            DrawMainAnsi;
+          end;
+      8 : Begin
               If ImmidiateDial(Dial) Then Begin
                 Result:=True;
                 DoExit:=true;
               End;
             End;
-      8 : begin GetFieldFormat;reloadlist;end;
-      9 : stopmusic;
-      10 : globalmenu;
-      11 : If ShowMsgBox(1, 'Are you sure?') Then DoExit:=True;
+      9 : begin GetFieldFormat;reloadlist;end;
+      10: stopmusic;
+      11 : globalmenu;
+      12 : regexp_edit;
+      //13 : FindRegExs;
+      13 : If ShowMsgBox(1, 'Are you sure?') Then DoExit:=True;
       end;
     //Until mm.ExitCode = #27;
     mm.Box.Close;
@@ -3118,25 +3581,7 @@ Begin
       #44 : Begin
               Oldx:=Screen.Cursorx;
               Oldy:=Screen.Cursory;
-              
               DrawHelpAnsi;
-              {Screen.WriteXYPipe(25,11,7,49,'|15ALT-P |08: |15Pr|11evi|03ew ANSI File');
-              Screen.WriteXYPipe(25,12,7,49,'|15ALT-C |08: |15Co|11nve|03rt ANSI File');
-              Screen.WriteXYPipe(25,13,7,49,'|15ALT-Q |08: |15Fi|11le |03Queue');
-              Screen.WriteXYPipe(25,14,7,49,'|15ALT-X |08: |15Ex|11it');
-              Screen.WriteXYPipe(25,15,7,49,'|15ALT-E |08: |15Ed|11it |03Entry');
-              Screen.WriteXYPipe(25,16,7,49,'|15DEL   |08: |15De|11let|03e Ent|08ry');
-              Screen.WriteXYPipe(25,17,7,49,'|15ALT-I |08: |15Im|11por|03t Syn|08cTerm PhoneBook');
-              Screen.WriteXYPipe(25,18,7,49,'|15ALT-O |08: |15Op|11en |03Phone|08book');
-              Screen.WriteXYPipe(25,19,7,49,'|15ALT-D |08: |15Di|11al |03Addre|08ss');
-              Screen.WriteXYPipe(25,20,7,49,'|15ALT-M |08: |15Ma|11cro|03s');
-              Screen.WriteXYPipe(25,9,7,49,'|15Bl|11ocker |15BB|11S |15Te|11rmin|03al |15Ap|11p. |08v2.0');
-              //Screen.WriteXYPipe(25,11,7,49,'|15ALT-E |08: |15Ed|11it |03Phone|08book Entry');
-              //Screen.WriteXYPipe(25,12,7,49,'|15ALT-T |08: |15Tr|11ans|03fer F|08ile');
-              //Screen.WriteXYPipe(25,13,7,49,'|15ALT-A |08: |15Au|11toT|03ext');
-              Center('|15P|11r|03ess a |15K|11e|03y to |15C|11o|03ntinue',21);
-              Keyboard.ReadKey;
-            }
               Screen.CursorXY(Oldx,Oldy);
               DrawMainAnsi;
               if DropInfo.isDoor=False then screen.writexy(2,1,8,'local');
@@ -3149,6 +3594,7 @@ Begin
             End;
       #18 : begin EditEntry(Book, List.Picked);reloadlist;end;
       KeyALTX : If ShowMsgBox(1, 'Are you sure?') Then DoExit:=True;
+      
       #82 : Begin
               Found := False;
 
@@ -3169,7 +3615,7 @@ Begin
                 WriteBook(Book,BookFile);
               End;
             End;
-      #83 : begin DelRecord;reloadlist;end;
+      #83 : begin DelRecord;reloadlist;DrawMainAnsi;end;
     End;
   Until DoExit;
 
@@ -3222,6 +3668,7 @@ Begin
     IsBookLoaded := False;
   //End;
   LoadMacros;
+  LoadRegEx;
   TotalQuotes:=GetMaxQuotes;
   Queue  := TProtocolQueue.Create;
   x:=pos('/addr=',strlower(param1));

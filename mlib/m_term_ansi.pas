@@ -133,7 +133,7 @@ Begin
   Options := '';
   Octave   := 4;
   Duration := ConstDuration;
-  Music:='';
+  Music    :='';
   LDur     := 1;
 End;
 
@@ -258,8 +258,7 @@ Begin
                     End;
     'M'           : Begin
                       State := 3; // Music
-                      screen.writestr('xxxxxxxxxxxxxxxxxxxxxxxxxxx');
-                      delay(10);
+
                     End;
     'm'           : Begin
                       If Length(Options) = 0 Then Begin
@@ -352,7 +351,6 @@ MS       "Music Staccato." Each note plays 3/4 of the duration set by the
 
 Procedure TTermAnsi.MusicCode (Ch : Char);
 Begin
-  Screen.WriteStr('sldjalsdjldjldsjdlasdja');
   Case Ch Of
     #14 : Begin
             ProcessMusic;
@@ -360,8 +358,6 @@ Begin
           End; //Process Music
   Else Begin
     Music:=Music+Ch;
-    screen.writestr('vx,nv,xcvnx,cncv,xcn');
-    delay(5);
     end;
   End;
 
@@ -375,6 +371,7 @@ Begin
     0 : Begin
           Case Ch of
             #0  : ;
+            #7  : xsound.beep; // bell ascii code #7
             #27 : State := 1;
             #9  : Screen.CursorXY (Screen.CursorX + 8, Screen.CursorY);
             #10 : Begin
@@ -399,11 +396,11 @@ Begin
            Options := '';
          End Else
            State := 0;
-     2 : CheckCode(Ch);
-     3 : Begin
-            MusicCode(Ch);
-            Screen.Writestr('xxxxxxx3423432423423423423423423');
-            delay(5);
+    2 : CheckCode(Ch);
+    3 : Begin
+          screen.writexy(1,2,13,'Process Music...');
+          delay(2000);
+          MusicCode(Ch);
         end;
    Else
      ResetState;

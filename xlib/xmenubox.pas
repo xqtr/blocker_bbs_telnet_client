@@ -1,36 +1,46 @@
-// ====================================================================
-// Mystic BBS Software               Copyright 1997-2013 By James Coyle
-// ====================================================================
-//
-// This file is part of Mystic BBS.
-//
-// Mystic BBS is free software: you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation, either version 3 of the License, or
-// (at your option) any later version.
-//
-// Mystic BBS is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with Mystic BBS.  If not, see <http://www.gnu.org/licenses/>.
-//
-// ====================================================================
-Unit m_MenuBox;
+{
+   ====================================================================
+   xLib                                                            xqtr
+   ====================================================================
 
-{$I M_OPS.PAS}
+   This file is part of xlib for FreePascal
+   
+   https://github.com/xqtr/xlib
+    
+   To use this Unit you need the source code of MysticBBS from here:
+   https://github.com/fidosoft/mysticbbs, which is shared under GPL
+    
+   For contact look at Another Droid BBS [andr01d.zapto.org:9999],
+   FSXNet and ArakNet.
+   
+   --------------------------------------------------------------------
+   
+   This program is free software; you can redistribute it and/or modify
+   it under the terms of the GNU General Public License as published by
+   the Free Software Foundation; either version 2 of the License, or
+   (at your option) any later version.
+   
+   This program is distributed in the hope that it will be useful,
+   but WITHOUT ANY WARRANTY; without even the implied warranty of
+   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   GNU General Public License for more details.
+   
+   You should have received a copy of the GNU General Public License
+   along with this program; if not, write to the Free Software
+   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
+   MA 02110-1301, USA.
+   
+}
 
+Unit xMenuBox;
+{$MODE objfpc}
 Interface
 
 Uses
-  m_Types,
-  m_Input,
-  m_Output;
+  xStrings,xCrt;
 
 Const
-  BoxFrameType : Array[1..9] of String[8] =
+  BoxFrameType : Array[1..8] of String[8] =
         ('ÚÄ¿³³ÀÄÙ',
          'ÉÍ»ººÈÍ¼',
          'ÖÄ·ººÓÄ½',
@@ -38,14 +48,19 @@ Const
          'ÛßÛÛÛÛÜÛ',
          'ÛßÜÛÛßÜÛ',
          '        ',
-         '.-.||`-''',
-         #254+'ß'+#254+#221+#222+#254+'Ü'+#254);
+         '.-.||`-''');
+         
+Var
+  
+  {$IFNDEF NORMAL}
+  Scr : TOutput;
+  {$ENDIF}
+  Inp : TInput;         
 
 Type
   TMenuBox = Class
-    Console    : TOutput;
-    Image      : TConsoleImageRec;
-    HideImage  : ^TConsoleImageRec;
+    Image      : TScreenBuf;
+    HideImage  : TScreenBuf;
     FrameType  : Byte;
     BoxAttr    : Byte;
     Box3D      : Boolean;
@@ -58,8 +73,9 @@ Type
     HeadType   : Byte;
     Header     : String;
     WasOpened  : Boolean;
+    Emboss     : Boolean;
 
-    Constructor Create (Var Screen: TOutput);
+    Constructor Create;
     Destructor  Destroy; Override;
     Procedure   Open (X1, Y1, X2, Y2: Byte);
     Procedure   Close;
@@ -73,13 +89,10 @@ Type
   TMenuListBoxRec = Record
     Name   : String;
     Tagged : Byte;                     { 0 = false, 1 = true, 2 = never }
-    Data   : Word;
-    Index  : Word;
   End;
 
   TMenuList = Class
-    InKey      : TInput;
-    List       : Array[1..1000] of ^TMenuListBoxRec;
+    List       : Array[1..10000] of ^TMenuListBoxRec;
     Box        : TMenuBox;
     HiAttr     : Byte;
     LoAttr     : Byte;
@@ -110,14 +123,12 @@ Type
     SearchY    : Byte;
     SearchA    : Byte;
 
-    Constructor Create (Var S: TOutput);
+    Constructor Create;
     Destructor  Destroy; Override;
     Procedure   Open (BX1, BY1, BX2, BY2: Byte);
     Procedure   Close;
-    //Procedure   Add (Str: String; B: Byte);
-    Procedure   Add (Str : String; B : Byte; Dat:Word = 0; Index:Word = 0);
-    //Procedure   Get (Num: Word; Var Str: String; Var B: Boolean);
-    Procedure   Get (Num : Word; Var Str : String; Var B : Boolean; Var Dat:Word; Var Index:Word);
+    Procedure   Add (Str: String; B: Byte);
+    Procedure   Get (Num: Word; Var Str: String; Var B: Boolean);
     Procedure   SetStatusProc (P: TMenuListStatusProc);
     Procedure   SetSearchProc (P: TMenuListSearchProc);
     Procedure   Clear;
@@ -126,11 +137,20 @@ Type
     Procedure   UpdateBar (X, Y: Byte; RecPos: Word; IsHi: Boolean);
     Procedure   Update;
   End;
+  
+
+  
+Procedure Box3d(x1,y1,x2,y2:Byte;Shadow:Boolean);
+Procedure Box3dBorder(x1,y1,x2,y2:Byte;Shadow:Boolean);
+Procedure WinBox(x1,y1,x2,y2,bg:Byte);
+Procedure WinBoxBorder(x1,y1,x2,y2,bg:Byte);
+Procedure ShadowBox(x1,y1,x2,y2,at:byte);
+Procedure SmallBox(x,y:Byte);
+Procedure WideBox(x,y:Byte);
+Procedure MenuBox(x,y:Byte);
+Procedure Selection(X: Byte; Text: String);
 
 Implementation
-
-Uses
-  m_Strings;
 
 Procedure DefListBoxSearch (Var Owner: Pointer; Str: String);
 Begin
@@ -140,42 +160,38 @@ Begin
     If Length(Str) > 15 Then
       Str := Copy(Str, Length(Str) - 15 + 1, 255);
 
-    //Str := '[' + strLower(Str) + ']';
-    Str := strLower(Str);
-    //asd
+    Str := '[' + Lower(Str) + ']';
+
     While Length(Str) < 17 Do
       Str := Str + BoxFrameType[TMenuList(Owner).Box.FrameType][7];
   End;
 
-  TMenuList(Owner).Box.Console.WriteXY (
+  WriteXY (
            TMenuList(Owner).SearchX,
            TMenuList(Owner).SearchY,
            TMenuList(Owner).SearchA,
            Str);
 End;
 
-Constructor TMenuBox.Create (Var Screen: TOutput);
+Constructor TMenuBox.Create;
 Begin
   Inherited Create;
 
-  Console    := Screen;
-  Shadow     := True;
-  ShadowAttr := 8;
+  Shadow     := theme.shadow;
+  ShadowAttr := theme.ShadowAttr;
   Header     := '';
-  FrameType  := 6;
-  Box3D      := True;
-  BoxAttr    := 15 + 7 * 16;
-  BoxAttr2   := 8  + 7 * 16;
-  BoxAttr3   := 15 + 7 * 16;
-  BoxAttr4   := 8  + 7 * 16;
-  HeadAttr   := 15 + 1 * 16;
+  FrameType  := theme.FrameType;
+  Box3D      := theme.Box3d;
+  BoxAttr    := theme.BoxAttr;
+  BoxAttr2   := theme.BoxAttr2;
+  BoxAttr3   := theme.BoxAttr3;
+  BoxAttr4   := theme.BoxAttr4;
+  HeadAttr   := theme.HeadAttr;
   HeadType   := 0;
-  HideImage  := NIL;
   WasOpened  := False;
+  Emboss     := Theme.Emboss;
 
-  FillChar(Image, SizeOf(TConsoleImageRec), 0);
-
-  Console.BufFlush;
+  FillChar(Image, SizeOf(TScreenBuf), 0);
 End;
 
 Destructor TMenuBox.Destroy;
@@ -191,9 +207,9 @@ Var
 Begin
   If Not WasOpened Then
     If Shadow Then
-      Console.GetScreenImage(X1, Y1, X2 + 2{3}, Y2 + 1, Image)
+      SaveScreen(Image)
     Else
-      Console.GetScreenImage(X1, Y1, X2, Y2, Image);
+      SaveScreen(Image);
 
   WasOpened := True;
 
@@ -204,70 +220,76 @@ Begin
     BoxAttr3 := BoxAttr;
     BoxAttr4 := BoxAttr;
   End;
+  If Not Emboss Then Begin
+    WriteXY (X1, Y1, BoxAttr, BoxFrameType[FrameType][1] + strRep(BoxFrameType[FrameType][2], B));
+    WriteXY (X2, Y1, BoxAttr4, BoxFrameType[FrameType][3]);
 
-  Console.WriteXY (X1, Y1, BoxAttr, BoxFrameType[FrameType][1] + strRep(BoxFrameType[FrameType][2], B));
-  Console.WriteXY (X2, Y1, BoxAttr4, BoxFrameType[FrameType][3]);
+    For A := Y1 + 1 To Y2 - 1 Do Begin
+      WriteXY (X1, A, BoxAttr, BoxFrameType[FrameType][4] + strRep(' ', B));
+      WriteXY (X2, A, BoxAttr2, BoxFrameType[FrameType][5]);
+    End;
 
-  For A := Y1 + 1 To Y2 - 1 Do Begin
-    Console.WriteXY (X1, A, BoxAttr, BoxFrameType[FrameType][4] + strRep(' ', B));
-    Console.WriteXY (X2, A, BoxAttr2, BoxFrameType[FrameType][5]);
+    WriteXY (X1,   Y2, BoxAttr3, BoxFrameType[FrameType][6]);
+    WriteXY (X1+1, Y2, BoxAttr2, strRep(BoxFrameType[FrameType][7], B) + BoxFrameType[FrameType][8]);
+  End Else Begin
+    WriteXY (X1, Y1, BoxAttr4, BoxFrameType[FrameType][1] + strRep(BoxFrameType[FrameType][2], B));
+    WriteXY (X2, Y1, BoxAttr, BoxFrameType[FrameType][3]);
+
+    For A := Y1 + 1 To Y2 - 1 Do Begin
+      WriteXY (X1, A, BoxAttr2, BoxFrameType[FrameType][4] + strRep(' ', B));
+      WriteXY (X2, A, BoxAttr, BoxFrameType[FrameType][5]);
+    End;
+
+    WriteXY (X1,   Y2, BoxAttr2, BoxFrameType[FrameType][6]);
+    WriteXY (X1+1, Y2, BoxAttr3, strRep(BoxFrameType[FrameType][7], B) + BoxFrameType[FrameType][8]);
   End;
-
-  Console.WriteXY (X1,   Y2, BoxAttr3, BoxFrameType[FrameType][6]);
-  Console.WriteXY (X1+1, Y2, BoxAttr2, strRep(BoxFrameType[FrameType][7], B) + BoxFrameType[FrameType][8]);
 
   If Header <> '' Then
     Case HeadType of
-      0 : Console.WriteXY (X1 + 1 + (B - Length(Header)) DIV 2, Y1, HeadAttr, Header);
-      1 : Console.WriteXY (X1 + 1, Y1, HeadAttr, Header);
-      2 : Console.WriteXY (X2 - Length(Header), Y1, HeadAttr, Header);
+      0 : WriteXY (X1 + 1 + (B - Length(Header)) DIV 2, Y1, HeadAttr, Header);
+      1 : WriteXY (X1 + 1, Y1, HeadAttr, Header);
+      2 : WriteXY (X2 - Length(Header), Y1, HeadAttr, Header);
+      3 : WriteXY (X1 , Y1, HeadAttr, StrPadC(Header,X2-X1+1,' '));
+      4 : WriteXY (X1 , Y1, HeadAttr, StrPadR(Header,X2-X1+1,' '));
+      5 : WriteXY (X1 , Y1, HeadAttr, StrPadL(Header,X2-X1+1,' '));
     End;
 
   If Shadow Then Begin
     For A := Y1 + 1 to Y2 + 1 Do
       For B := X2 + 1 to X2 + 2 Do Begin
-        Ch := Console.ReadCharXY(B, A);
-        Console.WriteXY (B, A, ShadowAttr, Ch);
+        Ch := GetCharAt(B, A);
+        WriteXY (B, A, ShadowAttr, Ch);
       End;
 
     A := Y2 + 1;
     For B := (X1 + 2) To (X2 + 2) Do Begin
-      Ch := Console.ReadCharXY(B, A);
-      Console.WriteXY (B, A, ShadowAttr, Ch);
+      Ch := GetCharAt(B, A);
+      WriteXY (B, A, ShadowAttr, Ch);
     End;
   End;
 End;
 
 Procedure TMenuBox.Close;
 Begin
-  If WasOpened Then Console.PutScreenImage(Image);
+  If WasOpened Then RestoreScreen(Image);
 End;
 
 Procedure TMenuBox.Hide;
 Begin
-  If Assigned(HideImage) Then FreeMem(HideImage, SizeOf(TConsoleImageRec));
-
-  GetMem (HideImage, SizeOf(TConsoleImageRec));
-
-  Console.GetScreenImage (Image.X1, Image.Y1, Image.X2, Image.Y2, HideImage^);
-  Console.PutScreenImage (Image);
+  SaveScreen(HideImage);
+  RestoreScreen(Image);
 End;
 
 Procedure TMenuBox.Show;
 Begin
-  If Assigned (HideImage) Then Begin
-    Console.PutScreenImage(HideImage^);
-    FreeMem (HideImage, SizeOf(TConsoleImageRec));
-    HideImage := NIL;
-  End;
+  RestoreScreen(HideImage);
 End;
 
-Constructor TMenuList.Create (Var S: TOutput);
+Constructor TMenuList.Create;
 Begin
   Inherited Create;
 
-  Box        := TMenuBox.Create(S);
-  InKey      := TInput.Create;
+  Box        := TMenuBox.Create;
   ListMax    := 0;
   HiAttr     := 15 + 1 * 16;
   LoAttr     := 1  + 7 * 16;
@@ -290,7 +312,7 @@ Begin
   SearchProc := @DefListBoxSearch;
   SearchX    := 0;
   SearchY    := 0;
-  SearchA    := 3;
+  SearchA    := 0;
   TopPage    := 1;
 End;
 
@@ -322,10 +344,7 @@ End;
 Destructor TMenuList.Destroy;
 Begin
   Box.Free;
-  InKey.Free;
-
   Clear;
-
   Inherited Destroy;
 End;
 
@@ -350,20 +369,20 @@ Begin
   End Else
     Str := strRep(' ', Width);
 
-  Box.Console.WriteXY (X, Y, Attr, Str);
+  WriteXY (X, Y, Attr, Str);
 
   If AllowTag Then
     If (RecPos <= ListMax) and (List[RecPos]^.Tagged = 1) Then
-      Box.Console.WriteXY (TagPos, Y, TagAttr, TagChar)
+      WriteXY (TagPos, Y, TagAttr, TagChar)
     Else
-      Box.Console.WriteXY (TagPos, Y, TagAttr, ' ');
+      WriteXY (TagPos, Y, TagAttr, ' ');
 End;
 
 Procedure TMenuList.UpdatePercent;
 Var
   NewPos : LongInt;
 Begin
-  If Not PosBar  Then Exit;
+  If Not PosBar Then Exit;
 
   If (ListMax > 0) and (WinSize > 0) Then Begin
     NewPos := (Picked * WinSize) DIV ListMax;
@@ -376,11 +395,11 @@ Begin
 
     If LastBarPos <> NewPos Then Begin
       If LastBarPos > 0 Then
-        Box.Console.WriteXY (X1 + Width + 1, LastBarPos, Box.BoxAttr2, #178);
+        WriteXY (X1 + Width + 1, LastBarPos, Box.BoxAttr2, #176);
 
       LastBarPos := NewPos;
 
-      Box.Console.WriteXY (X1 + Width + 1, NewPos, Box.BoxAttr2, #176);
+      WriteXY (X1 + Width + 1, NewPos, Box.BoxAttr2, #178);
     End;
   End;
 End;
@@ -456,7 +475,7 @@ Begin
 
   If PosBar Then
     For Count := 1 to WinSize Do
-      Box.Console.WriteXY (X1 + Width + 1, Y1 + Count, Box.BoxAttr2, #178);
+      WriteXY (X1 + Width + 1, Y1 + Count, Box.BoxAttr2, #176);
 
   If NoInput Then Exit;
 
@@ -480,11 +499,11 @@ Begin
       Else
         StatusProc(Picked, '');
 
-    Ch := InKey.ReadKey;
+    Ch := ReadKey;
 
     Case Ch of
       #00 : Begin
-              Ch := InKey.ReadKey;
+              Ch := ReadKey;
 
               If Pos(Ch, HiChars) > 0 Then Begin
                 If SearchStr <> '' Then Begin
@@ -606,7 +625,7 @@ Begin
         Count := StartPos;
 
         While (Count <= EndPos) Do Begin
-          If Pos(strUpper(SearchStr), strUpper(List[Count]^.Name)) > 0 Then Begin
+          If Pos(Upper(SearchStr), Upper(List[Count]^.Name)) > 0 Then Begin
 
             While Count <> Picked Do Begin
               If Picked < Count Then Begin
@@ -649,20 +668,18 @@ Begin
   If Not NoWindow Then Box.Close;
 End;
 
-Procedure   TMenuList.Add (Str : String; B : Byte; Dat:Word = 0; Index:Word = 0);
+Procedure TMenuList.Add (Str : String; B : Byte);
 Begin
   Inc (ListMax);
   New (List[ListMax]);
 
   List[ListMax]^.Name   := Str;
   List[ListMax]^.Tagged := B;
-  List[ListMax]^.Data := Dat;
-  List[ListMax]^.Index := Index;
 
   If B = 1 Then Inc(Marked);
 End;
 
-Procedure TMenuList.Get (Num : Word; Var Str : String; Var B : Boolean; Var Dat:Word; Var Index:Word);
+Procedure TMenuList.Get (Num : Word; Var Str : String; Var B : Boolean);
 Begin
   Str := '';
   B   := False;
@@ -670,8 +687,6 @@ Begin
   If Num <= ListMax Then Begin
     Str := List[Num]^.Name;
     B   := List[Num]^.Tagged = 1;
-    Dat := List[Num]^.Data;
-    Index := List[Num]^.Index;
   End;
 End;
 
@@ -683,6 +698,197 @@ End;
 Procedure TMenuList.SetStatusProc (P: TMenuListStatusProc);
 Begin
   StatusProc := P;
+End;
+
+
+Procedure WinBox(x1,y1,x2,y2,bg:Byte);
+Var
+  i:Byte;
+Begin
+  SetTextAttr(15+bg*16);
+  GotoXY(x1,y1);
+  Write(StrRep('Ü',x2-x1+1));
+  
+  SetTextAttr(15+7*16);
+  For i:=y1+1 to y2-1 Do Begin
+    GotoXY(x1,i);
+    Write('Ý');
+  End;
+  
+  SetTextAttr(8+bg*16);
+  GotoXY(x1,y2);
+  Write(StrRep('ß',x2-x1+1));
+  
+  SetTextAttr(8+7*16);
+  For i:=y1+1 to y2-1 Do Begin
+    GotoXY(x2,i);
+    Write('Þ');
+  End;
+  
+  SetTextAttr(7*16);
+  For i:=y1+1 to y2-1 Do Begin
+    GotoXY(x1+1,i);
+    Write(strrep(' ',x2-x1-1));
+  End;
+  
+  SetTextAttr(15+16);
+  GotoXY(x1,y1+1);
+  Write('Ý');
+  
+  SetTextAttr(8+16);
+  GotoXY(x2,y1+1);
+  Write('Þ');
+  GotoXY(x1+1,y1+1);
+  Write(StrRep(' ',x2-x1-1));
+  SetTextAttr(7);
+  
+End;
+
+Procedure WinBoxBorder(x1,y1,x2,y2,bg:Byte);
+Var
+  B2 : TMenuBox;
+Begin
+  WinBox(x1,y1,x2,y2,bg);
+  B2 := TMenuBox.Create;
+  B2.Shadow:=False;
+  B2.FrameType:=1;
+  B2.Emboss:=True;
+  B2.Open(x1+1,y1+2,x2-1,y2-1);
+  B2.Destroy;
+End;
+
+Procedure Box3d(x1,y1,x2,y2:Byte;Shadow:Boolean);
+Var
+  i:Byte;
+Begin
+  SetTextAttr(15+7*16);
+  GotoXY(x1,y1);
+  Write(StrRep('ß',x2-x1));
+  
+  For i:=y1 to y2-1 Do Begin
+    GotoXY(x1,i);
+    Write('Û');
+  End;
+  
+  SetTextAttr(8+7*16);
+  GotoXY(x1,y2);
+  Write(StrRep('Ü',x2-x1+1));
+  SetTextAttr(8+7*16);
+  For i:=y1+1 to y2 Do Begin
+    GotoXY(x2,i);
+    Write('Û');
+  End;
+  
+  SetTextAttr(7*16);
+  For i:=y1+1 to y2-1 Do Begin
+    GotoXY(x1+1,i);
+    Write(strrep(' ',x2-x1-1));
+  End;
+  
+  WriteXY(x2,y1,8+7*16,'Ü');
+  WriteXY(x1,y2,15+7*16,'ß');
+End;
+
+Procedure Box3dBorder(x1,y1,x2,y2:Byte;Shadow:Boolean);
+Var
+  B1 : TMenuBox;
+  B2 : TMenuBox;
+Begin
+  B1 := TMenuBox.Create;
+  B2 := TMenuBox.Create;
+  B1.FrameType:=5;
+  B1.Shadow:=Shadow;
+  B2.Shadow:=False;
+  B2.FrameType:=1;
+  B2.Emboss:=True;
+  B1.Open(x1,y1,x2,y2);
+  B2.Open(x1+2,y1+2,x2-2,y2-1);
+  B1.Destroy;
+  B2.Destroy;
+End;
+
+Procedure ShadowBox(x1,y1,x2,y2,at:byte);
+Var
+  i  : Byte;
+  l  : Char;
+Begin
+
+    For i := y1+3 to y2 Do Begin
+      l := GetCharAt(x2+1,i);
+      WriteXY(x2+1,i,at,l);
+      l := GetCharAt(x2+2,i);
+      WriteXY(x2+2,i,at,l);
+    End;
+      For i := x1+5 to x2 Do Begin
+      l := GetCharAt(i,y2+3);
+      WriteXY(i,y2+3,at,l);
+    End;
+End;
+
+Procedure SmallBox(x,y:Byte);
+Var
+  d     : Byte = 0;
+Begin
+
+  SetTextAttr(0);
+  GotoXY(x,y);           WritePipe('|23|07Ü|00ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ');
+  d:=d+1; GotoXY(x,y+d); WritePipe('|16 |15ÜÛßß|07ß|15ß|07ß²ßß|08 ßßß±±ßßßßßÛÜ ');
+  d:=d+1; GotoXY(x,y+d); WritePipe('|16 |07²|00 |23ß                 ß|16 |08Û ');
+  d:=d+1; GotoXY(x,y+d); WritePipe(' |07Û|00 |23 °                 |16 |08Û|16 ');
+  d:=d+1; GotoXY(x,y+d); WritePipe(' |15|23ß|00|16 |23                   |16 |08Û|16 ');
+  d:=d+1; GotoXY(x,y+d); WritePipe(' |23Ü|00Ü                   |16 |08Û|16 ');
+  d:=d+1; GotoXY(x,y+d); WritePipe(' |23°|00|16 |23                   |16 |08Û|16 ');
+  d:=d+1; GotoXY(x,y+d); WritePipe(' |23Ü|00|16 |23                   |16 |08Û|16 ');
+  d:=d+1; GotoXY(x,y+d); WritePipe(' ²|00 |23                   |16 |07²|16 ');
+  d:=d+1; GotoXY(x,y+d); WritePipe(' |08ß|00 |23                   |16 |07Û|16 ');
+  d:=d+1; GotoXY(x,y+d); WritePipe(' |08Û|00 |23                 ° |16 |15|23ß|16 ');
+  d:=d+1; GotoXY(x,y+d); WritePipe(' |08|16Û|00 |23Ü                 Ü|16 |15Û|16 ');
+  d:=d+1; GotoXY(x,y+d); WritePipe(' |08ßÛÜÜÜÜ Ü²²ÜÜ|00|23°°|07|16ÜÜ|15ÜÜ|07Ü|15ÜÜ|00|23°|15|16ß ');
+  d:=d+1; GotoXY(x,y+d); WritePipe('|23|07Ü|16ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ');
+
+End;
+
+Procedure WideBox(x,y:Byte);
+Var
+  d     : Byte = 0;
+Begin
+
+    GotoXY(x,y);
+    Write('[1;37mÜÛßß[0;37;40mß[1mß[0;37;40mß²ßßßß[1;30mß[0;37;40mß[1;30mßßßßßßßßßßßßßßßßßßßßßßß[0;37;40mß[1;30mßßßß ßßß±±ßßßßßÛÜ[0m');
+    d:=d+1; GotoXY(x,y+d); Write('²[1CÜÛÛÛÛÛÛÛÛÛÛÛÛÛ[30;47m                [37;40mÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÜ[1C[1;30mÛ[0m');
+    d:=d+1; GotoXY(x,y+d); Write('[1;30mÛ[1C[0;30;47m                                                  [37;40mÛ[1C[1;47mß[0m');
+    d:=d+1; GotoXY(x,y+d); Write('[1;30mÛ[1C[0;37;40mßÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛÛß[1C[1mÛ[0m');
+    d:=d+1; GotoXY(x,y+d); Write('[1;30mßÛÜÜÜÜ Ü²²ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ[0;37;40mÜ[1;30mÜÜ[0;37;40mÜ[1;30mÜ[0;37;40mÜ[30;47m°°[37;40mÜÜ[1mÜÜ[0;37;40mÜ[1mÜÜ[0;30;47m°[1;37;40mß[0m');
+
+End;
+
+Procedure MenuBox(x,y:Byte);
+Begin
+WriteXY(x,y,7,'[1;37;47m [0;37;40mÛßßßßßßßßßßßßßßßßßßßßßÛ[1;47m [0;30;40m [0m');
+WriteXY(x,y+1,7,'[1;30;47m±[0;30;40m [37mÜ[30;47m                   [37;40mÜ[1C[1;30;47m±[0;30;40m   [0m');
+WriteXY(x,y+2,7,'[1;30m²[1C[0;30;47m                     [1C[1;40m²[0m');
+WriteXY(x,y+3,7,'[1;30m²[1C[0;30;47m                     [1C[1;40m²[0m');
+WriteXY(x,y+4,7,'[1;30m±[1C[0;30;47m                     [1C[1;40m±[0m');
+WriteXY(x,y+5,7,'[1;30m±[1C[0;30;47m                     [1C[1;40m±[0m');
+WriteXY(x,y+6,7,'[1;30m²[1C[0;30;47m                     [1C[1;40m±[0m');
+WriteXY(x,y+7,7,'[1;30mÛ[1C[0;37;40mß[30;47m                   [37;40mß[1C[1;30m²[0m');
+WriteXY(x,y+8,7,'[1;30mÛÛÜ ÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜÜ ÜÜÛÛ[0m');
+End;
+
+Procedure Selection(X: Byte; Text: String);
+Var
+  S : String;
+Begin
+  S := Text;
+  While Length(S)<12 Do Begin
+    S := ' '+S+' ';
+  End;
+//WriteXY(1,2,8+7*16,'    File       Tools      Other    1           2          3          Help ');
+  WriteXY(1,2,8+7*16,'    File       Tools      Other                                      Help ');
+  WriteXY(X,1,7,'[37mÜ[1;47m°ÜÛÛÜÜÛÜ[0;37;40m²[1mÜ[47mÜÜ[0;37;40mÛÜ');
+  WriteXY(X,2,7,'²[1;47m             [0;37;40m±');
+  WriteXY(X,3,7,'ßÛ[1;30;47mßß[0;37;40m²[1;30;47mßßß[40mß[47mßßßß[37m²[40mß[0m');
+  WriteXY(X+2,2,15+7*16,Text);
 End;
 
 End.

@@ -1,0 +1,512 @@
+;A Agoranet Nodelist for Friday, July 17, 2020 -- Day number 199 : 63010
+;A Copyright 2020, Agoranet, All rights reserved.
+;A
+;S                                                   .
+;S          .  .               .              .      |\         . /\
+;S    _\___/|  |\__/_   /\     |\______  \___/|: ___ | \_\_____/| /\______
+;S    __\__ |__| _/_____/\_____| _    / __\__ |__\  \| \\ \  _  |/   _   /
+;S   /    |      \_    /  _  \\  |  _/_/    |  /     \   \/ _)___    |   \
+;S  //            |  //   |   \  _    //           \        |    /___|   \\_
+;S  \ ______._\__     \______ /__|      ______._\__|\___ /__   //_.  |____ /
+;S __\/_________(_____|_____\/___|____\/___________:___\/__(______|__:___\/__
+;S
+;S               The Official Network of ACiD Productions
+;S            A weekly nodelist for the Agoranet FTN network
+;S Network information can be obtained by telnetting to bbs.pharcyde.org or
+;S          grabbing the latest Agoranet information pack from
+;S               http://pharcyde.org/agoranet/agoranet.zip
+;S
+;S
+;
+Zone,46,Agoranet_Coordinator,Pewaukee_WI,Nicholas_Boel,-Unpublished-,300,CM,INA:binkp.pharcyde.org,IBN
+;
+Region,1,North_America,Pewaukee_WI,Nicholas_Boel,-Unpublished-,9600,CM,INA:binkp.pharcyde.org,IBN
+,100,The_Pharcyde_HUB,Pewaukee_WI,Nicholas_Boel,-Unpublished-,9600,CM,INA:binkp.pharcyde.org,IBN
+,102,Fluph_BBS,Elkview_WV,Leslie_Given,-Unpublished-,9600,CM,INA:fluph.darktech.org,IBN
+,104,Under_The_Black_Flag,Hudson_FL,Hawk_Hubbard,-Unpublished-,9600,CM,INA:blackflag.acid.org,IBN
+,107,Electronic_Warfare_BBS,Vincennes_IN,Nicholas_Loch,-Unpublished-,9600,CM,INA:bbs.ewbbs.net,IBN
+,108,Clutch,Brantford_Ontario_CAN,Mike_Fenton,-Unpublished-,9600,CM,INA:clutch.darktech.org,IBN
+,109,Darkrealms,Toronto_Ontario_CAN,Nick_Andre,1-647-847-2083,9600,CM,INA:darkrealms.ca,IBN
+,111,Lo_Fidelity,Colorado_Springs_CO,Ryan_Fantus,-Unpublished-,9600,CM,INA:lo-fibbs.com,IBN
+,115,RealityCheckBBS,San_Carlos_CA,Kurt_Weiske,-Unpublished-,9600,CM,INA:realitycheckbbs.org,IBN
+,118,Archaic_Binary,Orlando_FL,Wayne_Smith,-Unpublished-,9600,CM,INA:bbs.archaicbinary.net,IBN
+,120,Shadowscope_BBS,Temple_USA,Richard_Miles,-Unpublished-,9600,CM,INA:bbs.shadowscope.com,IBN
+,122,Necronomicon_BBS,New_Bedford_MA,Carlos_Roldan,-Unpublished-,9600,CM,INA:necrobbs.strangled.net,IBN
+,125,Sinner's_Haven_2.0,Berea_OH,Karl_Kunc,-Unpublished-,9600,CM,INA:sinnershaven.com,IBN
+,126,Tiny's_BBS,Oshawa_Ontario_CAN,Shawn_Highfield,-Unpublished-,9600,CM,INA:tinysbbs.com,IBN
+,127,Sector_7,Philedelphia_PA,James_Coyle,-Unpublished-,9600,INA:mysticbbs.pwnz.org,IBN
+,128,Hidden_Paradise_BBS,Batavia_NY,Dean_Brooks,-Unpublished-,9600,CM,INA:hpbbs.dyndns.org,IBN
+,138,Orbit_BBS,Opp_AL,Allen_Scofield,-Unpublished-,9600,CM,INA:orbitbbs.ddns.net,IBN
+,140,Haunting_The_Chapel,Chicago_IL,Michael_Griffin,-Unpublished-,9600,CM,INA:htc.zapto.org,IBN
+,141,Mojo's_World_BBS,Jackson_MI,Jay_Allshire,-Unpublished-,9600,CM,INA:bbs.mojosworld.net,IBN
+,142,Decker's_Heaven,Lake_Mary_FL,Eric_Renfro,-Unpublished-,9600,CM,INA:bbs.deckersheaven.com,IBN
+,145,Distortion,East_TN,Jack_Phlash,-Unpublished-,9600,CM,INA:d1st.org,IBN
+,148,Throwback_BBS,Meriden_CT,Todd_Yatzook,-Unpublished-,9600,CM,INA:throwbackbbs.hopto.org,IBN
+,149,Mystic_Prison_Board_BBS,Mesquite_TX,Ruben_Figueroa,-Unpublished-,9600,CM,INA:pb.darktech.org,IBN:24555
+,150,Digital_Distortion,Hillsboro_OR,Eric_Oulashin,-Unpublished-,9600,CM,INA:digitaldistortionbbs.com,IBN
+,151,Capitol_Shrill_BBS,Washington_DC,Vincent_Macaluso,-Unpublished-,9600,CM,INA:capitolshrill.com,IBN
+,154,Raiders_Inc_BBS,Wichita_KS,Jon_Justvig,-Unpublished-,9600,CM,INA:vintagebbsing.com,IBN
+,155,Bit_Sunrise,Los_Angeles_CA,Waylon_Jennings,-Unpublished-,9600,CM,INA:bitsunrise.com,IBN
+,156,Phoenix_BBS,Pawcatuck_CT,Andrew_Leary,-Unpublished-,9600,CM,INA:phoenix.bnbbbs.net,IBN:24555
+,160,Error_404_BBS,Perrysburg_OH,Todd_Zieman,-Unpublished-,9600,CM,INA:error404bbs.ddns.net,IBN
+,163,Weather_Station_HUB,Bel_Air_MD,Mark_Hofmann,-Unpublished-,9600,CM,INA:bbs.weather-station.org,IBN:24555
+,164,Battlestar_BBS,Warminster_PA,Mark_Iezzi,-Unpublished-,9600,CM,INA:battlestarbbs.dyndns.org,IBN
+,166,Alcoholiday,SC,Andrew_Haworth,-Unpublished-,9600,CM,INA:alky.duckdns.org,IBN
+,168,Echo_Base_BBS,Perry_MI,Jeff_Jun,-Unpublished-,9600,CM,INA:binkp.echo-base-bbs.com
+,169,Basement_Theory,Sciotoville_OH,Josh_Ramsey,-Unpublished-,9600,CM,INA:basement.synchro.net,IBN
+,170,Dogtown_BBS,Los_Angeles_CA,Christopher_Taylor,-Unpublished-,9600,CM,INA:bbs.kiwi.net,IBN
+,179,Razor's_Domain_BBS,McAllen_TX,Kevin_Nunn,-Unpublished-,9600,CM,INA:bbs.razorsdomain.com,IBN
+,181,Castle_Rock_BBS,Rio_Rancho_NM,Dan_Richter,-Unpublished-,9600,CM,INA:bbs.castlerockbbs.com,IBN
+,183,Ink_Two_BBS,Covina_CA,Lawrence_Manuel,-Unpublished-,9600,CM,INA:bbs.inktwo.com,IBN
+,186,Central_Ontario_Remote,Campbellford_Ontario_CAN,Mick_Manning,-Unpublished-,9600,CM,INA:manningfire.dyndns.org,IBN
+,188,Troy's_Den,Phoenix_AZ,Scott_Miller,-Unpublished-,9600,CM,INA:troybbs.com,IBN
+,193,War_Ensemble_BBS,Appeton_WI,Mike_Miller,-Unpublished-,9600,CM,INA:warensemble.com,IBN
+,194,End_Of_The_Line_BBS,Plano_TX,Nigel_Reed,-Unpublished-,9600,CM,INA:ipv4.endofthelinebbs.com,IBN
+Pvt,700,The_Pharcyde_BBS,Pewaukee_WI,Nicholas_Boel,-Unpublished-,9600,IBN
+;
+Host,10,Phoenix_Hub,Pawcatuck_CT,Andrew_Leary,-Unpublished-,9600,ICM,XX,INA:phoenix.bnbbbs.net,IBN:24555,ITN:60177,IFC
+,101,Freeside_BBS,Cincinnati_OH,Marty_Taylor,-Unpublished-,9600,CM,INA:freeside.bbs.io,IBN
+,103,Diskshop_BBS,Toronto_Ontario_CAN,Frank_Linhares,-Unpublished-,9600,CM,INA:bbs.diskshop.ca,IBN
+,105,t311net,Toronto_Ontario_CAN,Rex_Gibson,-Unpublished-,9600,CM,INA:t311net.ddns.net,IBN
+,106,Gateway_to_the_West,St._Peters_MO,Robert_Stinnett,-Unpublished-,9600,CM,INA:bbs.homelabber.net,IBN
+,110,The_Ghetto_BBS,The_Villages_FL,Greg_Youngblood,-Unpublished-,9600,CM,INA:binkp.theghettobbs.com,IBN:24570
+,112,Lost_Cause_Halfway_House_BBS,Alden_NY,Ernest_J_Gainey_III,-Unpublished-,9600,CM,INA:bbs.lostcause.house,IBN
+,114,Blackfair's_Manor,Lancaster_PA,Keith_Cunningham,-Unpublished-,9600,CM,INA:blackf.synchro.net,IBN
+,117,The_ROCK_BBS_III,Goshen_IN,Michael_Batts,-Unpublished-,9600,CM,INA:therockbbs.net,IBN
+,119,Fishingnet_BBS,Toronto_Ontario_CAN,Matthew_Smith,-Unpublished-,9600,CM,INA:fishingnet.phatstar.org,IBN
+,120,Mystic_Island_BBS,Fountain_Valley_CA,Mickey_Frklic,-Unpublished-,9600,CM,INA:mysticisland.strangled.net,IBN
+,121,Capitol_City_Online,Frankfort_KY,Mike_Powell,-Unpublished-,9600,CM,INA:capitolcityonline.net,IBN
+,123,Moderate_Chaos,Watauga_TX,David_DeWell,-Unpublished-,9600,CM,INA:bbs.moderatechaos.com,IBN
+,129,Dragons_Den_BBS,Forest_Hill_MD,Al_Miller,-Unpublished-,9600,CM,INA:merlock.org,IBN
+,130,Stellar_Darkness,Toronto_Ontario_CAN,Mike_Da_Costa,-Unpublished-,9600,CM,INA:stellardarkness.com,IBN
+,131,The_Bottomless_Abyss_BBS,Quebec_City_CAN,Dave_Cloutier,-Unpublished-,9600,CM,INA:bbs.bottomlessabyss.net,IBN
+,132,ACME_BBS,Albany_OR,Don_Lowery,-Unpublished-,9600,CM,INA:acmebbs.ddns.net,IBN
+,134,Card_&_Claw_BBS,Berkeley_CA,Robbie_Whiting,-Unpublished-,9600,CM,INA:cardandclaw.com,IBN
+,135,Dark_Matter_BBS,Kurten_TX,Will_Milberger,-Unpublished-,9600,CM,INA:darkmatt.synchro.net,IBN
+,136,Abacus_BBS,Portland_OR,Rick_Smith,-Unpublished-,9600,CM,INA:bbs.abon.us,IBN
+,137,Eggy_BBS,Chicago_IL,Matt_Richards,-Unpublished-,9600,CM,INA:bbs.eggy.cc,IBN
+,139,Vertraun,Fullerton_CA,Rob_Swindell,-Unpublished-,9600,CM,INA:vert.synchro.net,IBN
+,144,The_Curse_of_Fenric,Atlanta_GA,Raleigh_Apple,-Unpublished-,9600,CM,INA:fenric.muppetwhore.net,IBN
+,146,SpaceSST_BBS,Montreal_QC,Luc_McCarragher,-Unpublished-,9600,CM,INA:mccarragher.org,IBN
+,152,Northern_Realms,Binbrook_ON,Jay_Harris,-Unpublished-,9600,CM,INA:bbs.nrbbs.net,IBN
+,158,The_Underground,Carmel_IN,Doug_Cooper,-Unpublished-,9600,CM,INA:www.theunderground.us,IBN
+,161,Arcadia_BBS,Putnam_CT,Michael_Pedersen,-Unpublished-,9600,CM,INA:telnet.arcadiabbs.com,IBN
+,256,Bits_&_Bytes_BBS,North_Stonington_CT,Andrew_Leary,1-860-503-8857,9600,H16,V34,VFC,V32T,V42b,XA,CM,INA:bbs.bnbbbs.net,IBN,IVM,ITN:2023
+;
+Region,2,Europe,Pewaukee_WI,Nicholas_Boel,-Unpublished-,9600,CM,INA:binkp.pharcyde.org,IBN
+,101,Haciend_el_Bananas,Helsinki_Finland,Antti_Kiuru,-Unpublished-,9600,CM,INA:haciend.com,IBN
+,103,Bits_Lair_BBS,Madrid_Spain,Yeray_Arroitajauregui,-Unpublished-,9600,CM,INA:bitslair.voidlabs.com,IBN
+,104,BlackICE_BBS,Duesseldorf_Germany,Vitus_Zeel,-Unpublished-,9600,CM,INA:blackice.bbsindex.com,IBN
+,105,SLiME_CiTY_BBS,Sweden,David_Jacoby,-Unpublished-,9600,CM,INA:slimecity.retrohack.se,IBN
+,109,Kuehlbox,Ranstadt_Germany,Philipp_Giebel,-Unpublished-,9600,CM,INA:kuehlbox.wtf,IBN
+,114,AlcaBBS,Apeldoorn_The_Netherlands,Michael_Trip,-Unpublished-,9600,CM,INA:fido.alcatrash.org
+;
+Host,20,Phoenix_Hub,Pawcatuck_CT,Andrew_Leary,-Unpublished-,9600,ICM,XX,INA:phoenix.bnbbbs.net,IBN:24555,ITN:60177,IFC
+,102,Another_Droid_BBS,Greece,Andreas_Apostolou,-Unpublished-,9600,CM,INA:andr01d.zapto.org,IBN
+,106,The_Quantum_Wormhole,Ramsgate_UK,Christian_Sacks,-Unpublished-,9600,CM,INA:bbs.erb.pw,IBN
+,107,Veleno_BBS,Rovereto_Italy,Thomas_Bampi,-Unpublished-,9600,CM,INA:mail.velenobbs.net,IBN
+,108,Retro_Acorn,Glasgow_UK,Richard_Fairman,-Unpublished-,9600,CM,INA:80.192.18.227,IBN:1600
+;
+Region,3,AustralAsia,Pewaukee_WI,Nicholas_Boel,-Unpublished-,9600,CM,INA:binkp.pharcyde.org,IBN
+,101,Dragon's_Claw,Ballarat_Victoria_Australia,Stephen_Walsh,-Unpublished-,9600,CM,MO,INA:ftn633.vk3heg.net,IBN
+,103,Agency_Mail_Hub,Dunedin_New_Zealand,Paul_Hayton,-Unpublished-,9600,CM,INA:agency.bbs.geek.nz,IBN
+,106,Datanet_BBS,Melbourne_Australia,Steve_Ellis,-Unpublished-,9600,CM,INA:datanetbbs.net,IBN
+;
+Host,30,Phoenix_Hub,Pawcatuck_CT,Andrew_Leary,-Unpublished-,9600,ICM,XX,INA:phoenix.bnbbbs.net,IBN:24555,ITN:60177,IFC
+,102,Wicked_Garden_BBS,Burnside_Victoria_Australia,Hung_Tran,-Unpublished-,9600,CM,INA:wgbbs.fsxnet.nz,IBN
+;S END
+;S
+;S --- NODELIST FLAGS ---
+;S
+;S  A. OPERATING CONDITION FLAGS:
+;S
+;S          Flag      Meaning
+;S
+;S          CM        Node accepts mail 24 hours a day
+;S          MO        Node does not accept human callers
+;S          LO        Node accepts calls Only from Listed
+;S                    FidoNet addresses
+;S          ICM       Node accepts 24/7 IP-mail but has limited
+;S                    "open"-hours only via PSTN and/or ISDN
+;S
+;S  B. MODEM FLAGS:
+;S     The following flags define modem protocols supported:
+;S
+;S          Flag      Meaning
+;S
+;S          V21       CCITT V.21     300 bps   full duplex
+;S          V22       CCITT V.22     1200 bps  full duplex
+;S          V29       CCITT V.29     9600 bps  half duplex
+;S          V32       CCITT V.32     9600 bps  full duplex
+;S          V32b      ITU-T V.32 bis 14400 bps full duplex
+;S          V32T      V.32 Terbo
+;S          V33       CCITT V.33
+;S          V34       CCITT V.34
+;S          HST       USR Courier HST
+;S          H14       USR Courier HST 14.4
+;S          H16       USR Courier HST 16.8
+;S          H96       Hayes V9600
+;S          MAX       Microcom AX/96xx series
+;S          PEP       Packet Ensemble Protocol
+;S          CSP       Compucom Speedmodem
+;S          ZYX       Zyxel series
+;S          VFC       V.Fast Class
+;S          Z19       Zyxel 19,200 modem protocol
+;S          V90C      ITU-T V.90 modem Client
+;S          V90S      ITU-T V.90 Server.
+;S          X2C       US Robotics x2 client.
+;S          X2S       US Robotics x2 server.
+;S
+;S     The following flags define type of error correction available. A
+;S     separate error correction flag should not be used when the error
+;S     correction type can be determined by the modem flag. For instance
+;S     a modem flag of HST implies MNP.
+;S
+;S          Flag      Meaning
+;S
+;S          MNP       Microcom Networking Protocol error correction
+;S                    of type MNP1 to MNP4
+;S          V42       LAP-M error correction w/fallback to MNP
+;S
+;S  C. COMPRESSION FLAGS:
+;S
+;S     The following flags define the type(s) of compression of mail
+;S     packets supported.
+;S
+;S          Flag      Meaning
+;S
+;S          MN        No compression supported
+;S
+;S    The following flags define the type(s) of data compression
+;S    available.
+;S
+;S         V42b      ITU-T V42bis
+;S
+;S D. FILE/UPDATE REQUEST FLAGS:
+;S
+;S    The following flags indicate the types of file/update requests
+;S    supported.
+;S
+;S
+;S |--------------------------------------------------|
+;S |      |         Bark        |        WaZOO        |
+;S |      |---------------------|---------------------|
+;S |      |   File   |  Update  |   File   |  Update  |
+;S | Flag | Requests | Requests | Requests | Requests |
+;S |------|----------|----------|----------|----------|
+;S | XA   |    Yes   |    Yes   |    Yes   |    Yes   |
+;S | XB   |    Yes   |    Yes   |    Yes   |    No    |
+;S | XC   |    Yes   |    No    |    Yes   |    Yes   |
+;S | XP   |    Yes   |    Yes   |    No    |    No    |
+;S | XR   |    Yes   |    No    |    Yes   |    No    |
+;S | XW   |    No    |    No    |    Yes   |    No    |
+;S | XX   |    No    |    No    |    Yes   |    Yes   |
+;S |--------------------------------------------------|
+;S
+;S
+;S
+;S The following software is qualified to
+;S use the appropriate file request flag
+;S according to information provided by
+;S developers:
+;S
+;S |-----------------------------------|
+;S | Flag      Software Package        |
+;S |-----------------------------------|
+;S |  XA  Frontdoor   1.99b and lower  |
+;S |      Frontdoor   2.01  and higher |
+;S |      Dutchie     2.90c            |
+;S |      Binkleyterm 2.1   and higher |
+;S |      D'Bridge    1.2   and lower  |
+;S |      Melmail                      |
+;S |      TIMS                         |
+;S |      Xenia                        |
+;S |-----------------------------------|
+;S |  XB  Binkleyterm 2.0              |
+;S |      Dutchie     2.90b            |
+;S |-----------------------------------|
+;S |  XC  Opus        1.1              |
+;S |-----------------------------------|
+;S |  XP  Seadog                       |
+;S |-----------------------------------|
+;S |  XR  Opus        1.03             |
+;S |      Platinum Xpress              |
+;S |-----------------------------------|
+;S |  XW  Fido        12N   and higher |
+;S |      Tabby                        |
+;S |      TrapDoor  No update processor|
+;S |      The Brake!                   |
+;S |-----------------------------------|
+;S |  XX  Argus	      2.00  and higher |
+;S |      BeeMail
+;S |      D'Bridge    1.30  and higher |
+;S |      Frontdoor   1.99c/2.00       |
+;S |      InterMail   2.01             |
+;S |      McMail      1.00             |
+;S |      T-Mail                       |
+;S |      TrapDoor - Update Processor  |
+;S |-----------------------------------|
+;S |  None       QMM                   |
+;S |-----------------------------------|
+;S
+;S
+;S E. GATEWAY FLAG:
+;S
+;S    The following flag defines gateways to other domains (networks).
+;S
+;S         Flag      Meaning
+;S
+;S         Gx..x     Gateway to domain 'x..x', where 'x..x` is a string
+;S                   of alphanumeric characters. Valid values for
+;S                   'x..x' are assigned by the FidoNet International
+;S                   Coordinator.  Current valid values of 'x..x' may
+;S                   be found in the notes at the end of the FidoNet
+;S                   nodelist.
+;S
+;S F. MAIL PERIOD FLAGS:
+;S    The following flags define the dedicated mail periods supported.
+;S    They have the form "#nn" or !nn where nn is the UTC hour the mail
+;S    period begins,  # indicates Bell 212A compatibility,  and !
+;S    indicates incompatibility with Bell 212A.
+;S
+;S         Flag      Meaning
+;S
+;S          #01       Zone 5 mail hour (01:00 - 02:00 UTC)
+;S          #02       Zone 2 mail hour (02:30 - 03:30 UTC)
+;S          #08       Zone 4 mail hour (08:00 - 09:00 UTC)
+;S          #09       Zone 1 mail hour (09:00 - 10:00 UTC)
+;S          #18       Zone 3 mail hour (17:00 - 18:00 UTC)
+;S          #20       Zone 6 mail hour (20:00 - 21:00 UTC)
+;S
+;S                   NOTE:  When applicable,  the mail period flags may
+;S                   be strung together with no intervening commas, eg.
+;S                   "#02#09".  Only mail hours other than that
+;S                   standard within a node's zone should be given.
+;S                   Since observance of mail hour within one's zone is
+;S                   mandatory,  it should not be indicated.
+;S
+;S G. ISDN CAPABILTY FLAGS:
+;S
+;S  Nodelist  Specification of minimal support required for this flag;
+;S  flag      any additional support to be arranged via agreement
+;S          between users
+;S
+;S  V110L     ITU-T V.110 19k2 async ('low').
+;S  V110H     ITU-T V.110 38k4 async ('high').
+;S  V120L     ITU-T V.120 56k async, layer 2 framesize 259, window 7,
+;S            modulo 8.
+;S  V120H     ITU-T V.120 64k async, layer 2 framesize 259, window 7,
+;S            modulo 8.
+;S  X75       ITU-T X.75 SLP (single link procedure) with 64kbit/s B
+;S            channellayer 2 max.framesize 2048, window 2, non-ext.
+;S            mode (modulo 8)layer 3 transparent (no packet layer).
+;S  ISDN      Other configurations. Use only if none of the above
+;S            fits.
+;S
+;S  NOTE: No flag implies another. Each capability MUST be specifically
+;S      listed.
+;S  If no modem connects are supported, the nodelist speed field should
+;S  be 300.
+;S
+;S  Conversion from old to new ISDN capability flags:
+;S    ISDNA -> V110L
+;S    ISDNB -> V110H
+;S    ISDNC -> X75
+;S
+;S H. INTERNET CAPABILITY FLAGS:
+;S
+;S   FLAG   MEANING
+;S
+;S   IBN - denotes a system that does BINKP
+;S   IFC - denotes a system that is capable of RAW or IFCICO
+;S   ITN - denote a system that does TELNET
+;S   IVM - denotes a system that is capable of VMODEM
+;S   IFT - denotes a system that allows FTP
+;S   ITX - denotes a system that uses TransX encoding for email
+;S         tunneling
+;S   IUC - denotes a system that uses UUEncode for email tunneling
+;S   IMI - denotes a system which uses MIME encoding for email
+;S         tunneling
+;S   ISE - denotes a system which supports SEAT receipts for anonymous
+;S         mail
+;S   IP  - denotes a system that can receive TCP/IP connects using a
+;S         protocol that is not covered by any other flag.
+;S   IEM - is a deprecated flag, and new implementations must not
+;S         write it in nodelist entries. This was used as a single
+;S         placeholder for the InterNet address of the system if it
+;S         supported several transport methods. Instead of placing
+;S         the system address in the deprecated form specified below
+;S         in each flag, the address would be placed once only in this
+;S         flag. Implementations may need to parse this information
+;S         from nodelists created with older programs.
+;S   INA - Place to list a Fully Qualified Domain Name Or Static IP
+;S         Address, to be followed by applicable protocol flags
+;S         offered.   Usage:  INA:<somedomain.com>|<x.x.x.x>
+;S
+;S
+;S Conversion from R46/R50 Internet capabilty flags to the new flags:
+;S
+;S   BND -> IBN
+;S   TEL -> ITN
+;S   TELNET -> ITN
+;S   VMD -> IVM
+;S   TCP -> IP
+;S
+;S The Internet Address should be placed in the BBS name field.
+;S
+;S Previous usage has placed the InterNet address as part of the
+;S I-flag (for example ITX:r10_tx@thevision.net)
+;S In this format the flag, colon, and address combined cannot exceed 32
+;S characters. However, this practice is deprecated, and new implementations
+;S must not place address data in the flag section of the nodelist entry,
+;S implementations may however be required to read this data from the
+;S flag section.
+;S
+;S Telnet default port is 23. If the port is not 23 then the port
+;S number must be placed after the ITN flag (eg ITN:60177) if the
+;S Telnet address is part of the ITN flag (eg ITN:farsi.dynip.com) then
+;S the port number should be last (eg ITN:kraut.dynip.com:60177) always
+;S remember that the flag cannot exceed 32 characters total.
+;S
+;S The default ports for other protocols are shown below, and changes
+;S from the default port must be flagged in a similar way.
+;S
+;S Protocol      Flag    Default Port
+;S
+;S FTP           IFT     21
+;S BINKP         IBN     24554
+;S RAW/IFCICO    IFC     60179
+;S VMODEM        IVM     3141
+;S
+;S Actual IP addresses can also be placed in the phone number field
+;S using  the country code of 000, however, the use of a FQDN is prefered.
+;S
+;S Note: All IP nodes *must* have mailer capabilities. E-Mail/FTP etc. denote
+;S       supplemental capabilities only.
+;S
+;S I. SYSTEM ONLINE TIME FLAGS
+;S
+;S  The flag Tyz is used by non-CM nodes online not only during ZMH,
+;S  y is a letter indicating the start and z a letter indicating the
+;S  end of the online period as defined below (times in UTC):
+;S
+;S       A  0:00,  a  0:30,   B  1:00,  b  1:30,   C  2:00,  c  2:30,
+;S       D  3:00,  d  3:30,   E  4:00,  e  4:30,   F  5:00,  f  5:30,
+;S       G  6:00,  g  6:30,   H  7:00,  h  7:30,   I  8:00,  i  8:30,
+;S       J  9:00,  j  9:30,   K 10:00,  k 10:30,   L 11:00,  l 11:30,
+;S       M 12:00,  m 12:30,   N 13:00,  n 13:30,   O 14:00,  o 14:30,
+;S       P 15:00,  p 15:30,   Q 16:00,  q 16:30,   R 17:00,  r 17:30,
+;S       S 18:00,  s 18:30,   T 19:00,  t 19:30,   U 20:00,  u 20:30,
+;S       V 21:00,  v 21:30,   W 22:00,  w 22:30,   X 23:00,  x 23:30.
+;S
+;S  For example TuB shows an online period from 20:30 until 1:00 UTC.
+;S
+;S  Daylight saving time
+;S
+;S  If a node changes online times with respect to UTC when daylight
+;S  saving time becomes effective (which would be the case with most
+;S  part time nodes), then this is to be taken into account when
+;S  assigning this flag. An online times flag assigned to a node should
+;S  not be altered for the specific purpose of adjusting due to
+;S  daylight saving time, since large difference files (NODEDIFF's)
+;S  would result if every node was allowed to do this, e.g. my node
+;S  used to be online from 2300 to 0800 in local time, which in winter
+;S  is UTC, but in the summer it becomes BST (British Summer Time).
+;S  This is one hour ahead of UTC, and the corresponding availability
+;S  times of my node during the summer period were 2200 to 0700 UTC.
+;S  Therefore my online times flag would have indicated availability
+;S  between the hours of 2300 and 0700 UTC, the daily time period
+;S  encompassing both times, so the flag would be TXH.
+;S
+;S  J. BAUD RATES:
+;S
+;S  The following baud rates are authorized for use in the nodelist:
+;S
+;S  300, 1200, 2400, 4800, 9600, 14400, 16800, 19200, 28800, 33600
+;S
+;S  K.  Special flag: "PING" without any arguments
+;S
+;S    Meaning:
+;S
+;S         Nodes flying this flag will adhere to the following functionality:
+;S
+;S         1) PING-function:
+;S         """""""""""""""""
+;S             If a message destined to "PING" arrives at its final destination
+;S             and this final destination flies the "PING"-flag, then the
+;S             receiving node will bounce the message back to the original
+;S             sender clearly displaying all the original via-lines.
+;S
+;S             If a message destined to "PING" arrives at its final destination
+;S             but this final destination does _not_ fly the "PING"-flag then the
+;S             message may be deleted from the inbound-queue without further
+;S             follow-up.
+;S
+;S         2) TRACE-function:
+;S         """"""""""""""""""
+;S             If a message destined to "PING" arrives at a node which flies
+;S             the PING-flag but is merely passing-through to another destination
+;S             then the in-transit node will notify the sender of this occurence
+;S             and will forward the original mail unaltered towards its final
+;S             destination.
+;S
+;S
+;S Userflags authorized for use in the nodelist
+;S ------------
+;S A. FORMAT OF USER FLAGS
+;S
+;S    U,x..x
+;S              A user-specified string, which may contain any
+;S              alphanumeric character except blanks.  This string may
+;S              contain one to thirty-two characters of information
+;S              that may be used to add user-defined data to a specific
+;S              nodelist entry.  The character "U" must not be
+;S              repeated, eg, ",U,XXX,YYY,ZZZ" not ",U,XXX,U,YYY,UZZZ".
+;S              The 32 character limitation is per userflag, not for
+;S              the total of all userflags.
+;S
+;S              New implementations must place a comma after the
+;S              initial "U" before the user flags. Some
+;S              implementations will not place a separating comma
+;S              between the "U" and the first user flag, but this
+;S              practice is deprecated. Implementations should be
+;S              prepared to read flags in this format, and must strip
+;S              the "U" from the flag before analysis in this case.
+;S
+;S              Entries following the "U" flag must be of a technical
+;S              or administrative nature.  While experimentation of new
+;S              software functions using this flag is encouraged,
+;S              advertisement is strictly prohibited.
+;S
+;S              For applications other than those shown, or if you
+;S              have questions concerning the use of this field, please
+;S              contact your Regional or Zone Coordinator.
+;S
+;S    ZEC       Zone EchoMail Coordinator. Not more than one entry
+;S              in the zone  segment may carry this flag and that entry
+;S              must be the current Zone EchoMail Coordinator.
+;S
+;S    REC       Regional EchoMail Coordinator. Not more than one
+;S              entry in any region may carry this flag and that entry
+;S              must be the current Regional EchoMail Coordinator.
+;S
+;S    NEC       Network EchoMail coordinator. Not more than one entry
+;S              in any net may carry this flag and that entry must be
+;S              the current Network EchoMail Coordinator of that Net.
+;S
+;S
+;S    SDS       Software Distribution System
+;S
+;S    SMH       SecureMail Hub - or one of the following variations,
+;S              indicating the specific level of the hub:
+;S
+;S 		NSMH - Net SecureMail Host - only one per net
+;S 		RSMH - Region SecureMail Host - only one per region
+;S 		ZSMH - Zone SecureMail Host - only one in Zone 1
+;S 		ISMH - International SecureMail Host - only one in Fidonet
+;S
+;S    NC        Network Coordinator. This flag is ONLY to be used by
+;S              the Network Coordinator of a net which has split the
+;S              duties of NC and Host and the NC does NOT occupy the
+;S              Net/0 position in the nodelist.
+

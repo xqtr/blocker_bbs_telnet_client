@@ -28,6 +28,7 @@ Uses
   m_DateTime,
   m_Input,
   m_io_Base,
+  m_io_sockets,
   m_Protocol_Queue;
 
 Type
@@ -49,10 +50,10 @@ Type
   TProtocolAbortProc  = Function : Boolean;
 
   TProtocolBase = Class
-    Status      : RecProtocolStatus;
+    StatusT      : RecProtocolStatus;
     StatusProc  : TProtocolStatusProc;
     AbortProc   : TProtocolAbortProc;
-    Client      : TIOBase;
+    Client      : TIOSocket;
     Queue       : TProtocolQueue;
     EndTransfer : Boolean;
     Connected   : Boolean;
@@ -60,7 +61,7 @@ Type
     StatusTimer : LongInt;
     ReceivePath : String;
 
-    Constructor Create (Var C: TIOBase; Var Q: TProtocolQueue); Virtual;
+    Constructor Create (Var C: TIOSocket; Var Q: TProtocolQueue); Virtual;
     Destructor  Destroy; Override;
 
     Function    AbortTransfer   : Boolean;
@@ -78,7 +79,7 @@ Begin
   Result := False;
 End;
 
-Constructor TProtocolBase.Create (Var C: TIOBase; Var Q: TProtocolQueue);
+Constructor TProtocolBase.Create (Var C: TIOSocket; Var Q: TProtocolQueue);
 Begin
   Client      := C;
   Queue       := Q;
@@ -90,7 +91,7 @@ Begin
   StatusCheck := 100;
   StatusTimer := 0;
 
-  FillChar(Status, SizeOf(Status), 0);
+  FillChar(Statust, SizeOf(Statust), 0);
 End;
 
 Destructor TProtocolBase.Destroy;
@@ -101,7 +102,7 @@ End;
 Procedure TProtocolBase.StatusUpdate (Starting, Ending: Boolean);
 Begin
   If Assigned(StatusProc) Then
-    StatusProc(Starting, Ending, Status);
+    StatusProc(Starting, Ending, Statust);
 End;
 
 Function TProtocolBase.ReadByteTimeOut (hSec: LongInt) : SmallInt;

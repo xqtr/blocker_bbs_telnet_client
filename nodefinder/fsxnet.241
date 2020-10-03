@@ -1,0 +1,415 @@
+;A fsxNet Nodelist for Friday, August 28, 2020 -- Day number 241 : 01257
+;A
+;A fsxNet, All rights reserved, Copyright 2015-2019
+;A
+;S
+;S fsxNet is a fun, simple and experimental network established in late 2015
+;S
+;S fsxNet is not a prescriptive network. e[X]perimentation is at heart
+;S of its name and members are actively encouraged to be creative in their
+;S use of the network. Only a handfull of message areas and file bases are
+;S used - setup is quick and [S]imple.
+;S
+;S Technologies covered by the network include (but are not limited to)
+;S BBSing, ANSI art, Amateur (HAM) Radio, Retro / Vintage Computers & Gaming,
+;S FTN communications, network protocols & topologies, encryption methods,
+;S contemporary computers (e.g. Raspberry Pi), computer coding and more.
+;S
+;S fsxNet sees a number of messages posted to it every week. It is an
+;S active support network for several developers of BBS software spanning
+;S BBS systems, door games and more.
+;S
+;S fsxNet is not an invite-only closed network, rather it is an open
+;S community and everyone who wishes to join is welcome.
+;S
+;S Do you find it [F]un to learn about and use retro computing technologies?
+;S Would you like to be part of a group that enjoy experimenting and developing
+;S those technologies further? If the answer is yes, then we invite you to
+;S join us :)
+;S
+;S == Goals ====================================================================
+;S
+;S Develop and encourage international communications between 100 (or more)
+;S geographically diverse bulletin board system operators (members)
+;S and their users in order to:
+;S
+;S - Support and create learning and experimental opportunities
+;S - Explore and develop new and interesting methods of online communication
+;S - Foster international friendships without borders
+;S - Raise awareness of BBS as a hobby and communications option for
+;S   the 21st century
+;S
+;S == Values ===================================================================
+;S
+;S - Have fun!
+;S - Keep it simple
+;S - Be kind, respectful and helpful
+;S - Reject disruptive conduct that willfully incites discord
+;S
+;S == Housekeeping =============================================================
+;S
+;S Members of fsxNet and their users to conduct themselves with the above goals
+;S and values in mind. Failure to do so risks being de-listed and/or removed
+;S by the Network Coordinator
+;S
+;S The use of the fsxNet for illegal purposes is not permitted. Members or users
+;S deemed to be engaged in such activities will be de-listed and/or removed by
+;S the Network Coordinator
+;S
+;S Members real names are used in the nodelist, members and users’ aliases or
+;S real names are welcome in all echoareas
+;S
+;S Messages containing ANSI should use a [ANSI] prefix in the message subject
+;S line. This allows members who can’t view ANSI content to opt out reading it
+;S if they are unable to do so. e.g. Subject: [ANSI] Something I drew last night
+;S
+;S Please do not gate fsxNet traffic to other FTN/QWK networks, Usenet,
+;S or any other network without first discussing your request in FSX_GEN
+;S and obtaining approval from the Zone 21 ZC.
+;S
+;S == Echoareas ================================================================
+;S
+;S Message Echos:
+;S
+;S FSX_GEN - A general discussion echoarea covering many topics.
+;S           Test messages and other experimentation is welcome.
+;S
+;S FSX_MYS - Mystic BBS discussions, support and development.
+;S
+;S FSX_CRY - Cryptographic discussion and experimentation.
+;S           Public key sharing, encoded messages, testing etc.
+;S           is welcome here.
+;S
+;S FSX_BOT - The first choice for non-human roBOT output.
+;S           May contain BBS and NET ads, stats reports, telemetry reports,
+;S           traces of nuts etc. Set your BOT free in this area :)
+;S
+;S FSX_BBS - BBS software, development and support. The echoarea is also
+;S           host to fsxNet Wiki (wiki.bbs.nz) discussions and support.
+;S
+;S FSX_DAT - InterBBS Data. An echomail area used by software such as InterBBS
+;S           Oneliner or Double-Up (both by Darryl Perry) to send inter-BBS
+;S           data between nodes in fsxNet. In most cases the data is not readable
+;S           or of interest to human eyes. Sysops may wish to hide this echo
+;S           from BBS users.
+;S
+;S FSX_MAG - Magicka BBS discussions, support and development.
+;S
+;S FSX_ENG - ENiGMA 1/2 BBS discussions, support and development.
+;S
+;S FSX_HAM - Amateur Radio discussions. Covers all aspects of HAM radio
+;S           including DX, HF, VHF/UHF, various digital modes etc.
+;S
+;S FSX_NET - Discussions about fsxNet. Chat about current network operations,
+;S           plans for the future and how to best implement them.
+;S
+;S
+;S File Bases:
+;S
+;S FSX_NODE - Weekly Nodelists (fsxNet, etc.)
+;S FSX_INFO - Weekly Infopacks (fsxNet, etc.)
+;S
+;S FSX_MYST - Mystic BBS Software
+;S FSX_MUTL - Mystic BBS Utils, Mods etc.
+;S
+;S FSX_SOFT - BBS Software (Current + Legacy)
+;S FSX_DOOR - BBS Doors, Games etc.
+;S FSX_UTLS - BBS Utils, Tools, Networking etc.
+;S
+;S FSX_ARTS - ANSI Art - Groups, Individuals etc.
+;S FSX_IMGE - Image Files (Various)
+;S FSX_TEXT - Text Files (Various)
+;S
+;S == ChangeLog ================================================================
+;S
+;S For a full list of changes refer to the HISTORY.TXT file in the fsxNet
+;S infopack:
+;S
+;S =============================================================================
+;S
+;S
+;S
+;
+Zone,21,fsxNet_ZC,Dunedin_NZL,Paul_Hayton,-Unpublished-,300,ICM,MO,INA:agency.bbs.nz,IBN:24556,ZEC
+;
+Region,21,fsxNet_RC,Dunedin_NZL,Paul_Hayton,-Unpublished-,300,ICM,MO,INA:agency.bbs.nz,IBN:24556,REC
+;
+Host,1,fsxNet_(NET_1),Dunedin_NZL,Paul_Hayton,-Unpublished-,300,CM,MO,INA:agency.bbs.nz,IBN:24556
+Pvt,1,Agency_HUB,Dunedin_NZL,Paul_Hayton,-Unpublished-,300
+,10,fsxNet_Games_+_Usenet_Gateway,Dunedin_NZL,Paul_Hayton,-Unpublished-,300,CM,MO,INA:agency.bbs.nz,IBN:24557
+,100,Risa_HUB,Dunedin_NZL,Paul_Hayton,-Unpublished-,300,CM,MO,INA:agency.bbs.nz,IBN:24556,SDS
+,101,Agency_BBS,Dunedin_NZL,Paul_Hayton,-Unpublished-,300,CM,INA:ipv4.agency.bbs.nz,IBN:24555
+,102,Error_404_BBS,Perrysburg_USA,Todd_Zieman,-Unpublished-,300,CM,INA:error404bbs.ddns.net,IBN,ITN:404
+Pvt,103,Micro_Link_BBS,Maryborough_AUS,Lloyd_Russell,-Unpublished-,300
+,104,Shenk's_Express_BBS,Virginia_Beach_USA,Carol_Shenkenberger,-Unpublished-,300,CM,INA:shenks.dyndns.org,IBN
+,105,Fluph_BBS,Elkview_USA,Leslie_Given,-Unpublished-,300,CM,INA:fluph.zapto.org,IBN
+,106,BlackICE_BBS,Duesseldorf_GER,Vitus_Zeel,-Unpublished-,300,CM,INA:blackice.bbsindex.de,IBN
+,107,The_ByteXchange_BBS,Lindale_USA,Chad_Adams,-Unpublished-,300,CM,INA:bbs.thebytexchange.com,IBN
+,109,Freeway_BBS,Bendigo_AUS,Tony_Langdon,-Unpublished-,300,CM,INA:freeway.vkradio.com,IBN
+,110,AmigaXess,Georgsmarienhuette_GER,Ingo_Juergensmann,-Unpublished-,300,CM,INA:ftn.amigaxess.de,IBN
+,111,Another_Droid_BBS,Athens_GRC,Andreas_Apostolou,-Unpublished-,300,CM,INA:andr01d.zapto.org,IBN,ITN:9999
+,112,Black_Flag_BBS,Hudson_USA,Hawk_Hubbard,-Unpublished-,300,CM,INA:blackflag.acid.org,IBN,ITN:28
+,114,Throwback_BBS,Meriden_USA,Todd_Yatzook,-Unpublished-,300,CM,INA:bbs.throwbackbbs.com,IBN
+,115,1st_Choice_Core_BBS,Ashburton_NZL,Ian_Segers,-Unpublished-,300,CM,INA:1stchoicecore.co.nz,IBN
+Pvt,116,sOUNDGARDEn,Zoetermeer_NLD,Marco_Reparon,-Unpublished-,300
+,117,Mystic_Dreams_BBS,Warminster_USA,Mark_Iezzi,-Unpublished-,300,CM,INA:mysticdreams.dyndns.org,IBN:24555,ITN:24
+,118,Crystal_Peak_BBS,Pine_City_USA,Will_Du_Chene,-Unpublished-,300,CM,INA:crystalp.duckdns.org,IBN
+,119,Sysgod_BBS,Sydney_AUS,Scott_Little,61-2-9727-7775,300,CM,XA,V32b,V34,V42b,VFC,INA:ftn.sysgod.org,IBN,ITN:60177,IFC,PING
+,120,Cyberia_BBS,Kingwood_USA,Darryl_Perry,-Unpublished-,300,CM,INA:cyberiabbs.zapto.org,IBN
+,121,Xibalba_BBS,Salt_Lake_City_USA,Bryan_Ashby,-Unpublished-,300,CM,INA:xibalba.l33t.codes,IBN:54554,ITN:44510
+,122,Necronomicon_BBS,New_Bedford_USA,Carlos_Roldan,-Unpublished-,300,CM,INA:necrobbs.ddns.net,IBN
+,123,Thiaramus_Den,Brooklyn_USA,Roman_Litvinenko,-Unpublished-,300,CM,INA:thiaramus.fsxnet.nz,IBN
+,124,apernevan.tk_BBS,Arad_ROU,Andrei_Pernevan,-Unpublished-,300,CM,INA:apernevan.tk,IBN
+,125,CrNet_BBS,Saint_James_USA,John_Gonzales,-Unpublished-,300,CM,INA:bbs.crnet.net,IBN
+,126,Wunderlust_BBS,Toowoomba_AUS,Andrew_Pamment,-Unpublished-,300,CM,INA:wunderlust.ddns.net,IBN,
+,127,Capital_Station_BBS,Nassau_USA,Gregory_Deyss,-Unpublished-,300,CM,INA:csbbs.dyndns.org,IBN
+,128,The_OuijaBoard_BBS,Anoka_USA,Jeff_Smith,-Unpublished-,300,CM,INA:bbs.ouijabrd.net,IBN
+,129,SpaceSST_BBS,Montreal_CAN,Luc_McCarragher,-Unpublished-,300,CM,INA:mccarragher.org,IBN
+,130,Tiny's_BBS,Oshawa_CAN,Shawn_Highfield,-Unpublished-,300,CM,INA:tinysbbs.com,IBN,ITN:3023
+,131,Weather_Station_HUB,Bel_Air_USA,Mark_Hofmann,-Unpublished-,300,CM,INA:bbs.weather-station.org,IBN:24555
+,132,Weather_Station_WWIV_BBS,Bel_Air_USA,Mark_Hofmann,-Unpublished-,300,CM,INA:bbs.weather-station.org,IBN
+,133,The_Parity_Error_BBS,Kelowna_CAN,Ian_McLaughlin,-Unpublished-,300,CM,INA:theparityerror.com,IBN
+,134,Mystic_Prison_Board_BBS,Mesquite_USA,Ruben_Figueroa,-Unpublished-,300,CM,INA:pbmystic.rdfig.net,IBN:24555,ITN:24
+,135,Return_to_The_Lair_of_the_Wolverine_BBS,Salt_Lake_City_USA,Kevin_Taylor,-Unpublished-,300,CM,INA:bbs.r2lotw.com,IBN
+,136,force9_BBS,London_GBR,David_Stephens,-Unpublished-,300,CM,INA:bbs.force9.org,IBN
+,137,Digital_Distortion_BBS,Hillsboro_USA,Eric_Oulashin,-Unpublished-,300,CM,INA:digdist.synchro.net,IBN
+,138,Electronic_Warfare_BBS,Vincennes_USA,Nicholas_Loch,-Unpublished-,300,CM,INA:bbs.ewbbs.net,IBN
+Pvt,139,devNULL_BBS,Colorado_Springs_USA,Phillip_Kimble,-Unpublished-,300
+,140,Daves_BBS,Marbury_USA,David_Smith,-Unpublished-,300,CM,INA:davesbbs.com,IBN
+,141,Pie33_BBS,Amsterdam_NLD,Moises_Aranas,-Unpublished-,300,CM,INA:pie33.com,IBN,ITN:2223
+,143,The_Bridge_BBS,Bendigo_AUS,Tony_Langdon,-Unpublished-,300,CM,INA:bridge.vkradio.com,IBN
+,144,PBBS_WHQ_Support,Richmond_USA,Ozz_Nixon,-Unpublished-,300,CM,INA:exchangebbs.com,IBN
+,145,Mystic_Pi_BBS,Nashua_USA,Brian_Wallace,-Unpublished-,300,CM,INA:bcw142.zapto.org,IBN:24556
+,146,Saturn's_Orbit_BBS,Rio_de_Janeiro_BRA,Flavio_Bessa,-Unpublished-,300,CM,INA:saturnsorbit.hopto.org,IBN
+,147,The_Comm's_Nut_BBS,Gagebrook_AUS,Danny_Moss,-Unpublished-,300,CM,INA:tcnbbs.fsxnet.nz,IBN
+,148,Coco_BBS,San_Jose_CRI,Luis_Marin,-Unpublished-,300,CM,INA:cocosbbs.fsxnet.nz,IBN,ITN:50600
+Pvt,150,Sotano_Msx_BBS,Ibiza_ESP,Pepe_Diaz,-Unpublished-,300
+,152,2nd_Choice_Core_BBS,Ashburton_NZL,Ian_Segers,-Unpublished-,300,CM,INA:2ndchoicecore.nz,IBN:24555,ITN:1024
+Pvt,153,Infoline_BBS,Prague_CZE,Mickolas_Pansky,-Unpublished-,300
+,154,Raiders_Inc_BBS,Wichita_USA,Jon_Justvig,-Unpublished-,300,CM,INA:vintagebbsing.com,IBN
+,155,Haciend_BBS,Helsinki_FIN,Antti_Kiuru,-Unpublished-,300,CM,INA:haciend.com,IBN
+,156,Central_Ontario_Remote_BBS,Campbellford_CAN,Mike_Manning,-Unpublished-,300,CM,INA:oxfordmi.synchro.net,IBN
+,157,Shadowscope_BBS,Temple_USA,Richard_Miles,-Unpublished-,300,CM,INA:bbs.shadowscope.com,IBN
+,158,The_Quantum_Wormhole_BBS,Ramsgate_GBR,Christian_Sacks,-Unpublished-,300,CM,INA:bbs.erb.pw,IBN
+,159,The_GateHouse_BBS,Hockley_Valley_CAN,John_Riley,-Unpublished-,300,CM,INA:bbs.digitalgatehouse.com,IBN
+,160,Slime_City_BBS,Ahus_SWE,David_Jacoby,-Unpublished-,300,CM,INA:bbs.retrohack.se,IBN
+,161,The_Search_BBS,Goshen_USA,Karl_Harris,-Unpublished-,300,CM,INA:searchbbs.fsxnet.nz,IBN,ITN:34123
+,162,Razors_Domain_3.141592_BBS,McAllen_USA,Kevin_Nunn,-Unpublished-,300,CM,INA:bbs.razorsdomain.com,IBN,ITN:31415
+,163,Dreamland_BBS,North_Hollywood_USA,Tony_Master,-Unpublished-,300,CM,INA:bbs.dreamlandbbs.org,IBN
+,164,Electronic_Chicken_BBS,Toronto_CAN,Derek_Mullin,-Unpublished-,300,CM,INA:bbs.electronicchicken.com,IBN
+,165,The_Underground_BBS,Carmel_USA,Doug_Cooper,-Unpublished-,300,CM,INA:theunderground.us,IBN,ITN:10023
+,166,Datanet_BBS,Melbourne_AUS,Steve_Ellis,-Unpublished-,300,CM,INA:datanetbbs.net,IBN
+,167,Nitemare_Cafe_BBS,Cardington_USA,Rod_Barnhart,-Unpublished-,300,CM,INA:bbs.nitemarecafe.com,IBN,ITN:2002
+,168,Monterey_BBS,San_Franciso_USA,Ryan_Fantus,-Unpublished-,300,CM,INA:montereybbs.com,IBN
+,169,Sinner's_Haven_BBS,Dothan_USA,Karl_Kunc,-Unpublished-,300,CM,INA:bbs.sinnershaven.com,IBN
+,170,Weather_Station_Mystic_BBS,Bel_Air_USA,Mark_Hofmann,-Unpublished-,300,CM,INA:bbs.weather-station.org,IBN:24557
+Pvt,171,Modema_Tider_BBS,Gothenburg_SWE,Andreas_Selstam,-Unpublished-,300
+,172,The_Bottomless_Abyss_BBS,Quebec_City_CAN,Dave_Cloutier,-Unpublished-,300,CM,INA:bbs.bottomlessabyss.net,IBN
+,173,Sinclair_Retro_BBS,San_Giorgio_di_Mantova_ITA,Simone_Voltolini,-Unpublished-,300,CM,INA:retrobbs.sinclair.homepc.it,IBN
+,174,The_Zone_BBS,Lorain_USA,Mike_Warnock,-Unpublished-,300,CM,INA:zonebbs.net,IBN
+,175,Capitol_City_Online_BBS,Frankfort_USA,Mike_Powell,-Unpublished-,300,CM,INA:capitolcityonline.net,IBN
+,176,Darkrealms_BBS,Toronto_CAN,Nick_Andre,-Unpublished-,300,CM,INA:bbs.darkrealms.ca,IBN
+,177,Dali's_Cat_BBS,Chicago_USA,Ismar_Hasanbegovic,-Unpublished-,300,CM,INA:daliscat.synchro.net,IBN
+,178,Internal_Dimension_BBS,Ontario_CAN,Dave_Vandermeer,-Unpublished-,300,CM,INA:id-bbs.ddns.net,IBN,ITN:59
+Pvt,179,Cryptogenic_Radix_BBS,Dunedin_NZL,Paul_Hayton,-Unpublished-,300
+Pvt,180,Perceptronica_BBS,Pflugerville_USA,Jeff_Thiele,-Unpublished-,300
+,181,Ninho_do_Abutre_2_BBS,Rio_de_Janeiro_BRA,Mauro_Veiga,-Unpublished-,300,CM,INA:abutre.no-ip.org,ITN:2323
+,182,The_Colossus_BBS,Provo_USA,Jordan_McGilvray,-Unpublished-,300,CM,INA:bbs.excalibursheath.com,IBN
+,183,Vertrauen_BBS,Norco_USA,Rob_Swindell,-Unpublished-,300,CM,INA:vert.synchro.net,IBN
+,184,Echo_Base_BBS,Perry_USA,Jeff_Jun,-Unpublished-,300,CM,INA:telnet.echo-base-bbs.com,IBN
+,185,Immortal's_Domain_BBS,Pleasant_Grove_USA,Steve_Helferich,-Unpublished-,300,CM,INA:idomain.synchro.net,IBN,ITN:2400
+,186,Castle_Rock_BBS,Rio_Rancho_USA,Dan_Richter,-Unpublished-,300,CM,INA:bbs.castlerockbbs.com,IBN
+,187,Cosmik_Debris_BBS,Little_Falls_USA,Andrew_Pepper,-Unpublished-,300,CM,INA:cosmikdebris.ddns.net,IBN:24556,ITN:2323
+Pvt,188,ACiD_Underworld_BBS,Hudson_USA,Hawk_Hubbard,-Unpublished-,300
+,189,The_Virtual_Terminal_BBS,Belleville_USA,Joseph_Werle,-Unpublished-,300,CM,INA:bbs.kernelerror.com,IBN,ITN:10023
+,190,Abacus_BBS,Portland_USA,Rick_Smith,-Unpublished-,300,CM,INA:bbs.abon.us,IBN,ITN:2323
+,191,Slasho.me_BBS,Pikeville_USA,Christopher_Hall,-Unpublished-,300,CM,INA:slasho.me,IBN
+,193,Darkstar_BBS,Vienna_AUT,Alexander_Winkler,-Unpublished-,300,CM,INA:darkstar.bmxjo.org,IBN:24556
+,194,Diamond_Mine_Online_BBS,Fredericksburg_USA,David_Perrussel,-Unpublished-,300,CM,INA:bbs.dmine.net,IBN
+,195,Dragon's_Claw_HUB,Melbourne_AUS,Stephen_Walsh,-Unpublished-,300,CM,INA:ftn.vk3heg.net,IBN
+,196,Dragon's_Lair_BBS,Ballarat_AUS,Stephen_Walsh,-Unpublished-,300,CM,INA:dragon.vk3heg.net,IBN
+Pvt,197,Trigonia_BBS,Somewhere_SWE,Gustav_Dersjo,-Unpublished-,300
+,198,The_Fat_Dragon,New_York_USA,Dan_Cross,-Unpublished-,300,CM,INA:trunk.fat-dragon.org,IBN
+,199,Clutch_BBS,Ontario_CAN,Mark_Stark,-Unpublished-,300,CM,INA:bbs.clutchbbs.com,IBN
+Pvt,200,The_Pharcyde_BBS,Pewaukee_USA,Nicholas_Boel,-Unpublished-,300
+,201,Decker's_Heaven_BBS,Gainesville_USA,Eric_Renfro,-Unpublished-,300,CM,INA:bbs.deckersheaven.com,IBN
+,202,Star_Collision_BBS,Uppsala_SWE,Bjorn_Wiberg,-Unpublished-,300,CM,INA:scbbs.nsupdate.info,IBN,IFC,ITN:60177,IVM:60177
+,203,Rocket_Town_BBS,Titusville_USA,Ricky_DeLuco,-Unpublished-,300,CM,INA:rtbbs.ddns.net,IBN
+,204,Family_BBS,Auckland_NZL,Tony_Pawson,-Unpublished-,300,CM,INA:familybbs.ddns.net,IBN
+,207,Argen_X_BBS,Tortuguitas_ARG,Eduardo_Castillo,-Unpublished-,300,CM,INA:sysop.kozow.com,IBN
+,208,S_W_A_T_S_BBS,Auckland_NZL,Stephen_Hunt,-Unpublished-,300,CM,INA:swatsbbs.ddns.net,IBN
+,209,LU8FJH_BBS,Rosario_ARG,Juan_Musso,-Unpublished-,300,CM,INA:lu8fjh.dyndns.org,IBN
+,210,Digital_Jackalope_BBS,Toronto_CAN,Daria_Juniper,-Unpublished-,300,CM,INA:bbs.jackalope.pw,IBN
+Pvt,999,New_System,AnyTown_AnyCountry,New_Sysop,-Unpublished-,300
+;
+Host,2,fsxNet_(NET_2),Perrysburg_USA,Todd_Zieman,-Unpublished-,300,CM,MO,INA:error404bbs.ddns.net,IBN:24555
+,100,Tholian_HUB,Perrysburg_USA,Todd_Zieman,-Unpublished-,300,CM,MO,INA:error404bbs.ddns.net,IBN:24555,SDS
+,101,End_Of_The_Line_BBS,Plano_USA,Nigel_Reed,-Unpublished-,300,CM,INA:endofthelinebbs.com,IBN
+,102,Flynn's_Arcade_BBS,Ceder_Springs_USA,Rich_Webb,-Unpublished-,300,CM,INA:bbs.webbhq.net,IBN
+,103,Resistance_Pride_BBS,Pittsboro_USA,Kevin_Sonney,-Unpublished-,300,CM,INA:resistancepride.sytes.net,IBN
+,104,Vger_Cloud_BBS,Torrance_USA,Bradley_Thornton,-Unpublished-,300,CM,INA:vger.fsxnet.nz,IBN
+,105,The_New_Frontier_2_BBS,Akron_USA,Charles_Stephenson,-Unpublished-,300,CM,INA:frontierbbs.net,IBN:24556
+,106,NeoCincinnati_BBS,Cincinnati_USA,Nikki_Jenks,-Unpublished-,300,CM,INA:neocinci.bbs.io,IBN
+,107,The_Northern_Borderlands_BBS,Sacramento_USA,Jack_Palmer_Jr,-Unpublished-,300,CM,INA:northernborderlands.ddns.net,IBN
+,108,Storm_BBS,Los_Altos_USA,April_Monoceros,-Unpublished-,300,CM,INA:telnet.stormbbs.com,IBN
+,109,Nexus_Computers_BBS,Gold_Coast_AUS,Manu_Ngamotu,-Unpublished-,300,CM,INA:bbs.nexuscomputers.com.au,IBN
+,110,Ink_Two_BBS,Covina_USA,Lawrence_Manuel,-Unpublished-,300,CM,INA:bbs.inktwo.com,IBN
+,111,Leisure_Time_BBS,New_Baden_USA,Robert_Riddell,-Unpublished-,300,CM,INA:bbs.riddells.net,IBN,ITN:10023
+,112,Drakefire_BBS,Kingswood_USA,Jake_Parks,-Unpublished-,300,CM,INA:bbs.drakefire.com,IBN
+,113,PHATstar_RetroBOX_BBS,Toronto_CAN,Matthew_Smith,-Unpublished-,300,CM,INA:echo.phatstar.org,IBN:7000
+,114,Freeside_BBS,Monroe_USA,Marty_Taylor,-Unpublished-,300,CM,INA:freeside.bbs.io,IBN
+,115,Mystic_Rhythms_BBS,San_Francisco_USA,Rob_Cole,-Unpublished-,300,CM,INA:mystic.wwivbbs.org,IBN
+,116,Chinwag_BBS,Parkdale_AUS,Deon_George,-Unpublished-,300,CM,INA:alterant.leenooks.net,IBN:24564
+,118,SmokyThing_BBS,San_Antonio_USA,Shannon_Kuchler,-Unpublished-,300,CM,INA:inflecto.org,IBN
+,119,Temple_of_Doom_BBS,Anderson_USA,Kris_Jones,-Unpublished-,300,CM,INA:tod.eothnet.com,IBN
+,123,Deadbeatz_BBS,Albuquerque_USA,Tim_Blada,-Unpublished-,300,CM,INA:deadbeatz.org,IBN
+Pvt,124,Insane_Asylum_BBS,Racine_USA,James_Kulwicki,-Unpublished-,300
+,125,Fishingnet_BBS,Toronto_CAN,Matthew_Smith,-Unpublished-,300,CM,INA:fishingnet.phatstar.org,ITN:7777
+,126,Rust_Belt_BBS,Rochester_USA,Kevin_Miller,-Unpublished-,300,CM,INA:rbbbs.mtonetwork.com,IBN:24555
+,127,Battlestar_BBS,Warminster_USA,Mark_Iezzi,-Unpublished-,300,CM,INA:battlestarbbs.dyndns.org,IBN
+,128,The_Dragon's_Den,Forest_Hill_USA,Al_Miller,-Unpublished-,300,CM,INA:merlock.org,IBN
+,129,Risky_Business_BBS,Sudbury_CAN,Roger_Ouimette,-Unpublished-,300,CM,INA:riskybusiness.hopto.org,IBN
+,130,Delta_City_BBS,Vallentuna_SWE,Joacim_Melin,-Unpublished-,300,CM,INA:deltacity.fsxnet.nz,IBN:24556
+,131,Orbit_BBS,Opp_USA,Allen_Scofield,-Unpublished-,300,CM,INA:orbitbbs.ddns.net,IBN
+,132,Archaic_Binary_BBS,Orlando_USA,Wayne_Smith,-Unpublished-,300,CM,INA:bbs.archaicbinary.net,IBN
+,133,8-Bit_Classics_BBS,Wisconsin_USA,Corey_Koltz,-Unpublished-,300,CM,INA:bbs.8bitclassics.com,IBN
+,134,Troy's_Den_BBS,Phoenix_USA,Scott_Miller,-Unpublished-,300,CM,INA:troybbs.com,IBN
+,135,Omicron_Theta_Mail_System,Southaven_USA,Robert_Wolfe,-Unpublished-,300,CM,INA:winserver.org,IBN,ITN:2300
+,136,Omicron_Theta_BBS,Southaven_USA,Robert_Wolfe,-Unpublished-,300,CM,INA:winserver.org,IBN:24556
+,137,Tsali's_BBS,Louisville_USA,James_Washington,-Unpublished-,300,CM,INA:tsali.ddns.net,IBN,ITN:9023
+,138,Palantir_BBS,Pensacola_USA,Dan_Clough,-Unpublished-,300,CM,INA:palantirbbs.ddns.net,IBN
+,139,Gryphus_BBS,Nowra_AUS,Stephen_Arnold,-Unpublished-,300,CM,INA:gryphus.vk2sja.org,IBN,ITN:5632
+,140,Subcarrier_BBS,Ottawa_CAN,John_McCoy,-Unpublished-,300,CM,INA:subcarrier.ignorelist.com,IBN,ITN:2323
+,141,SiliconUnderground_BBS,Rochester_USA,Jason_Bock,-Unpublished-,300,CM,INA:siliconu.fsxnet.nz,IBN
+,142,Shakey_BBS,Allen_USA,Von_Wallace,-Unpublished-,300,CM,INA:shakeybbs.com,IBN
+,144,Outremer_BBS,Vancouver_CAN,Pieter_Bakker,-Unpublished-,300,CM,INA:outremer.fsxnet.nz,IBN
+,145,Mike's_Mansion_BBS,Portland_USA,Michael_Pierce,-Unpublished-,300,CM,INA:mansion.dynv6.net,IBN
+,146,Two_Dudes_BBS,Grand_Rapids_USA,Peter_Spalding,-Unpublished-,300,CM,INA:twodudesbbs.fsxnet.nz,IBN
+,147,ACME_BBS,Albany_USA,Don_Lowery,-Unpublished-,300,CM,INA:acmebbs.ddns.net,IBN
+,148,Mystic_Island_BBS,Fountain_Valley_USA,Mickey_Frklic,-Unpublished-,300,CM,INA:mysticisland.strangled.net,IBN
+Down,149,Moderate_Chaos_BBS,Watauga_USA,David_DeWell,-Unpublished-,300,CM,INA:bbs.moderatechaos.com,IBN
+Pvt,150,American_Pi_BBS,Portland_USA,Paul_Hughes,-Unpublished-,300
+,151,Dock_Sud_BBS,Dock_Sud_ARG,Fernando_Toledo,-Unpublished-,300,CM,INA:bbs.docksud.com.ar,IBN
+,152,UnderZaNet_BBS,London_GBR,Jan_Henkins,-Unpublished-,300,CM,INA:bbs.under.za.net,ITN:2024,IBN:24555
+,153,t311net_BBS,Ontario_CAN,Rex_Gibson,-Unpublished-,300,CM,INA:t311net.fsxnet.nz,IBN
+,154,Danger_Bay_BBS,Vancouver_CAN,Tom_Swartz,-Unpublished-,300,CM,INA:dangerbaybbs.dyndns.org,IBN,ITN:1337
+,155,The_Amiga_Frontier_BBS,Akron_USA,Charles_Stephenson,-Unpublished-,300,CM,INA:frontierbbs.net,IBN
+,156,CJ's_Place_BBS,Orange_City_USA,Chris_Johnson,-Unpublished-,300,CM,INA:cjsplace.thruhere.net,IBN
+,157,SBBS_BBS,St_Louis_USA,Phillip_Taylor,-Unpublished-,300,CM,INA:mystic.dynu.net,IBN
+,158,Segfault_BBS,Canyon_USA,Larry_Wyble,-Unpublished-,300,CM,INA:segfault.hopto.org,IBN
+,159,SBB_Systems_BBS,London_GBR,Frans_King,-Unpublished-,300,CM,INA:bbs.sbbsystems.com,IBN:54554
+,160,DarkAges_BBS,Wayne_USA,Randy_Henderson,-Unpublished-,300,CM,INA:darkagesbbs.com,IBN
+,161,DaRK_Games_BBS,Kannapolis_USA,Arturo_Busleiman,-Unpublished-,300,CM,INA:darkgame.buanzo.org,IBN
+,162,The_FreeSpeak_BBS,Pittsburgh_USA,Gary_Ailes,-Unpublished-,300,CM,INA:freespeak.hopto.org,IBN
+,163,XM_Core_BBS,Dallas_USA,Dwight_Spencer,-Unpublished-,300,CM,INA:bbs.dapla.net,IBN
+,164,Dragonstalon_BBS,Whiteville_USA,Lee_Staley,-Unpublished-,300,CM,INA:dtalon.ddns.net,IBN,ITN:8088
+,165,LoFi_BBS,Ottawa_CAN,Matt_Gibson,-Unpublished-,300,CM,INA:lofi.ooo,IBN
+,166,Dark_Carnival_BBS,LaGrange_USA,Richard_Matthews,-Unpublished-,300,CM,INA:bbs.darkcarnival.org,IBN
+,167,ITBNET_BBS,Rome_ITA,Pasquale_Monti,-Unpublished-,300,CM,INA:bbs.itbnet.eu,IBN
+,168,Conxtor_BBS,Cartama_ESP,Volker_Kerkhoff,-Unpublished-,300,CM,INA:conxtor.fsxnet.nz,IBN
+,169,Jebula_BBS,Espoo_FIN,Jesse_Maenpaa,-Unpublished-,300,CM,INA:bbs.jebu.la,IBN
+Pvt,1202,Error_1202_BBS,Perrysburg_USA,Todd_Zieman,-Unpublished-,300
+;
+Host,3,fsxNet_(NET_3),Parkdale_AUS,Deon_George,-Unpublished-,300,CM,INA:alterant.leenooks.net,IBN,ITN:60177
+,100,Mutura_HUB/Linucus_BBS,Parkdale_AUS,Deon_George,-Unpublished-,300,CM,INA:alterant.leenooks.net,IBN,ITN:60177
+,101,The_Lower_Planes_BBS,Melbourne_AUS,Anthony_Adverse,-Unpublished-,300,CM,INA:tlp.zapto.org,ITN:119
+Pvt,102,Types_of_Squash_BBS,Thueringen_GER,Oliver_Thuns,-Unpublished-,300,U,ON2:boqbccnwyumttwvh
+,103,The_Alien_Mindbenders_BBS,Rochfortbridge_IRL,Martin_List-Petersen,-Unpublished-,300,CM,INA:the.alienmindbenders.net,IBN
+Down,104,Brain_Storm_BBS,Recife_BRA,Ioram_Sette,-Unpublished-,300,CM,INA:bsbbs.com.br,ITN:24555
+,105,The_Lab_BBS,Dickson_USA,Les_Wade,-Unpublished-,300,CM,INA:bbs.dicksonlabs.net,IBN
+,106,Neuroflux_BBS,Boise_USA,Sam_Evans,-Unpublished-,300,CM,INA:bbs.neuroflux.online,IBN
+,107,Arcadia_BBS,Putnam_USA,Michael_Pedersen,-Unpublished-,300,CM,INA:telnet.arcadiabbs.com,IBN
+,108,Buckeye_Telegraph,Buckeye_USA,Dean_Galloway,-Unpublished-,300,CM,INA:mailer.buckeyetelegraph.net,IBN
+,109,Manic_Modem_BBS,Union_USA,John_Cameron,-Unpublished-,300,CM,INA:binkp.manic-modem.com,IBN
+,110,Northern_Realms_BBS,Binbrook_CAN,Jay_Harris,-Unpublished-,300,CM,INA:bbs.nrbbs.net,IBN
+,111,The_Unknown_Realm_BBS,Oshawa_CAN,Mike_McCafferty,-Unpublished-,300,CM,INA:turealm.no-ip.org,IBN
+,112,Flee_the_Planet_BBS,Sacramento_USA,Fang_Castro,-Unpublished-,300,CM,INA:flee.fsxnet.nz,IBN
+,113,Pweck's_Retreat_BBS,Omaha_USA,Dean_Lodge,-Unpublished-,300,CM,INA:pwecksretreat.com,IBN
+,114,1984_BBS,Washington_DC,Jeff_Liford,-Unpublished-,300,CM,INA:1984.fsxnet.nz,IBN
+Pvt,115,Tradestation_BBS,Florence_Al,Stan_Peck,-Unpublished-,300,IBN
+Pvt,116,Farm_BBS,Nashville_TN,Scott_Bogantinoff,-Unpublished-,300,IBN
+,117,Etienne_Robitaille,Milwaukee_WI,Etienne_Robitaille,-Unpublished-,300,CM,INA:bbs.k9zn.org,IBN
+,118,Panopticon,Calgary_Canada,Alex_Spezowka,-Unpublished-,300,CM,INA:panoptic.onl,IBN
+,119,FuNToPia,Potsdam_Germany,Stephan_Gebbers,-Unpublished-,300,CM,INA:funtopia.ddnss.eu,IBN
+;
+Host,4,fsxNet_(NET_4),Rio_Rancho_USA,Dan_Richter,-Unpublished-,300,CM,MO,INA:bbs.castlerockbbs.com,IBN:24560
+Pvt,10,fsxNet_FTN_QWK_Gateway,Rio_Rancho_USA,Dan_Richter,-Unpublished-,300
+,100,Niba_HUB,Rio_Rancho_USA,Dan_Richter,-Unpublished-,300,CM,MO,INA:bbs.castlerockbbs.com,IBN:24560,SDS
+,101,Back_to_the_Future_BBS,Pennsylvania_USA,Bill_Simon,-Unpublished-,300,CM,INA:bttfbbs.com,IBN
+,102,Before_the_Web_BBS,Huntsville_USA,Dallas_Vinson,-Unpublished-,300,CM,INA:furmenservices.net,IBN:24551,ITN:23232
+Down,103,Ready_Player_Two_BBS,Front_Royal_USA,Scott_Daniels,-Unpublished-,300,CM,INA:readyplayertwo.ddns.net,IBN
+,104,Herbies_BBS_II,Weil_am_Rhein_GER,Thorsten_Herb,-Unpublished-,300,CM,INA:herbies-bbs.ddns.net,IBN
+,105,Phoenix_BBS,Pawcatuck_USA,Andrew_Leary,-Unpublished-,300,CM,INA:phoenix.bnbbbs.net,IBN:24555,ITN:2323
+,106,The_Rusty_Mailbox_BBS,Penticton_CAN,Alan_Ianson,-Unpublished-,300,CM,XW,INA:trmb.ca,IBN
+,107,Centaurus_BBS,Drome_FRA,Stephen_Berard,-Unpublished-,300,CM,INA:centaurus.ventouxlabs.com,IBN,ITN:2323
+,109,9640_News_BBS,Campbellsburg_USA,Beery_Miller,-Unpublished-,300,CM,INA:9640news.ddns.net,IBN,ITN:9640
+,110,BZ&BZ_BBS,New_Port_Richey_USA,Steve_Thielemann,-Unpublished-,300,CM,INA:bbs.red-green.com,IBN,ITN:4023
+,111,Blue_Northen_Software_BBS,Bellevue_USA,Dave_Eidson,-Unpublished-,300,CM,INA:bnsbbs.ddns.net,IBN,ITN:23000
+,112,Sloane_BBS,Atlanta_USA,Steve_Smith,-Unpublished-,300,CM,INA:sloanebbs.com,IBN
+,113,Digital_Wurmhole_BBS,London_CAN,Blair_Lovell,-Unpublished-,300,CM,INA:digitalwurmhole.ddns.net,IBN:24556,ITN:2323
+,115,Phaseshift_BBS,Vancouver_CAN,Kevin_Pausche,-Unpublished-,300,CM,INA:phased.port0.org,IBN
+,116,Intermail_Support,Chicago_USA,Dale_Barnes,-Unpublished-,300,CM,INA:im.ifidonet.com,IBN
+,117,Brainsuxx.inc_BBS,Beelitz_GER,Michael_Braun,-Unpublished-,300,CM,INA:brainsuxxinc.ddns.net,IBN
+Pvt,118,Bit's_Lair_BBS,Madrid_ESP,Yeray_Dorta,-Unpublished-,300
+,119,After_Hours_BBS,Lady_Lake_USA,Greg_Youngblood,-Unpublished-,300,CM,INA:afterhours-bbs.com,IBN
+Pvt,120,Deep_Space_Gateway_BBS,Crystal_River_USA,Sam_Penwright,-Unpublished-,300
+,121,AlcaBBS,Apeldoorn_NLD,Michael_Trip,-Unpublished-,300,CM,INA:bbs.alcatrash.org,IBN
+,122,realitycheckBBS,Aptos_USA,Kurt_Weiske,-Unpublished-,300,CM,INA:realitycheckbbs.org,IBN
+,123,Humongous_BBS,Chiayi_TWN,Nathanel_Culver,-Unpublished-,300,CM,INA:jenandcal.familyds.org,IBN,ITN:2323
+,124,The_Dungeon_BBS,Canberra_AUS,Keith_Matthews,-Unpublished-,300,CM,INA:dungeon.barnabasmusic.com,IBN
+,125,Veleno_BBS,Rovereto_ITA,Thomas_Bampi,-Unpublished-,300,CM,INA:velenobbs.ddns.net,IBN
+,126,Another_F-ing_BBS,CasaGrande_USA,Gary_Crunk,-Unpublished-,300,CM,INA:anotherbbs.dynu.net,IBN
+,128,DragonsWeb_Labs_BBS,Pembroke_USA,James_DiGriz,-Unpublished-,300,CM,INA:bbs.dragonsweb.org,IBN
+,129,Syrinx_BBS,Norwich_USA,Marc_Carrano,-Unpublished-,300,CM,INA:bbs.syrinxbbx.com,IBN
+,131,The_Wrong_Number_[]_BBS,Yorktown_Heights_USA,Al_DeRosa,-Unpublished-,300,CM,INA:wn2.duckdns.org,IBN
+,133,Fading_Black_BBS,Hamilton_CAN,Will_Smith,-Unpublished-,300,CM,INA:fadingblack.net,IBN
+,134,Possum_Lodge_South_BBS,Frankfort_USA,Mike_Powell,-Unpublished-,300,CM,INA:possumso.fsxnet.nz,IBN:24555,ITN:7636
+,135,Veteran_BBS,Clanton_USA,Mike_Welborn,-Unpublished-,300,CM,INA:vetbbs.fsxnet.nz,IBN
+,136,Total_Lost_BBS,Harnosand_SWE,Dennis_Eklund,-Unpublished-,300,CM,INA:bbs.deek.se,IBN
+,137,8_Bit_Boyz_BBS,Rio_Rancho_USA,Shane_O'Neill,-Unpublished-,300,CM,INA:8bitboyz.bbs.io,ITN:6502
+,138,CIA_Amiga_BBS,Mayflower_USA,Tim_Grooms,-Unpublished-,300,CM,INA:ciaamigabbs.dynu.net,IBN,ITN:6400
+,139,DigiSoft_BBS,Norrk??ping_SWE,Peter_H??rje,-Unpublished-,300,CM,INA:mm2.se,IBN
+,141,Retro_Underground_BBS,Edmonds_USA,John_Rumpelein,-Unpublished-,300,CM,INA:retrounderground.org,IBN,ITN:1337
+,143,Eggy_BBS,Chicago_USA,Matt_Richards,-Unpublished-,300,CM,INA:eggy.fsxnet.nz,IBN,ITN:2300
+,144,Sonic_BBS,Beverley_GBR,Louis_Northmore,-Unpublished-,300,CM,INA:sonicbbs.ddns.net,IBN
+,146,The_Dragon's_Gate_BBS,La_Junta_USA,Cory_Daehn,-Unpublished-,300,CM,INA:bbs.mayorlormar.com,IBN
+,147,Aliens'_Alcove_BBS,Taguig_City_PHL,Eric_Pareja,-Unpublished-,300,CM,INA:aliens.free.net.ph,IBN
+,148,Gateway_to_the_West_BBS,St_Peters_USA,Robert_Stinnett,-Unpublished-,300,CM,INA:bbs.homelabber.net,IBN
+,150,VA7AQD's_Tavern_BBS,Kamloops_CAN,Adam_Clark,-Unpublished-,300,CM,INA:bbs.isurf.ca,IBN
+,151,Thunder-Storm_BBS,Totonto_CAN,Darryl_Wood,-Unpublished-,300,CM,INA:thunder-storm.ca,IBN,ITN:10023
+,152,Blackfair's_Manor_BBS,Lancaster_USA,Keith_Cunningham,-Unpublished-,300,CM,INA:blackf.synchro.net,IBN
+,153,ARDA_BBS,Delaware_USA,Tim_Woodland,-Unpublished-,300,CM,INA:arda-bbs.com,IBN
+,154,Diskshop_BBS,Toronto_CAN,Frank_Linhares,-Unpublished-,300,CM,INA:bbs.diskshop.ca,IBN
+,155,Flower_BBS,Osborne_Park_AUS,Troy_Marchant,-Unpublished-,300,CM,INA:flower.sytes.net,IBN
+,156,The_Rock_BBS_III,Goshen_USA,Michael_Batts,-Unpublished-,300,CM,INA:therockbbs.net,IBN,ITN:10023
+,157,LostCause_Halfway_House,Alden_USA,Ernest_Gainey,-Unpublished-,300,CM,INA:bbs.lostcause.house,IBN
+,158,Card_&_Claw_BBS,Berkely_USA,Robbie_Whiting,-Unpublished-,300,CM,INA:cardandclaw.servebbs.com,IBN
+,159,RetroDevOps_BBS,Brisbane_AUS,Todd_Whitehead,-Unpublished-,300,CM,INA:bbs.retrodevops.com,IBN
+,160,Brotherhood_of_Groovyness_BBS,Sioux_City_USA,John_Porterfield,-Unpublished-,300,CM,INA:b-o-g.net,IBN
+,161,Gerlach_BBS,Zvolen_SVK,Dominik_Madarasz,-Unpublished-,300,CM,INA:bbs.madaraszd.net,IBN,ITN:4321
+Pvt,163,Retro_Acorn_BBS,Glasgow_GBR,Richard_Fairman,-Unpublished-,300
+,164,FuSiON_BBS,Deer_Park_USA,Chris_Schneider,-Unpublished-,300,CM,INA:fusion.zapto.org,IBN
+,165,w0pr.win,Sparta_USA,Richard_Swartz,-Unpublished-,300,CM,INA:w0pr.win
+,166,Black_Lodge_Research_BBS,Seattle_USA,Emory_Balmer,-Unpublished-,300,CM,INA:blacklodge.fsxnet.nz,IBN
+,167,The_Vault_BBS,Buenos_Aires_ARG,Rodrigo_Pelaez,-Unpublished-,300,CM,INA:thevaultbbs.fsxnet.nz,IBN
+,168,Dales_BBS,Norfolk_GBR,Dale_Cousins,-Unpublished-,300,CM,INA:dalesbbs.fsxnet.nz,IBN
+,170,Hispania_BBS,Milton_Keynes_GBR,Efraim_Sanchez_Gil,-Unpublished-,300,CM,INA:hispaniabbs.ddns.net,IBN:24560
+,171,Star_Frontiers_BBS,Huntsville_USA,William_Williams,-Unpublished-,300,CM,INA:starfron.synchronetbbs.org,IBN
+,172,Dark_Forces_BBS,Warminster_USA,Mark_Iezzi,-Unpublished-,300,CM,INA:darkforcesbbs.dyndns.org,IBN:24558
+,173,KN6Q_BBS,Azle_USA,Tom_Kisner,-Unpublished-,300,CM,INA:bbs.kn6q.org,IBN
+,174,Mirrored_Lands_BBS,Manchester_USA,Chris_Lagonick-Weitzel,-Unpublished-,300,CM,INA:mirroredlands.ddns.net,IBN
+;
+Host,5,fsxNet_(NET_5),Mesquite_USA,Ruben_Figueroa,-Unpublished-,300,CM,INA:rdfig.net,IBN:24555,ITN:2324,IVM
+,100,Omicron_HUB/WildCat_Prison_BBS,Mesquite_USA,Ruben_Figueroa,-Unpublished-,300,CM,INA:rdfig.net,IBN:24555,ITN:2324,IVM
+,101,The_File_Bank_BBS,Cairns_AUS,Terry_Roati,-Unpublished-,300,CM,XR,INA:tfb-bbs.org,IBN,IFT,ITN,IVM,ITX:transx@tfb-bbs.org
+,102,TAK_Software_BBS,Murfreesboro_USA,Thomas_Kloos,-Unpublished-,300,CM,INA:bbs.taksoftware.com,IVM
+,103,The_Computer_Express,Anoka_USA,Chris_Costakis,-Unpublished-,300,CM,INA:bbs.costakis.org,ITN:3141,IVM
+;
+;S
+;S == Nodelist Flags ===========================================================
+;S
+;S   Details of the permitted nodelist flags can be found in the Fidonet
+;S   Technical Standards Committee document FTSC-5001. Copies of this
+;S   document are available from http://www.ftsc.org/docs/
+;S
+

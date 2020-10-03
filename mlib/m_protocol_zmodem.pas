@@ -37,6 +37,7 @@ Uses
   m_Strings,
   m_Input,
   m_io_Base,
+  m_io_sockets,
   m_Protocol_Base,
   m_Protocol_Queue;
 
@@ -48,6 +49,48 @@ Const
 Type
   ZHdrType = Array[0..3] of Byte;
   ZBufType = Array[0..MaxBufSize - 1] of Byte;
+  
+  Type
+  RecProtocolStatus = Record
+    Protocol    : String[15];
+    Sender      : Boolean;
+    FilePath    : String;
+    FileName    : String;
+    FileSize    : Int64;
+    Position    : Int64;
+    BlockSize   : Word;
+    Errors      : Word;
+    StartTime   : LongInt;
+    StartPos    : Int64;
+    LastMessage : String[80];
+    Count       : Word;
+  End;
+
+  TProtocolStatusProc = Procedure (Starting, Ending: Boolean; Status: RecProtocolStatus);
+  TProtocolAbortProc  = Function : Boolean;
+  
+  TProtocolBase = Class
+    StatusT      : RecProtocolStatus;
+    StatusProc  : TProtocolStatusProc;
+    AbortProc   : TProtocolAbortProc;
+    Client      : TIOSocket;
+    Queue       : TProtocolQueue;
+    EndTransfer : Boolean;
+    Connected   : Boolean;
+    StatusCheck : Word;
+    StatusTimer : LongInt;
+    ReceivePath : String;
+
+    Constructor Create (Var C: TIOSocket; Var Q: TProtocolQueue); Virtual;
+    Destructor  Destroy; Override;
+
+    Function    AbortTransfer   : Boolean;
+    Procedure   StatusUpdate    (Starting, Ending: Boolean);
+    Function    ReadByteTimeOut (hSec: LongInt) : SmallInt;
+
+    Procedure   QueueReceive; Virtual;
+    Procedure   QueueSend; Virtual;
+  End;
 
   TProtocolZmodem = Class(TProtocolBase)
     CurBufSize : Word;
@@ -68,7 +111,7 @@ Type
     RxBytes    : LongInt;
     RxCount    : LongInt;
 
-    Constructor Create (Var C: TIOBase; Var Q: TProtocolQueue); Override;
+    Constructor Create (Var C: TIOSocket; Var Q: TProtocolQueue); 
     Destructor  Destroy; Override;
 
     Procedure   QueueReceive; Override;
@@ -161,6 +204,72 @@ Const
   XoffHi     = Xoff OR $80;
 
   CancelStr : String = #24#24#24#24#24#24#24#24#8#8#8#8#8#8#8#8;
+  
+Function NoAbortProc : Boolean;
+Begin
+  Result := False;
+End;
+
+Constructor TProtocolBase.Create (Var C: TIOSocket; Var Q: TProtocolQueue);
+Begin
+  Client      := C;
+  Queue       := Q;
+  EndTransfer := False;
+  Connected   := True;
+  ReceivePath := '';
+  StatusProc  := NIL;
+  AbortProc   := @NoAbortProc;
+  StatusCheck := 100;
+  StatusTimer := 0;
+
+  FillChar(Statust, SizeOf(Statust), 0);
+End;
+
+Destructor TProtocolBase.Destroy;
+Begin
+  Inherited Destroy;
+End;
+
+Procedure TProtocolBase.StatusUpdate (Starting, Ending: Boolean);
+Begin
+  If Assigned(StatusProc) Then
+    StatusProc(Starting, Ending, Statust);
+End;
+
+Function TProtocolBase.ReadByteTimeOut (hSec: LongInt) : SmallInt;
+Var
+  Res : Byte;
+Begin
+  Result := -1;
+
+  If Client.DataWaiting Then Begin
+    Connected := Client.ReadBuf(Res, 1) >= 0;
+    Result    := Res;
+  End Else
+    Case Client.WaitForData(hSec * 10) of
+      -1 : Connected := False;
+      0  : ;
+    Else
+      Client.ReadBuf(Res, 1);
+      Result := Res;
+    End;
+End;
+
+Function TProtocolBase.AbortTransfer : Boolean;
+Begin
+  If Not EndTransfer Then
+    EndTransfer := (Not Connected) or AbortProc;
+
+  AbortTransfer := EndTransfer;
+End;
+
+Procedure TProtocolBase.QueueReceive;
+Begin
+End;
+
+Procedure TProtocolBase.QueueSend;
+Begin
+End;
 
 {$IFDEF ZDEBUG}
 Function HeaderType (B: SmallInt) : String;
@@ -214,11 +323,11 @@ Begin
 End;
 {$ENDIF}
 
-Constructor TProtocolZmodem.Create (Var C: TIOBase; Var Q: TProtocolQueue);
+Constructor TProtocolZmodem.Create (Var C: TIOSocket; Var Q: TProtocolQueue);
 Begin
   Inherited Create (C, Q);
 
-  Status.Protocol := 'Zmodem';
+  Statust.Protocol := 'Zmodem';
   LastSent        := 0;
   EscapeAll       := False;
   Attn            := '';
@@ -569,7 +678,8 @@ Begin
 
   Client.BufFlush;
 
-  If FrameType <> ZDATA Then WaitMS(250); { do we need this? }
+  //If FrameType <> ZDATA Then WaitMS(250); 
+  If FrameType <> ZDATA Then WaitMS(50); { do we need this? }
 End;
 
 Function TProtocolZmodem.ZGetHex : SmallInt;
@@ -889,7 +999,7 @@ Begin
 
     SendEscaped (Lo(SmallInt(CRC SHR 8)));
     SendEscaped (Lo(CRC));
-	End;
+  End;
 
   If FrameEnd = ZCRCW Then Begin
     Client.BufWriteChar(Char(XON));
@@ -923,12 +1033,12 @@ Begin
 
   GetFTime (WrkFile, FTime);
 
-  Status.FileName  := Queue.QData[Queue.QPos]^.FileName;
-  Status.FilePath  := Queue.QData[Queue.QPos]^.FilePath;
-  Status.FileSize  := Queue.QData[Queue.QPos]^.FileSize;
-  Status.Position  := 0;
-  Status.StartPos  := 0;
-  Status.StartTime := TimerSeconds;
+  Statust.FileName  := Queue.QData[Queue.QPos]^.FileName;
+  Statust.FilePath  := Queue.QData[Queue.QPos]^.FilePath;
+  Statust.FileSize  := Queue.QData[Queue.QPos]^.FileSize;
+  Statust.Position  := 0;
+  Statust.StartPos  := 0;
+  Statust.StartTime := TimerSeconds;
 
   StatusUpdate(False, False);
 
@@ -945,7 +1055,7 @@ Begin
     // do we need to send more stuff here?  maybe that is why syncterm is
     // puking?
 
-    TmpStr := Status.FileName + #0 + strI2S(Status.FileSize);
+    TmpStr := Statust.FileName + #0 + strI2S(Statust.FileSize);
 
     Move (TmpStr[1], TxBuf[0], Length(TmpStr));
 
@@ -954,7 +1064,8 @@ Begin
 
     {$IFDEF ZDEBUG} ZLog('ZSendFile -> Sending ZFILE want ZRPOS'); {$ENDIF}
 
-    WaitMS(500);  // Delay for older terminal programs apparently
+    WaitMS(150);  // Delay for older terminal programs apparently
+    //WaitMS(500);
 
     Repeat
       C := ZGetHeader(RxHdr);
@@ -981,7 +1092,7 @@ Begin
         ZCRC :      Begin
                       {$IFDEF ZDEBUG} ZLog('ZSendFile -> Sending File CRC response'); {$ENDIF}
 
-                      ZPutLong(FileCRC32(Status.FilePath + Status.FileName));
+                      ZPutLong(FileCRC32(Statust.FilePath + Statust.FileName));
                       ZSendHexHeader(ZCRC);
 
                       RxPos := 0;
@@ -1019,12 +1130,12 @@ Start:
   GoodNeeded := 0;
   RxBufLen   := CurBufSize;
 
-  Status.Position  := RxPos;
-  Status.BlockSize := RxBufLen;
+  Statust.Position  := RxPos;
+  Statust.BlockSize := RxBufLen;
 
   StatusUpdate(False, False);
 
-  If TxPos < Status.FileSize Then Begin
+  If TxPos < Statust.FileSize Then Begin
     ZPutLong (TxPos);
     ZSendBinaryHeader (ZDATA);
   End;
@@ -1043,8 +1154,8 @@ Start:
 
         Inc (TxPos, Res);
 
-        Status.Position  := TxPos;
-        Status.BlockSize := Res;
+        Statust.Position  := TxPos;
+        Statust.BlockSize := Res;
 
         If TimerUp(StatusTimer) Then Begin
           If AbortTransfer Then Break;
@@ -1103,7 +1214,7 @@ Start:
 //                      Client.PurgeInputData;
 //                      Client.PurgeOutputData;
 
-                      If TxPos < Status.FileSize Then Begin
+                      If TxPos < Statust.FileSize Then Begin
                         ZPutLong (TxPos);
                         ZSendBinaryHeader (ZDATA);
                       End;
@@ -1122,8 +1233,8 @@ Start:
                           GoodNeeded := GoodNeeded SHL 1;
                       End;
 
-                      Status.Position  := RxPos;
-                      Status.BlockSize := RxBufLen;
+                      Statust.Position  := RxPos;
+                      Statust.BlockSize := RxBufLen;
 
                       StatusUpdate(False, False);
 
@@ -1156,7 +1267,8 @@ Begin
     ZSendBinaryHeader (ZFIN);
 
     If Not Client.DataWaiting Then
-      WaitMS(500)
+      WaitMS(250)
+      //WaitMS(500)
     Else
       C := ZGetHeader(RxHdr);
 
@@ -1215,7 +1327,7 @@ Var
   N      : SmallInt;
 Begin
   UseCRC32      := True;
-  Status.Errors := 0;
+  Statust.Errors := 0;
 
   {$IFDEF ZDEBUG} ZLog('ZInitSender -> begin'); {$ENDIF}
 
@@ -1235,7 +1347,7 @@ Begin
 
 Again:
 
-    If Status.Errors > 10 Then Begin
+    If Statust.Errors > 10 Then Begin
       ZInitSender := ZERROR;
       Exit;
     End;
@@ -1254,7 +1366,7 @@ Again:
                     Exit;
                   End;
 
-                  Inc (Status.Errors);
+                  Inc (Statust.Errors);
 
                   ZSendHexHeader (ZNAK);
 
@@ -1284,7 +1396,7 @@ Again:
                   {$IFDEF ZDEBUG} ZLog('ZInitSender -> EscapeAll:' + strI2S(Ord(EscapeAll))); {$ENDIF}
                   {$IFDEF ZDEBUG} ZLog('ZInitSender -> BlockSize:' + strI2S(RxBufLen)); {$ENDIF}
 *)
-                  Inc (Status.Errors);
+                  Inc (Statust.Errors);
 
                   Goto Again;
                 End;
@@ -1300,8 +1412,8 @@ Again:
 
                     Repeat
                       ZSendHexHeader (ZCOMPL);
-                      Inc (Status.Errors);
-                    Until (Status.Errors >= 10) or (ZGetHeader(RxHdr) = ZFIN);
+                      Inc (Statust.Errors);
+                    Until (Statust.Errors >= 10) or (ZGetHeader(RxHdr) = ZFIN);
 
                     ZAckBiBi;
                     ZInitSender := ZCOMPL;
@@ -1471,7 +1583,7 @@ Var
   FName      : String;
   FSize      : LongInt;
   RetryCount : SmallInt;
-  C          : SmallInt;
+  C          : Integer;
 Begin
   {$IFDEF ZDEBUG} ZLog(''); {$ENDIF}
   {$IFDEF ZDEBUG} ZLog('ZRecvFile -> begin'); {$ENDIF}
@@ -1502,6 +1614,8 @@ Begin
   {$IFDEF ZDEBUG} ZLog('ZRecvFile -> Size:' + strI2S(FSize)); {$ENDIF}
 
   Queue.Add(False, ReceivePath, FName, '');
+  
+  {$IFDEF ZDEBUG} ZLog('ZRecvFile -> '+ReceivePath +' # '+ FName); {$ENDIF}
 
   Queue.QData[Queue.QSize]^.FileSize := FSize;
   Queue.QData[Queue.QSize]^.Status   := QueueIntransit;
@@ -1522,29 +1636,30 @@ Begin
       ZReceiveFile := ZEOF;
 
       Exit;
-    End Else
-    If FileSize(WrkFile) < FSize Then Begin
-      // Resume transfer
-      RxBytes := FileSize(WrkFile);
+    End; {Else
+      If FileSize(WrkFile) < FSize Then Begin
+        // Resume transfer
+        
+        RxBytes := FileSize(WrkFile);
 
-      Seek (WrkFile, RxBytes);
-    End Else Begin
-      // If adding rename/overwrite support do it either
-      // but for now we just ZSKIP
+        Seek (WrkFile, RxBytes);
+      End Else Begin
+        // If adding rename/overwrite support do it either
+        // but for now we just ZSKIP
+        
+        Close (WrkFile);
 
-      Close (WrkFile);
+        Queue.QData[Queue.QSize]^.Status := QueueSkipped;
 
-      Queue.QData[Queue.QSize]^.Status := QueueSkipped;
+        ZSendHexHeader (ZSKIP);
 
-      ZSendHexHeader (ZSKIP);
+        ZReceiveFile := ZEOF;
 
-      ZReceiveFile := ZEOF;
-
-      Exit;
-    End;
+        Exit;
+      End;}
   End Else Begin
     {$I-} ReWrite (WrkFile, 1); {$I+}
-
+    {$IFDEF ZDEBUG} ZLog('ZRecvFile -> File Error???'); {$ENDIF}
     If IoResult <> 0 Then Begin
       ZSendHexHeader (ZSKIP);
       ZReceiveFile := ZEOF;
@@ -1555,31 +1670,36 @@ Begin
 
   {$IFDEF ZDEBUG} ZLog('ZRecvFile -> Begin data'); {$ENDIF}
 
-  Status.FilePath  := ReceivePath;
-  Status.FileName  := FName;
-  Status.FileSize  := FSize;
-  Status.BlockSize := 0;
-  Status.Position  := RxBytes;
-  Status.StartTime := TimerSeconds;
+  Statust.FilePath  := ReceivePath;
+  Statust.FileName  := FName;
+  Statust.FileSize  := FSize;
+  Statust.BlockSize := 0;
+  Statust.Position  := RxBytes;
+  Statust.StartTime := TimerSeconds;
+  
+  
+  {$IFDEF ZDEBUG} ZLog('ZRecvFile -> Filename '+Fname); {$ENDIF}
+  {$IFDEF ZDEBUG} ZLog('ZRecvFile -> Path '+ReceivePath); {$ENDIF}
 
   StatusUpdate(False, False);
 
-  RetryCount := 25;
+  RetryCount := 5;
 
   Queue.QData[Queue.QSize]^.Status := QueueFailed;
 
   StatusTimer := TimerSet(StatusCheck);
 
   While Not EndTransfer Do Begin
-
+    
     {$IFDEF ZDEBUG} ZLog('ZRecvFile -> Sending ZRPOS ' + strI2S(RxBytes)); {$ENDIF}
 
     Client.PurgeOutputData;
 
     ZPutLong (RxBytes);
-    ZSendBinaryHeader (ZRPOS);
+    //ZSendBinaryHeader (ZRPOS);
+    ZSendHexHeader (ZRPOS);
 
-//    Client.BufFlush;
+    //Client.BufFlush;
 
     {$IFDEF UNIX}
     Client.PurgeInputData(100);
@@ -1602,6 +1722,7 @@ NextHeader:
                     Close (WrkFile);
                     ZReceiveFile := ZERROR;
                     Exit;
+                    {$IFDEF ZDEBUG} ZLog('ZRecvFile -> Timed Out'); {$ENDIF}
                   End;
                 End;
       ZFILE   : Begin
@@ -1612,8 +1733,8 @@ NextHeader:
       ZEOF    : Begin
                   If ZGetLong(RxHdr) <> RxBytes Then Continue;
 
-                  Status.Position  := RxBytes;
-                  Status.BlockSize := RxCount;
+                  Statust.Position  := RxBytes;
+                  Statust.BlockSize := RxCount;
 
                   StatusUpdate(False, False);
 
@@ -1622,12 +1743,13 @@ NextHeader:
                   Queue.QData[Queue.QSize]^.Status := QueueSuccess;
 
                   ZReceiveFile := C;
-
+                  {$IFDEF ZDEBUG} ZLog('ZRecvFile -> ZEOF'); {$ENDIF}
                   Exit;
                 End;
       RCDO    : Begin
                   Close (WrkFile);
                   ZReceiveFile := ZERROR;
+                  {$IFDEF ZDEBUG} ZLog('ZRecvFile -> RCDO'); {$ENDIF}
                   Exit;
                 End;
       ZERROR  : Begin
@@ -1641,7 +1763,7 @@ NextHeader:
 
                   Client.BufWriteStr(Attn);
                   Client.BufFlush;
-
+                  {$IFDEF ZDEBUG} ZLog('ZRecvFile -> ZERROR'); {$ENDIF}
                   Continue;
                 End;
       ZDATA   : Begin
@@ -1662,7 +1784,7 @@ NextHeader:
                     Continue;
                   End;
 
-MoreData:
+                  MoreData:
 
                   If TimerUp(StatusTimer) Then Begin
                     If AbortTransfer Then Break;
@@ -1680,9 +1802,11 @@ MoreData:
                     ZCAN    : Begin
                                 Close (WrkFile);
                                 ZReceiveFile := ZERROR;
+                                {$IFDEF ZDEBUG} ZLog('ZRecvFile -> ZCAN2'); {$ENDIF}
                                 Exit;
                               End;
                     ZERROR  : Begin
+                                {$IFDEF ZDEBUG} ZLog('ZRecvFile -> zerror2'); {$ENDIF}
                                 Dec(RetryCount);
 
                                 If RetryCount < 0 Then Begin
@@ -1696,6 +1820,7 @@ MoreData:
                               End;
                     ZTIMEOUT: Begin
                                 Dec(RetryCount);
+                                {$IFDEF ZDEBUG} ZLog('ZRecvFile -> ztimeout2'); {$ENDIF}
 
                                 If RetryCount < 0 Then Begin
                                   Close (WrkFile);
@@ -1707,7 +1832,8 @@ MoreData:
                               End;
                     GOTCRCW : Begin
                                 RetryCount := 25;
-
+                                {$IFDEF ZDEBUG} ZLog('ZRecvFile -> gotcrcw'); {$ENDIF}
+          
                                 BlockWrite (WrkFile, RxBuf, RxCount);
 
                                 RxBytes := RxBytes + RxCount;
@@ -1715,13 +1841,14 @@ MoreData:
                                 ZPutLong (RxBytes);
                                 ZSendBinaryHeader (ZACK);
 
-                                Status.Position  := RxBytes;
-                                Status.BlockSize := RxCount;
+                                Statust.Position  := RxBytes;
+                                Statust.BlockSize := RxCount;
 
                                 Goto NextHeader;
                               End;
                     GOTCRCQ : Begin
                                 RetryCount := 25;
+                                {$IFDEF ZDEBUG} ZLog('ZRecvFile -> gotcrcq'); {$ENDIF}
 
                                 BlockWrite (WrkFile, RxBuf, RxCount);
 
@@ -1730,32 +1857,34 @@ MoreData:
                                 ZPutLong (RxBytes);
                                 ZSendBinaryHeader (ZACK);
 
-                                Status.Position  := RxBytes;
-                                Status.BlockSize := RxCount;
+                                Statust.Position  := RxBytes;
+                                Statust.BlockSize := RxCount;
 
                                 Goto MoreData;
                               End;
                     GOTCRCG : Begin
                                 RetryCount := 25;
+                                {$IFDEF ZDEBUG} ZLog('ZRecvFile -> gotcrcg'); {$ENDIF}
 
                                 BlockWrite (WrkFile, RxBuf, RxCount);
 
                                 Rxbytes := RxBytes + RxCount;
 
-                                Status.Position  := RxBytes;
-                                Status.BlockSize := RxCount;
+                                Statust.Position  := RxBytes;
+                                Statust.BlockSize := RxCount;
 
                                 Goto MoreData;
                               End;
                     GOTCRCE : Begin
                                 RetryCount := 25;
+                                {$IFDEF ZDEBUG} ZLog('ZRecvFile -> gotcrce'); {$ENDIF}
 
                                 BlockWrite (WrkFile, RxBuf, RxCount);
 
                                 RxBytes := RxBytes + RxCount;
 
-                                Status.Position  := RxBytes;
-                                Status.BlockSize := RxCount;
+                                Statust.Position  := RxBytes;
+                                Statust.BlockSize := RxCount;
 
                                 Goto NextHeader;
                               End;
@@ -1786,7 +1915,7 @@ End;
 
 Procedure TProtocolZmodem.QueueReceive;
 Begin
-  Status.Sender := False;
+  Statust.Sender := False;
 
   StatusUpdate(True, False);
 
@@ -1794,6 +1923,8 @@ Begin
 
   While Not AbortTransfer Do Begin
     If ZInitSender = ZFILE Then Begin
+      //asd
+      Statust.Count := Statust.Count + 1;
       If ZReceiveFile <> ZEOF Then Break;
     End Else
       Break;
@@ -1808,7 +1939,7 @@ End;
 
 Procedure TProtocolZmodem.QueueSend;
 Begin
-  Status.Sender := True;
+  Statust.Sender := True;
 
   StatusUpdate (True, False);
 

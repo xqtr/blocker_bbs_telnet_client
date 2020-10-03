@@ -12,7 +12,7 @@
    ;                                                                         ;
    + --- --  -   .     -        ---    ---    ---        -     .    - -- --- ´
    :                                                                         :
-   |                            Blocker v2.0 Alpha                           |
+   |                               Blocker v2.11                             |
    :                                                                         :
    + --- --  -   .     -        ---    ---    ---        -     .    - -- --- ´
    | ._          SoftWare         Oper.System      Type                      |
@@ -76,7 +76,18 @@
       usefull when customizing your BBS.
     + Autotext feature!...
     + Custom StatusBar...
+    + Zmodem Download
+    + Regular Expressions
       and more...
+      
+      
+    to use it under a utf8 terminal use the utility cp437 from here:
+                      
+                      https://github.com/keaston/cp437
+                      
+    it's tested and works flawless under Gnome Terminal app. a linux 64b 
+    compiled version is also included in the archive.
+    
  
    + --- --  -   .     -        ---    ---    ---        -     .    - -- --- ´
    |        _ _                                                              |
@@ -126,6 +137,13 @@
    
     .:. June 2019
      `  + First Release
+    .:. September 2020
+     `  + 2.1 Release
+          - added zmodem support
+          - regular expressions mechanism
+          - updated the bbs list downloader script
+          - added node-finder script
+          - minor fixes
         
           
    

@@ -1,0 +1,143 @@
+;A SciNet Nodelist for Friday, August 28, 2020 -- Day number 241 : 49310
+;A
+;A                 copyright 2020 SciNet, all rights reserved.
+;A
+;S                   .                                       .
+;S                   :        >> S  C  I  N  E  T <<         :
+;S     - -- ---------+--- -- -                       - -- ---+--------- -- -
+;S           _______,-----,___,----,__________,---,_____,----,___,----,
+;S           \\_    _____     ,____/____.    /         ______\___     /
+;S            _/___    \/    /    /   \/       __/    __\__/    /    _\\
+;S           /    /    /    /    /    /   \    \     /    /    /    /
+;S         //____     _____     _____/____/    /____     _____     /jp!
+;S              /____/    /____/         /____/    /____/    /____/
+;S                   |                                       |
+;S     - -- ---------+--- -- -                       - -- ---+--------- -- -
+;S                   :       . http://scinet-ftn.org .       :
+;S     /- -- ----- --+-- ------------- --------------- ------+-------------/
+;S
+;S                      the ftn network for the bbs scene
+;S  ---------------------------------------------------------------------------
+;S             weekly nodelist for the scinet ftn message network
+;S  ---------------------------------------------------------------------------
+;S   infomation on the network can be obtained by telneting to bbs.diskshop.ca
+;S    or sending an email to scinet@diskshop.ca or by downloading the latest
+;S	                 info pack from https://scinet-ftn.org
+;S  ---------------------------------------------------------------------------
+;S
+;
+Zone,77,SciNet,Planet_Earth,Frank_Linhares,-Unpublished-,300,CM,INA:bbs.diskshop.ca,IBN,IFC,IFT,IMI,XW,PING,U,scinet-ftn.org
+,5,SciNet_UUCP_Gate,Planet_Earth,UUCP,-Unpublished-,300,CM,MO,INA:uucp.scinet-ftn.org,IBN:24555,GUUCP,U,uucp.scinet-ftn.org
+,10,SciNet_FTN_QWK_Gate,Rancho_USA,Dan_Richter,-Unpublished-,300,MO
+Pvt,999,New_SciNet_System,Planet_Earth,SciNet_Sysop,-Unpublished-,300
+;
+Region,1,Americas,Toronto_CAN,Frank_Linhares,-Unpublished-,300,CM,INA:bbs.diskshop.ca,IBN,IFC,IFT,IMI,XW,PING
+,100,Diskshop_BBS,Toronto_CAN,Frank_Linhares,-Unpublished-,300,CM,INA:bbs.diskshop.ca,IBN,IFC,IFT,IMI,XW,PING,U,diskshop.scinet-ftn.org,ZEC
+,101,Misery_BBS,Toronto_CAN,Frank_Linhares,-Unpublished-,300,CM,INA:misery.scinet-ftn.org,IBN,ITN:2023,U,misery.scinet-ftn.org
+,102,Castle_Rock_BBS,Rancho_USA,Dan_Richter,-Unpublished-,300,CM,INA:bbs.castlerockbbs.com,IBN,U,crbbs.scinet-ftn.org
+,103,Darkrealms,Toronto_CAN,Nick_Andre,1-647-847-2083,9600,CM,XX,INA:bbs.darkrealms.ca,IBN,U,darkrealms.scinet-ftn.org
+,104,The_ROCK_BBS_III,Goshen_USA,Michael_Batts,-Unpublished-,300,CM,INA:therockbbs.net,IBN,ITN:10023,U,therock.scinet-ftn.org
+,105,Second_Coming_BBS,Kankakee_USA,Jonathan_Hodges,-Unpublished-,300,CM,INA:scbbs.ddns.net,IBN,ITN:6400,U,scbbs.scinet-ftn.org
+,106,Leisure_Time_BBS,New_Baden_USA,Robert_Riddell,-Unpublished-,300,CM,INA:bbs.riddells.net,IBN,U,leisuretime.scinet-ftn.org
+,107,Battlestar_BBS,Warminster_USA,Mark_Iezzi,-Unpublished-,300,CM,INA:battlestarbbs.dyndns.org,IBN
+,108,Mystic_Dreams,Warminster_USA,Mark_Iezzi,-Unpublished-,300,CM,INA:mysticdreams.dyndns.org,IBN:24555,ITN:24
+,109,Battlestar_3,Warminster_USA,Mark_Iezzi,-Unpublished-,300,CM,INA:battlestar3.dyndns.org,IBN:24556,ITN:2400
+,110,Digital_Distortion,Hillsboro_USA,Eric_Oulashin,-Unpublished-,300,CM,INA:digdist.synchro.net,IBN,U,digitaldist.scinet-ftn.org
+,111,Hysteria_BBS,Toronto_CAN,Frank_Linhares,-Unpublished-,300,CM,INA:hysteriabbs.com,IBN,U,hysteria.scinet-ftn.org
+,112,Raiders_Inc_BBS,Wichita_USA,Jon_Justvig,-Unpublished-,300,CM,INA:vintagebbsing.com,IBN,U,raiders.scinet-ftn.org
+,113,LostCause_Halfway_House,Alden_USA,Ernest_J_Gainey_III,-Unpublished-,300,CM,INA:bbs.lostcause.house,IBN,U,lostcause.scinet-ftn.org
+,114,Palantir_BBS,Pensacola_USA,Dan_Clough,-Unpublished-,300,CM,INA:palantirbbs.ddns.net,IBN,U,palantir.scinet-ftn.org
+,115,Capitol_City_Online,Kentucky_USA,Mike_Powell,-Unpublished-,300,CM,INA:capitolcityonline.net,IBN,U,capitalcity.scinet-ftn.org
+,116,Danger_Bay,Vancouver_CAN,Tom_Swartz,-Unpublished-,300,CM,INA:dangerbaybbs.dyndns.org,IBN,ITN:1337,U,dangerbay.scinet-ftn.org
+,117,The_Bottomless_Abyss,Quebec_City_CAN,Dave_Cloutier,-Unpublished-,300,CM,INA:bbs.bottomlessabyss.net,IBN,ITN:1023,U,bottomlessabyss.scinet-ftn.org
+,118,Deckers_Heaven,Gainesville_USA,Eric_Renfro,-Unpublished-,300,CM,INA:bbs.deckersheaven.com,IBN,PING,U,deckers.scinet-ftn.org
+,119,End_Of_The_Line_BBS,Plano_USA,Nigel_Reed,-Unpublished-,300,CM,INA:endofthelinebbs.com,IBN,U,eotl.scinet-ftn.org
+,120,Electronic_Chicken_BBS,Toronto_CAN,Derek_Mullin,-Unpublished-,300,CM,INA:bbs.electronicchicken.com,IBN,U,ecbbs.scinet-ftn.org
+,121,Freeside_BBS,Cincinnati_USA,Marty_Taylor,-Unpublished-,300,CM,INA:freeside.bbs.io,IBN,U,freeside.scinet-ftn.org
+,122,Immortals_Domain,Spanish_Fork_USA,Steve_Helferich,-Unpublished-,300,CM,INA:idomain.synchro.net,IBN,U,idomain.scinet-ftn.org
+,123,Error_404,Perrysburg_USA,Todd_Zieman,-Unpublished-,300,CM,INA:error404bbs.ddns.net,IBN,ITN:404,U,error404.scinet-ftn.org
+,124,Necronomicon_BBS,New_Bedford_USA,Carlos_Roldan,-Unpublished-,300,CM,INA:necrobbs.strangled.net,IBN,U,necronomicon.scinet-ftn.org
+,125,Rocket_Town,Titusville_USA,Ricky_Deluco,-Unpublished-,300,CM,INA:rtbbs.ddns.net,IBN,U,rockettown.scinet-ftn.org
+,126,CJ's_Place,Orange_City_USA,Chris_Johnson,-Unpublished-,300,CM,INA:cjsplace.thruhere.net,IBN,U,cjsplace.scinet-ftn.org
+,127,Card_&_Claw,Berkely_USA,Robbie_Whiting,-Unpublished-,300,CM,INA:cardandclaw.com,IBN,U,cnc.scinet-ftn.org
+,128,Monterey,San_Francisco_USA,Ryan_Fantus,-Unpublished-,300,CM,INA:montereybbs.com,IBN,U,monterey.scinet-ftn.org
+,129,ACME_BBS,Albany_USA,Don_Lowery,-Unpublished-,300,CM,INA:acmebbs.ddns.net,IBN,ITN:7788,U,acme.scinet-ftn.org
+,130,Abacus_BBS,Portland_USA,Rick_Smith,-Unpublished-,300,CM,INA:bbs.abon.us,IBN,U,abacus.scinet-ftn.org
+,131,deadbeatz_bbs,Albuquerque_USA,Tim_Blada,-Unpublished-,300,CM,INA:deadbeatz.org,IBN,U,deadbeatz.scinet-ftn.org
+,132,Red_Mud_BBS,OKC_USA,David_Snyder,-Unpublished-,300,CM,INA:redmudbbs.site,IBN,U,redmud.scinet-ftn.org
+,133,Black_Lodge_Research_BBS,Seattle_USA,Emory_Balmer,-Unpublished-,300,CM,INA:blacklodgeresearch.org,IBN,ITN:4023,U,blacklodge.scinet-ftn.org
+,134,Ouijaboard_BBS,Anoka_USA,Jeff_Smith,-Unpublished-,300,CM,INA:bbs.ouijabrd.net,IBN,U,ouijabrd.scinet-ftn.org
+,135,Dark_Side_Of_The_Moon,Ottawa_CAN,Troy_Tuttle,-Unpublished-,300,CM,INA:reasonablyinteresting.com,IBN,U,darkside.scinet-ftn.org
+,136,Eggy_BBS,Chicago_USA,Matt_Richards,-Unpublished-,300,CM,INA:bbs.eggy.cc,IBN,ITN:2300,U,eggy.scinet-ftn.org
+,137,The_Wrong_Number_][_BBS,Yorktown_Heights_USA,Al_Derosa,-Unpublished-,300,CM,INA:wn2.duckdns.org,IBN:24558,U,wrongnumber.scinet-ftn.org
+Pvt,138,Sector_7_BBS,Philedelphia_USA,James_Coyle,-Unpublished-,300,U,sector7.scinet-ftn.org
+,139,What_the_Dormouse_Said,Springfield_USA,Greg_Zoll,-Unpublished-,300,CM,INA:whatthed.synchro.net,IBN,U,whatthed.scinet-ftn.org
+,140,Star_Frontiers,Huntsville_USA,William_Williams,-Unpublished-,300,CM,INA:starfron.synchronetbbs.org,IBN,U,starfron.scinet-ftn.org
+,141,CIA_Amiga_BBS,Mayflower_USA,Tim_Grooms,-Unpublished-,300,CM,INA:ciaamigabbs.dynu.net,IBN,ITN:6400,U,cia.scinet-ftn.org
+,142,Compufuck,Binghamton_USA,Aaron_Thomas,-Unpublished-,300,CM,INA:compufuck.xyz,IBN,ITN:2323,U,cf.scinet-ftn.org
+,143,8-Bit_Boyz_BBS,Rio_Rancho_USA,Shane_O'Neill,-Unpublished-,300,CM,INA:bbs.8bitboyz.com,IBN,ITN:6502,U,8-bitboyz.scinet-ftn.org
+,144,The_FreeSpeak,McMurray_USA,Gary_Ailes,-Unpublished-,300,CM,INA:thefreespeak.com,IBN,U,freespeak.scinet-ftn.org
+,145,Dreambuilders,San_Jose_USA,Hauns_Froehlingsdorf,-Unpublished-,300,CM,INA:dreambuilders.fros.com,IBN,U,dreambuilders.scinet-ftn.org
+,146,Gray_Matter_BBS,The_Villages_USA,Greg_Youngblood,-Unpublished-,300,CM,INA:graymatterbbs.com,IBN,U,graymatter.scinet-ftn.org
+,147,Reign_Of_Fire,Milwaukee_USA,Gary_McCulloch,-Unpublished-,300,CM,INA:rof.cnetbbs.com,IBN,ITN:2300,U,rof.scinet-ftn.org
+,148,Internal_Dimension,Chatam_CAN,Dave_Vandermeer,-Unpublished-,300,CM,INA:idbbs.dlinkddns.com,IBN,ITN:59,U,idbbs.scinet-ftn.org
+,911,Distortion,Seattle_USA,Jack_Phlash,-Unpublished-,300,CM,INA:d1st.org,IBN,U,d1st.scinet-ftn.org
+;
+Region,2,Europe,Toronto_CAN,Frank_Linhares,-Unpublished-,300,CM,INA:bbs.diskshop.ca,IBN,IFC,IFT,IMI,XW,PING
+,100,Bits_Lair_BBS,Madrid_ES,Yeray_A_Dorta,-Unpublished-,300,CM,INA:bitslair.voidlabs.com,IBN,U,bitslair.scinet-ftn.org
+,101,Delta_City,Vallentuna_SE,Joacim_Melin,-Unpublished-,300,CM,INA:deltacity.se,IBN,U,deltacity.scinet-ftn.org
+,102,Another_Droid_BBS,Athens_GR,Andreas_Apostolou,-Unpublished-,300,CM,INA:andr01d.zapto.org,IBN,ITN:9999,U,andr01d.scinet-ftn.org
+,103,Retro_Acorn,Glasgow_SC,Richard_Fairman,-Unpublished-,300,CM,INA:80.192.18.227,IBN:1600,U,retroacorn.scinet-ftn.org
+,104,Total_Lost_BBS,Harnosand_SE,Dennis_Eklund,-Unpublished-,300,CM,INA:bbs.deek.se,IBN,U,totallost.scinet-ftn.org
+;
+Region,3,Rest_Of_World,Toronto_CAN,Frank_Linhares,-Unpublished-,300,CM,INA:bbs.diskshop.ca,IBN,IFC,IFT,IMI,XW,PING
+,101,Alterant,Parkdale_AU,Deon_George,-Unpublished-,300,CM,INA:alterant.leenooks.net,IBN:24564,U,alterant.scinet-ftn.org
+,102,Agency,Dunedin_NZ,Paul_Hayton,-Unpublished-,300,CM,INA:agency.bbs.nz,IBN:24555,U,agency.scinet-ftn.org
+,103,HappyLand,Toowoomba_AU,Andrew_Pamment,-Unpublished-,300,CM,INA:magickabbs.com,IBN,ITN:2023,U,happyland.scinet-ftn.org
+,104,The_Comm's_Nut's_BBS,Hobart_AU,Danny_Moss,-Unpublished-,300,CM,INA:203.38.121.134,IBN,U,commsnuts.scinet-ftn.org
+,105,Wicked_Garden_BBS,Burnside_AU,Hung_Tran,-Unpublished-,300,CM,INA:wgbbs.fsxnet.nz,IBN,U,wickedgarden.scinet-ftn.org
+,106,Freeway_BBS,Bendigo_AU,Tony_Langdon,-Unpublished-,300,CM,INA:freeway.vkradio.com,IBN,U,freeway.scinet-ftn.org
+;S
+;S END
+;S
+;S    ---- SciNet UUCP Gate ----
+;S
+;S    SciNet currently offers a full fledged netmail <-> email gate.
+;S
+;S    Each node is assigned an alias on the scinet-ftn.org domain.
+;S    the U,aliasname.scinet-ftn.org of each node entry identifies the domain
+;S    name that is assigned to each node. Email may be sent to any user on a
+;S    bbs by addressing it using the following format:
+;S
+;S    firstname.lastname@aliasname.scinet-ftn.org
+;S
+;S    Email may be sent via netmail by addressing the netmail to an email
+;S    address and sending it to 77:77/5. If you are running older bbs
+;S    software that limits the number of characters that can be used in the
+;S    To: field, simply address the netmail message to UUCP @ 77:77/5 and
+;S    make sure to add a line at the top of your message as follows:
+;S
+;S    To: email.tosend@domain.com
+;S
+;S    If you wish to change your scinet-ftn.org bbs name, please send a
+;S    netmail to Netsurge @ 77:1/100 and let us know what you would like
+;S    it to be.
+;S
+;S    ---- Nodelist Flags ----
+;S
+;S    PING - denotes a system that will auto respond to netmail messages
+;S           addressed to PING
+;S     ITN - denote a system that does TELNET
+;S     IVM - denotes a system that is capable of VMODEM
+;S     IFT - denotes a system that allows FTP
+;S     ITX - denotes a system that uses TransX encoding for email
+;S           tunneling
+;S     IUC - denotes a system that uses UUEncode for email tunneling
+;S     IEM - denotes a system which uses an e-mail tranfer protocol
+;S           which is not covered by any other flag.
+;S     IMI - denotes a system which uses MIME encoding for email
+;S          tunneling
+;S     ISE - denotes a system which uses SEAT encodeing for email
+;S           tunneling
+;S     IP  - denotes a system that can receive TCP/IP connects using a
+;S           protocol that is not covered by any other flag.

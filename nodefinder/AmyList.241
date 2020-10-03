@@ -1,0 +1,108 @@
+;A AmigaNet Nodelist for Friday, August 28, 2020 -- Day number 241 : 47385
+;A
+;A Copyright 2020, AmigaNet.ftn and its Coordinators, All rights reserved.
+;A Produced in Zone 39 by 39:39/0
+;A
+;S
+;S For information or Region list updates send
+;S
+;S email to: z39c(at)vlzn(dot)nl or net- or crash-mail to: 39:150/200
+;S
+;
+Zone,39,AmigaNet,World,Wilfred_van_Velzen,-Unpublished-,300,CM,IBN:fido.vlzn.nl,U,ENC
+;
+Region,13,AmigaNet_UK,UK,Neil_Williams,44-1248-351451,9600,XX,V34,V42B,IUC,IBN,INA:bbs.zeusdev.co.uk
+,1,Region_13_Coordinator,UK,Neil_Williams,44-1248-351451,9600,XX,V34,V42B,IUC,IBN,INA:bbs.zeusdev.co.uk
+;
+Host,136,Western_Net,UK,Neil_Williams,44-1248-351451,9600,XX,V34,V42B,IUC,IBN,INA:bbs.zeusdev.co.uk
+,1,The_Killing_Ground,Wrexham,Neil_Williams,44-1248-351451,9600,XX,V34,V42B,IUC,IBN,INA:bbs.zeusdev.co.uk
+;
+Region,14,Region_14,DK,Benny_Pedersen,-Unpublished-,300,IBN,INA:f0.n230.z2.binkp.net,MO,XA
+;
+Host,140,Amiganet_DK,Jersore_DK,Benny_Pedersen,-Unpublished-,300,IBN,INA:f0.n230.z2.binkp.net,U,ENC
+,127,Amiga_DK,Jersore_DK,Benny_Pedersen,-Unpublished-,300,IBN,INA:f0.n230.z2.binkp.net,U,ENC
+;
+Region,15,AmigaNet_Benelux,Benelux,Wilfred_van_Velzen,-Unpublished-,300,CM,IBN:fido.vlzn.nl,U,ENC
+;
+Host,150,Region_15_Central_Mailer,Lisse,Wilfred_van_Velzen,-Unpublished-,300,CM,IBN:fido.vlzn.nl,U,ENC
+,200,FMail_DEV_fka_AOBL,Lisse,Wilfred_van_Velzen,-Unpublished-,300,CM,IBN:fido.vlzn.nl,U,ENC
+;
+Region,16,Sweden,SE,None,-Unpublished-,300
+;
+Host,160,Sweden_NET,SE,None,-Unpublished-,300
+,242,Delta_City_BBS,Vallentuna,Joacim_Melin,-Unpublished-,300,CM,IBN:deltacity.se
+;
+Region,17,Germany,RC_Germany,Torsten_Bamberg,49-40-98670307,9600,CM,XA,VFC,V34,X75,IMI,IUC,IBN,INA:bamberg-ot.de,U,ENC
+,1,REC_Germany,GER,Torsten_Bamberg,49-40-98670307,9600,CM,XA,VFC,V34,H16,X75,IBN,INA:datenbahn.dd-dns.de,U,ENC
+;
+Host,170,AmigaNet-Germany,Hamburg,Torsten_Bamberg,49-40-98670307,9600,CM,XA,VFC,V34,H16,X75,IBN,INA:datenbahn.dd-dns.de,U,ENC
+,2411,FunToPia,Potsdam,Stephan_Gebbers,-Unpublished-,300,MO,IBN,INA:funtopia.ddnss.eu
+,400,AmigaXess,Georgsmarienhuette,Ingo_Juergensmann,49-5401-460094,9600,CM,XW,ZYX,IBN,INA:ftn.amigaxess.de
+,5832,DatenBahn_BBS_1,Hamburg,Torsten_Bamberg,49-40-98670307,9600,CM,XA,VFC,V34,H16,IBN,INA:bamberg-ot.de,U,ENC
+,5833,DatenBahn_BBS_2,Hamburg,Torsten_Bamberg,49-40-98670308,300,CM,XA,X75,IBN,INA:datenbahn.dd-dns.de,U,ENC
+,5834,datenbahn.dd-dns.de,Hamburg,Torsten_Bamberg,49-40-98670309,300,CM,XA,IBN,U,ENC
+,5853,Kuehlbox,Ranstadt,Philipp_Giebel,-Unpublished-,300,CM,MO,XA,IBN,ITN,INA:bbs.kennmer.net
+,8001,BlackICE_BBS,Duesseldorf,Vitus_Zeel,-Unpublished-,300,CM,XA,MO,IBN,INA:blackice.bbsindex.com
+,8004,4-U_BBS,Duesseldorf,Vitus_Zeel,-Unpublished-,300,CM,XA,MO,IBN,INA:blackice.bbsindex.com
+,8006,PARADISE,Berlin,Daniel_Elsner,-Unpublished-,300,CM,XA,MO,IBN,INA:cpbbs.dnip.de
+;
+Host,171,AmigaNet-Austria,Vienna_A,Richard_Menedetter,-Unpublished-,300,CM,MO,XW,IBN,INA:fido.ricsi.priv.at,U,ENC
+,31,fido.ricsi.priv.at,Vienna_A,Richard_Menedetter,-Unpublished-,300,CM,MO,XW,IBN,INA:fido.ricsi.priv.at,U,ENC
+;
+Host,172,NC-Serbia,Bad_Ueberkingen,Ulrich_Schroeter,49-7331-9861042,9600,CM,XA,MO,IBN,INA:ambrosia60.spdns.eu,X75,V32B,V42B,U,ENC,CDP
+,147,Vortex,Novi_Sad,Strahinja_Bojovic,-Unpublished-,300,CM,IBN,ITN:3777,INA:vortex.redirectme.net
+;
+Region,26,Finland,FIN,None,-Unpublished-,300
+;
+Host,260,Finland_NET,FIN,None,-Unpublished-,300
+,512,Haciend,Helsinki_Finland,Antti_Kiuru,-Unpublished-,300,CM,INA:haciend.com,IBN,ITN
+;
+Region,42,Czech_Republic_and_Slovakia,CZ_SK,Milos_Bajer,420-233341039,9600,INA:fido.bajer.cz,IBN,IFC,ITN:2030,IVM,V110L,V110H,V120L,V120H,X75,V90S,X2S,VFC,V32T,H16,XX,CM
+;
+Host,423,Czech_NET,Praha,Milos_Bajer,420-233341039,9600,INA:fido.bajer.cz,IBN,IFC,ITN:2030,IVM,V110L,V110H,V120L,V120H,X75,V90S,X2S,VFC,V32T,H16,XX,CM
+Hub,81,GURU,Praha,Milos_Bajer,420-233341039,9600,INA:fido.bajer.cz,IBN,IFC,ITN:2030,IVM,V110L,V110H,V120L,V120H,X75,V90S,X2S,VFC,V32T,H16,XX,CM
+,120,Aleco_Experience_BBS,Praha,Martin_Ruzicka,420-222360199,9600,V34,VFC,V32,V42B,CM,XX,IFC,IBN,INA:bbs.alecoexp.cz
+,121,Pinkolinov,Tlucna,Jan_Pinkas,-Unpublished-,300,CM,XX,IBN,ITN:6400,INA:fido.pinkol.in
+;
+Region,90,AmigaNet-Rest_of_the_World,World,Wilfred_van_Velzen,-Unpublished-,300,CM,IBN:fido.vlzn.nl,U,ENC
+;
+Host,901,AmigaNet-Australia,Melbourne,Stephen_Walsh,-Unpublished-,300,CM,MO,IFC,ITN,IBN:ftn.vk3heg.net
+,280,Amiganet-Hub,Melbourne,Stephen_Walsh,-Unpublished-,300,CM,MO,IFC,ITN,IBN:ftn.vk3heg.net
+,281,Dragons_Lair_BBS,Ballarat,Stephen_Walsh,-Unpublished-,300,CM,IBN:dragon.vk3heg.net
+;
+Host,902,AmigaNet_North_America_FTN_Host,Quebec_City_QC_CAN,Dave_Cloutier,-Unpublished-,300,CM,INA:hub.bottomlessabyss.net,IBN
+,501,Archaic_Binary_BBS,Orlando_FL_USA,Wayne_Smith,-Unpublished-,300,CM,INA:bbs.archaicbinary.net,IBN
+,502,Battlestar_BBS,Doyelstown_PA_USA,Mark_Iezzi,-Unpublished-,300,CM,INA:battlestarbbs.dyndns.org,IBN
+,504,Error404_BBS,Perrysburg_OH_USA,Todd_Zieman,-Unpublished-,300,CM,INA:error404bbs.ddns.net,IBN
+,505,Amiga_City,San_Francisco_CA_USA,Marissa_Giancarla,-Unpublished-,300,CM,INA:amigacity.xyz,IBN
+,508,LostCause_Halfway_House,Alden_NY_USA,Ernest_J_Gainey_III,-Unpublished-,300,CM,INA:bbs.lostcause.house,IBN
+,509,Mystic_Prison_BBS,Mesquite_TX_USA,Ruben_Figueroa,-Unpublished-,300,CM,INA:pbmystic.rdfig.net,IBN:24555
+,513,End_Of_The_Line_BBS,Plano_TX_USA,Nigel_Reed,-Unpublished-,300,CM,INA:endofthelinebbs.com,IBN
+,515,Checksum_Acknowleged,Norcatur_KS_USA,James_Plotts,-Unpublished-,300,CM,INA:24.225.22.26,IBN
+,518,Reign_Of_Fire,Milwaukee_WI_USA,Gary_McCulloch,1-931-494-9100,9600,CM,INA:rofbbs.cnetbbs.net,IBN
+,519,The_Wrong_Number_II,Yorktown_Heights_NY_USA,Al_DeRosa,-Unpublished-,300,CM,INA:wn2.duckdns.org,IBN
+,522,CIA_Amiga_BBS,Mayflower_AZ_USA,Tim_Grooms,-Unpublished-,300,CM,INA:ciaamigabbs.dynu.net,IBN
+,530,The_Bottomless_Abyss,Quebec_City_QC_CAN,Dave_Cloutier,-Unpublished-,300,CM,INA:bbs.bottomlessabyss.net,IBN
+,531,Second_Coming_BBS,Kankakee_IL_USA,Jonathan_Hodges,-Unpublished-,300,CM,INA:scbbs.ddns.net,IBN
+,532,Dreambuilders,San_Jose_CA_USA,Hauns_Froehlingsdorf,-Unpublished-,300,CM,INA:dreambuilders.fros.net,IBN
+,533,The_Amiga_Outpost,Vienna_VA_USA,Phillip_Taylor,-Unpublished-,300,CM,INA:sbbs.dynu.net,IBN
+Hold,534,Hobbit_Empire,Gales_Ferry_CT_USA,Darin_Booker,-Unpublished-,300,CM,INA:bbs.hobbitempire.net,IBN
+;
+Host,905,bbs-scene-net,Toronto_ON_CAN,Frank_Linhares,-Unpublished-,300,CM,INA:bbs.diskshop.ca,IBN,XW,PING
+,100,Diskshop_BBS,Toronto_ON_CAN,Frank_Linhares,-Unpublished-,300,CM,INA:bbs.diskshop.ca,IBN,XW,PING
+,101,Hysteria,Toronto_ON_CAN,Frank_Linhares,-Unpublished-,300,CM,INA:hysteriabbs.com,IBN
+,102,Central_Ontario_Remote_BBS,Campbellford_ON,Mick_Manning,-Unpublished-,300,CM,INA:centralontarioremote.com,IBN
+,103,ACME_BBS,Albany_NY_USA,Don_Lowery,-Unpublished-,300,CM,INA:acmebbs.ddns.net,IBN
+,128,Monterey,San_Francisco_CA_USA,Ryan_Fantus,-Unpublished-,300,CM,INA:montereybbs.com,IBN
+;
+Host,970,AmigaNet-New_Zealand,New_Zealand,Paul_Hayton,-Unpublished-,300,CM,IBN:agency.bbs.nz
+,1,Agency_BBS,Dunedin,Paul_Hayton,-Unpublished-,300,CM,INA:ipv4.agency.bbs.nz,IBN:24555
+;S  *
+;S  * Zone 39 AmigaNet Nodelist epilog - 2018-08-03
+;S  *
+;S
+;S Flags should be in accordance with the latest Fidonet Standard FTS-5001 document.
+;S Currently http://ftsc.org/docs/fts-5001.006
+;S
+;S  *
+
