@@ -23,6 +23,11 @@ Blocker Features:
 - Music/Sounds
 - Script to download fresh BBS list from BBSIndex.
 - Use it as a DOOR program for linux BBSes
+- ZMODEM Download / Upload
+- Beep Sound in ALSA 
+- Built in Emoticons
+- Find Regular Expressions and launch external applications
+- Built in script to find information about a BBS (Nodefinder)
 
 Music/Sounds
 ---------
@@ -39,7 +44,7 @@ To use it as a DOOR, in the command line specify the path and filename to the DO
 
 Make sure to configure properly all ACS levels in the configuration file (blocker.ini)
 
-Bugs
+Bugs / ToDo
 -----
 - For the time being, IPv6 is not supported. If you have an IPv6 Address, convert it (if possible) to IPv4 and then enter it to connect.
-- ZModem Upload/Download is not working!
+
