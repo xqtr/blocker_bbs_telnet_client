@@ -28,14 +28,23 @@ Blocker Features:
 - Built in Emoticons
 - Find Regular Expressions and launch external applications
 - Built in script to find information about a BBS (Nodefinder)
+- Modem and Keystroke FXs
+- Copy/Paste, ASCII or ANSI with keyboard
+- OnConnect and OnDisconnect events to play music or launch any application
 
 Music/Sounds
 ---------
 Play track music while viewing a BBS, see the Help section inside the app.
+It can also play a modem handshake sound to emulate the good old dialup times
+and also emulates mechanical keyboard sounds ;) Full old shit expirience!!!
 
 Autotext
 ---------
 Autotext is a simple feature, for writing text to BBSes with too much lag. If there is too much lag in the connection, its very difficult to write text (correct mistakes, go back etc.) So with autotext, you write the text you want locally in a Form and then its sended, automatically to the BBS.
+
+Regular Expressions
+-------------------
+Detects RegEx values on screen and you can either copy the founded text or launch an application for it. For example you can use it to browse URLs.
 
 DOOR
 ---------
