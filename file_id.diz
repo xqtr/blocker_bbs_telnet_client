@@ -8,7 +8,7 @@
  :               \/  |__|                       .
  [:.                                           ,:
 -+--- -  .  -.- .    - ---+-- -  -   -  .   - --+-
- [.               Blocker v2.1                 `]
+ [.               Blocker v2.3                 `]
 -+-- -   .  -   -  - --+--- -    . -.-  .  - ---+-
  ; Blocker is a telnet client to use under any  :
  . linux terminal, supporting ANSI graphics. It .
@@ -36,7 +36,11 @@
  ; = scrollback feature                         '
  ; = preview ansi files                         '
  ' = convert any ansi file to mystic pipe codes '
- ' ... need more? :p                            ; 
+ : = modem & keystrokes fxs                     :
+ ' = copy/paste ansi or ascii with keyboard     '
+ : = internal audio player for mod files        :
+ ' = includes a music stream utility            '
+ : ... need more? :p                            ; 
  :                                              '
  '  open source. get the code at github/xqtr    :
  .   currently supports only ipv4 addresses     ;

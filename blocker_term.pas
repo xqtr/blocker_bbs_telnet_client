@@ -1,5 +1,11 @@
 Unit Blocker_Term;
 
+{
+echo -e "\033[c"   // get terminal information
+echo -e "\033[18t" // get terminal size ---> Procedure TOutputLinux.GetOriginalTermSize;
+
+}
+
 {$I M_OPS.PAS}
 
 
@@ -41,10 +47,14 @@ Type
     bookfile:string;
     downloadpath:string;
     uploadpath:string;
-    
+    soundfx:boolean;
+        
     play:string;
     stop:string;
   end;
+  
+Const
+  version = 'v2.3';  
   
 Var
   Pref : Tsettings;
@@ -86,6 +96,7 @@ Uses
   m_ansi2pipe,
   unix,
   Classes,
+  BASS,
   blocker_Common;
   
 const
@@ -121,6 +132,8 @@ const
   field2x = 73;
   fieldy  = 6;
   
+  max_keyboard_soundfx = 5;
+  
   max_records = 600;
   
   TransArray: array [1..2,1..17] of byte =
@@ -148,6 +161,10 @@ Type
     Comment   : string[30];
     Validated : LongInt;
     Flags     : string[5];
+    ModemFx   : Boolean;
+    KeystrokeFX : Boolean;
+    ondial    : string[254];
+    onhangup  : string[254];
   End;
 
   PhoneBookRec = Array[1..max_records] of PhoneRec;
@@ -169,13 +186,61 @@ Var
   MusicFound   : Boolean = false;
   RegExList : Array[1..50] Of RegExRec;
   TransIndex : Byte = 1;
+  BASSLoaded : Boolean = False;
+  BBSDialed  : PhoneRec;
   
-{$I blocker_ansiterm.pas}  
+  keystroke_sound : array[0..max_keyboard_soundfx-1] of hstream;
+  keystroke_enter : hstream;
+  beep_sound : hstream;
+  other_sound : hstream;
+  trackmod : hmusic;
+  
+  
+{$I blocker_ansiterm.pas}
+
+procedure playmodem;
+var  
+  ss:ansistring;
+begin
+  if not pref.soundfx then exit;
+  if not BASSLoaded then exit;
+  if not BBSDialed.modemfx then exit;
+  ss:=appdir+'fx'+pathsep+'modem.wav';
+  other_sound:=BASS_StreamCreateFile(False, pchar(ss), 0, 0, 0 {$IFDEF UNICODE} or BASS_UNICODE {$ENDIF});
+  BASS_ChannelPlay(other_sound, False);
+end;
+
+procedure playbeep;
+begin
+  if not BASSLoaded then exit;
+  BASS_ChannelPlay(beep_sound, False)
+end;
+
+procedure playkeystrokefx(c:char);
+var
+  r:byte;
+begin
+  if not pref.soundfx then exit;
+  if not BBSDialed.keystrokefx then exit;
+  if not BASSLoaded then exit;
+  if not BASS_IsStarted then bass_start;
+  case c of 
+  #13: BASS_ChannelPlay(keystroke_enter, False);
+  #27: BASS_ChannelPlay(keystroke_sound[0], False);
+  else begin
+      randomize;
+      r:=random(max_keyboard_soundfx);
+      BASS_ChannelPlay(keystroke_sound[r], False);
+    end;
+  end;
+end;
+        
 
 procedure StopMusic;
   begin
     if dropinfo.isDOOR then exit;
-    fpsystem(pref.stop);
+    //fpsystem(pref.stop);
+    bass_stop;
   end;
   
 Procedure FindRegExs;
@@ -515,6 +580,20 @@ Begin
     IniFile.Free;
   End;
 End;
+
+Procedure ToggleSoundFx;
+Var
+  Inifile : TIniFile;
+  i       : Byte;
+Begin
+  IniFile := TIniFile.Create(appdir+'blocker.ini');
+  pref.soundfx:= not pref.soundfx;
+  Try
+    inifile.writebool('general','soundfx',pref.soundfx);
+  Finally
+    IniFile.Free;
+  End;
+End;
   
 Function Ansi_Color (B : Byte) : String;
   Var
@@ -643,7 +722,11 @@ Begin
     Sysop     := '';
     Comment   := '';
     Validated := 0;
-    Flags :='';
+    Flags     :='';
+    modemfx     := False;
+    keystrokefx := False;
+    ondial    := '';
+    onhangup  := '';
   End;
 End;
 
@@ -688,6 +771,10 @@ Begin
     WriteLn (OutFile, #9 + 'rating=' + stri2s(Book[Count].rating));
     WriteLn (OutFile, #9 + 'validated=' + stri2s(Book[Count].validated));
     WriteLn (OutFile, #9 + 'flags=' + Book[Count].flags);
+    WriteLn (OutFile, #9 + 'keystrokefx=', ord(Book[Count].keystrokefx));
+    WriteLn (OutFile, #9 + 'modemfx=', ord(Book[Count].modemfx));
+    WriteLn (OutFile, #9 + 'ondial=' + Book[Count].OnDial);
+    WriteLn (OutFile, #9 + 'onhangup=' + Book[Count].OnHangup);
     WriteLn (OutFile, '');
   End;
 
@@ -721,8 +808,13 @@ Begin
     Book[Count].Rating    := INI.ReadInteger(strI2S(Count), 'rating', 0);
     Book[Count].Comment   := INI.ReadString(strI2S(Count), 'comment', '');
     Book[Count].Validated   := INI.ReadInteger(strI2S(Count), 'validated', 0);
-    Book[Count].Flags   := INI.ReadString(strI2S(Count), 'flags', '');
-    Book[Count].Position  := Count;
+    Book[Count].Flags       := INI.ReadString(strI2S(Count), 'flags', '');
+    Book[Count].modemfx     := INI.ReadBool(strI2S(Count), 'modemfx', False);
+    Book[Count].keystrokefx := INI.ReadBool(strI2S(Count), 'keystrokefx', False);
+    Book[Count].Name        := INI.ReadString(strI2S(Count), 'name', '');
+    Book[Count].OnDial      := INI.ReadString(strI2S(Count), 'ondial', '');
+    Book[Count].OnHangup    := INI.ReadString(strI2S(Count), 'onhangup', '');
+    Book[Count].Position    := Count;
   End;
 
   INI.Free;
@@ -991,6 +1083,139 @@ Begin
   Box.Close;
   Box.Free;
 End;
+
+procedure KeyboardCopy2Clipboard;
+type 
+  timgpoint = record
+    x,y,at:byte;
+    ch:char;
+  end;
+
+const
+  copyfooter = 'Cursor: Move | SPACE: Un/Mark | C: ASCII Copy | A: ANSI Copy | ESC: Back';
+    
+var
+  Image   : TConsoleImageRec;
+  xpos    : integer = 40;
+  ypos    : integer = 12;
+  selection : boolean = false;
+  done    : boolean = false;
+  oldpoint : timgpoint;
+  selbegin : timgpoint;
+  x1,x2,y1,y2 : byte;
+  
+  procedure drawselection;
+  var x,y : byte;
+  begin
+    Screen.PutScreenImage(Image);
+    screen.writexy(1,25,14+4*16,strpadr(copyfooter,79,' '));
+    x1:=min(selbegin.x,xpos);
+    x2:=max(selbegin.x,xpos);
+    y1:=min(selbegin.y,ypos);
+    y2:=max(selbegin.y,ypos);
+    for y:=y1 to y2 do 
+      for x:=x1 to x2 do begin
+        screen.writexy(x,y,screen.readattrxy(x,y) xor $16,screen.ReadCharXY(x,y));
+      end;
+  end;
+  
+  procedure asciicopyimagearea2clipboard;
+  var
+    x,y : byte;
+    ss  : ansistring = '';  
+  begin
+    x1:=min(selbegin.x,xpos);
+    x2:=max(selbegin.x,xpos);
+    y1:=min(selbegin.y,ypos);
+    y2:=max(selbegin.y,ypos);
+    for y:=y1 to y2 do begin
+      for x:=x1 to x2 do begin
+        ss:=ss+screen.ReadCharXY(x,y)
+      end;
+      ss:=ss+#13#10;
+    end;
+    fpsystem('echo "'+ss+'" | xclip -selection c');
+  end;
+  
+  procedure ansicopyimagearea2clipboard;
+  var
+    x,y   : byte;
+    ss    : ansistring = '';
+    oldat : byte = 0;
+    at    : byte = 0;
+  begin
+    x1:=min(selbegin.x,xpos);
+    x2:=max(selbegin.x,xpos);
+    y1:=min(selbegin.y,ypos);
+    y2:=max(selbegin.y,ypos);
+    for y:=y1 to y2 do begin
+      for x:=x1 to x2 do begin
+        at := image.data[y][x].Attributes;
+        ss:=ss+DiffANSI2Str(Oldat,at);
+        ss:=ss+image.data[y][x].UnicodeChar;
+        oldat:=at;
+      end;
+      ss:=ss+#13#10;
+    end;
+    fpsystem('echo "'+ss+'" | xclip -selection c');
+  end;
+  
+begin
+  Screen.GetScreenImage(1, 1, 80, Screen.ScreenSize, Image);
+  screen.writexy(1,25,14+4*16,strpadr(copyfooter,79,' '));
+  oldpoint.x:=1;
+  oldpoint.y:=1;
+  oldpoint.ch:=screen.ReadCharXY(1,1);
+  oldpoint.at:=screen.readattrxy(1,1);
+  while not done do begin
+    
+    Case Keyboard.ReadKey of
+      'c','C' : asciicopyimagearea2clipboard;
+      'a','A' : ansicopyimagearea2clipboard;
+      #00 : Case Keyboard.ReadKey of
+        keyLEFT : begin
+                    xpos:=xpos-1;
+                    if xpos<0 then xpos:=80;
+                  end;
+        keyRIGHT: begin
+                    xpos:=xpos+1;
+                    if xpos>80 then xpos:=1;
+                  end;
+        keyHOME : xpos:=1;
+        keyEND  : xpos:=80;
+        keyUP   : begin
+                    ypos:=ypos-1;
+                    if ypos<0 then ypos:=25
+                  end;
+        keyDOWN : begin
+                    ypos:=ypos+1;
+                    if ypos>25 then ypos:=1;
+                  end;
+        keyPGUP : ypos:=1;
+        keyPGDN : ypos:=25;
+      end;
+      #27   : done:=true;
+      #32   : begin
+                selection := not selection;
+                if selection then begin
+                  selbegin := oldpoint;
+                end else begin
+                  Screen.PutScreenImage(Image);
+                  screen.writexy(1,25,14+4*16,strpadr(copyfooter,79,' '));
+                end;
+              end;
+    end;
+    screen.writexy(oldpoint.x,oldpoint.y,oldpoint.at,oldpoint.ch);
+    oldpoint.x:=xpos;
+    oldpoint.y:=ypos;
+    oldpoint.ch:=screen.ReadCharXY(xpos,ypos);
+    oldpoint.at:=screen.readattrxy(xpos,ypos);
+    screen.writexy(xpos,ypos,screen.readattrxy(xpos,ypos) xor $16,screen.ReadCharXY(xpos,ypos));
+    if selection then drawselection;
+    
+  end;
+  Screen.PutScreenImage(Image);
+end;
 
 Procedure ActivateScrollback;
 Var
@@ -1641,6 +1866,7 @@ Var
   NewRec : PhoneRec;
   Image  : TConsoleImageRec;
   oldx,oldy:byte;
+  y : byte = 0;
 Begin
 
   if dropinfo.isdoor then if not isacs(pref.EditBookSec) then begin
@@ -1671,7 +1897,7 @@ Begin
   Box.Open (22, 10, 55, 18);
   box.close;
   waitms(200);
-  Box.Open (17, 8, 63, 21);
+  Box.Open (17, 8, 63, 23);
 
   Form.HelpSize := 0;
   
@@ -1692,17 +1918,23 @@ Begin
   
   //newrec.rating:=0;
   
-
-  Form.AddStr  ('N', ' Name'   ,   24, 10, 32, 10,  6, 26, 26, @NewRec.Name, '');
-  Form.AddStr  ('A', ' Address',   21, 11, 32, 11,  9, 30, 60, @NewRec.Address, '');
-  Form.AddStr  ('U', ' User Name', 19, 12, 32, 12, 11, 30, 30, @NewRec.User, '');
-  Form.AddPass ('P', ' Password',  20, 13, 32, 13, 10, 20, 20, @NewRec.Password, '');
-  Form.AddByte ('R', ' Rating', 22, 14, 32, 14, 8, 30, 1,100, @NewRec.Rating, '');
-  Form.AddStr  ('C', ' Comment', 21, 15, 32, 15, 9, 30, 30, @NewRec.Comment, '');
-  Form.AddStr  ('Y', ' Sysop', 23, 16, 32, 16, 7, 30, 30, @NewRec.Sysop, '');
-  Form.AddStr  ('S', ' Software', 20, 17, 32, 17, 10, 30, 30, @NewRec.Software, '');
-  Form.AddBol  ('B', ' StatusBar', 19, 18, 32, 18, 11,  3, @NewRec.StatusBar, '');
-  Form.AddBol  ('M', ' Music', 23, 19, 32, 19, 7,  3, @NewRec.Music, '');
+  y:=9;
+  Form.AddStr  ('N', ' Name'   ,   24, y, 32, y,  6, 26, 26, @NewRec.Name, '');y:=y+1;
+  Form.AddStr  ('A', ' Address',   21, y, 32, y,  9, 30, 60, @NewRec.Address, '');y:=y+1;
+  Form.AddStr  ('U', ' User Name', 19, y, 32, y, 11, 30, 30, @NewRec.User, '');y:=y+1;
+  Form.AddPass ('P', ' Password',  20, y, 32, y, 10, 20, 20, @NewRec.Password, '');y:=y+1;
+  Form.AddByte ('R', ' Rating', 22, y, 32, y, 8, 30, 1,100, @NewRec.Rating, '');y:=y+1;
+  Form.AddStr  ('C', ' Comment', 21, y, 32, y, 9, 30, 30, @NewRec.Comment, '');y:=y+1;
+  Form.AddStr  ('Y', ' Sysop', 23, y, 32, y, 7, 30, 30, @NewRec.Sysop, '');y:=y+1;
+  Form.AddStr  ('S', ' Software', 20, y, 32, y, 10, 30, 30, @NewRec.Software, '');y:=y+1;
+  Form.AddBol  ('B', ' StatusBar', 19, y, 32, y, 11,  3, @NewRec.StatusBar, '');y:=y+1;
+  Form.AddBol  ('M', ' Music', 23, y, 32, y, 7,  3, @NewRec.Music, '');y:=y+1;
+  
+  Form.AddStr  ('D', ' OnDial',   22, y, 32, y,  8, 30, 254, @NewRec.OnDial, '');y:=y+1;
+  Form.AddStr  ('H', ' OnHangUp',   20, y, 32, y,  10, 30, 254, @NewRec.OnHangup, '');y:=y+1;
+  
+  Form.AddBol  ('F', ' ModemFX', 21, y, 32, y, 9,  3, @NewRec.modemfx, '');y:=y+1;
+  Form.AddBol  ('K', ' KeysFX', 22, y, 32, y, 8,  3, @NewRec.keystrokefx, '');y:=y+1;
   
   Form.Execute;
 
@@ -1881,6 +2113,43 @@ Begin
   List.Free;
 End;
 
+Function GetQuote(i:integer):string;
+var 
+  f:text;
+  s,q: string;
+  d:integer;
+Begin
+  Result:='';
+  if i>TotalQuotes then exit;
+  s:=pref.quotefile;
+  if not fileexist(s) then begin
+    s:=appdir+pref.quotefile;
+    if not fileexist(s) then exit;
+  end;
+  assign(f,s);
+  reset(f);
+  for d:=1 to i do
+    readln(f,q);
+  close(f);
+  result:=q;
+end;
+
+Function MCI2Str(M:String; Dial: PhoneRec):String;
+Var
+  g:string;
+Begin
+  g:=m;
+  g:=strReplace(g,'|DA',FormatUnixDate(CurDateDos));
+  g:=strReplace(g,'|BN',dial.address);
+  g:=strReplace(g,'|CS',dial.calls);
+  if dropinfo.isdoor=false then g:=strReplace(g,'|UN',dial.user) else g:=strReplace(g,'|UN',dropinfo.Alias);
+  g:=strReplace(g,'|LO',FormatUnixDate(dial.lastcall));
+  if dropinfo.isdoor=false then g:=strReplace(g,'|SL','loc') else g:=strReplace(g,'|SL',stri2s(dropinfo.Access));
+  g:=strReplace(g,'|QO',GetQuote(Random(TotalQuotes)));
+  g:=strReplace(g,'|BD',Appdir);
+  Result:=g;
+End;
+
 Procedure TelnetClient (Var Book: PhoneBookRec; Dial: PhoneRec);
 Const
   BufferSize = 1024 * 4;
@@ -1899,42 +2168,9 @@ Var
   Image  : TConsoleImageRec;
   ShowSB : Boolean;
   
-  Function GetQuote(i:integer):string;
-  var 
-    f:text;
-    s,q: string;
-    d:integer;
-  Begin
-    Result:='';
-    if i>TotalQuotes then exit;
-    s:=pref.quotefile;
-    if not fileexist(s) then begin
-      s:=appdir+pref.quotefile;
-      if not fileexist(s) then exit;
-    end;
-    assign(f,s);
-    reset(f);
-    for d:=1 to i do
-      readln(f,q);
-    close(f);
-    result:=q;
-  end;
   
-  Function MCI2Str(M:String):String;
-  Var
-    g:string;
-  Begin
-    g:=m;
-    g:=strReplace(g,'|DA',FormatUnixDate(CurDateDos));
-    g:=strReplace(g,'|BN',dial.address);
-    g:=strReplace(g,'|CS',dial.calls);
-    if dropinfo.isdoor=false then g:=strReplace(g,'|UN',dial.user) else g:=strReplace(g,'|UN',dropinfo.Alias);
-    g:=strReplace(g,'|LO',FormatUnixDate(dial.lastcall));
-    if dropinfo.isdoor=false then g:=strReplace(g,'|SL','loc') else g:=strReplace(g,'|SL',stri2s(dropinfo.Access));
-    g:=strReplace(g,'|QO',GetQuote(Random(TotalQuotes)));
-    g:=strReplace(g,'|BD',Appdir);
-    Result:=g;
-  End;
+  
+  
   
   Procedure DrawStatus (Toggle: Boolean);
   Begin
@@ -1948,7 +2184,7 @@ Var
     If Dial.StatusBar Then Begin
       Screen.SetWindow (1, 1, 80, 24, False);
       Screen.CursorXY(1,25);
-      Screen.WriteXYPipe(1,25,7,79,MCI2Str(pref.statusbar));
+      Screen.WriteXYPipe(1,25,7,79,MCI2Str(pref.statusbar,dial));
       //Screen.WriteXYPipe(69,25,7,10,'|15ALT-X|07 Q|08uit');
     End;
   End;
@@ -1976,7 +2212,7 @@ Var
                               screen.textattr:=7;
                               screen.clearscreen;
                               err:=fpsystem(l); 
-                              showmsgbox(0,'Script finished with status: '+stri2s(err));
+                              //showmsgbox(0,'Script finished with status: '+stri2s(err));
                               drawmainansi;
                             end;
                           End;
@@ -2294,12 +2530,12 @@ Var
 
     ib.Add('ALT-B // ScrollBack History', 0);
     ib.Add('ALT-H // Hang Up', 0);
-    ib.Add('ALT-A // Snapshot to ANSI (with dialog)', 0);
-    ib.Add('ALT-D // Snapshot to ANSI (no dialog)', 0);
+    ib.Add('ALT-S // Snapshot to ANSI (with dialog)', 0);
+    ib.Add('ALT-N // Snapshot to ANSI (no dialog)', 0);
     ib.Add('ALT-L // Send Login Credentials', 0);
     ib.Add('ALT-E // Edit PhoneBook Entry', 0);
     ib.Add('ALT-T // Transfer File', 0);
-    ib.Add('ALT-C // Insert ASCII Char.', 0);
+    ib.Add('ALT-A // Insert ASCII Char.', 0);
     ib.Add('ALT-W // Write AutoText', 0);//AutoWriteText(Client);
     ib.Add('ALT-P // Stop Music',0);
     ib.Add('ALT-M // Edit/View Macros',0);
@@ -2308,6 +2544,8 @@ Var
     ib.add('ALT-R // Find Links/RegExs',0);
     ib.add('      // Edit RegExs',0);
     ib.add('CTR-E // Emoticons',0);
+    ib.add('      // Enable/Disable Sound Fx',0);
+    ib.add('ALT-C // Copy Area to Clipboard',0);
     ib.add('',0);
     ib.Add('Exit or Press ESC', 0);
 
@@ -2353,7 +2591,8 @@ Var
       14: FindRegExs;
       15: regexp_edit;
       16: emoticons;
-      
+      17: ToggleSoundFx;
+      18: KeyboardCopy2Clipboard;
       end;
     //Until ib.ExitCode = #27;
     ib.Box.Close;
@@ -2381,7 +2620,7 @@ Var
     for k:=1 to 30 do begin
       Tracks[k]:=ini.readstring('music',strpadl(stri2s(k),2,'0'),'');
     end;
-      MusicDir :=dirslash(mci2str(ini.readstring('music','dir','')));
+      MusicDir :=dirslash(mci2str(ini.readstring('music','dir',''),dial));
     ini.free;
   end;
   
@@ -2409,7 +2648,7 @@ Var
   
   procedure PlayMusic(t:string);
   var
-    ss:string;
+    ss:ansistring;
     k:byte;
   begin
     if not musicfound then exit;
@@ -2418,10 +2657,22 @@ Var
     if musicplaying then stopmusic;
     if strupper(t)='FF' then begin
       ss:=getrandommusic;
-      if ss<>'' then ss:= strreplace(pref.play,'%f',ss);
     end else
-      ss:= strreplace(pref.play,'%f',musicdir+tracks[strs2i('$'+t)]);
-    fpsystem(ss);
+      ss:=musicdir+tracks[strs2i('$'+t)];
+
+    BASS_MusicFree(trackmod);
+    musicplaying:=false;
+    trackmod:=BASS_MusicLoad(false,pchar(ss),0,0,BASS_MUSIC_RAMPS or BASS_MUSIC_SURROUND or BASS_MUSIC_POSRESET,0);
+    if trackmod=0 then begin
+      screen.writexy(1,25,4,'Couldn''t load music track. Error ['+stri2s(BASS_ErrorGetCode)+']');
+      screen.writexy(1,1,4,ss);
+      musicplaying:=false;
+      bass_stop;
+      exit;
+    end;
+    if BASS_IsStarted() then bass_stop;
+    bass_start;
+    if not BASS_ChannelPlay(trackmod,false) then screen.writeline('Couldn''t playback track music. Error ['+stri2s(BASS_ErrorGetCode)+']');
     musicplaying:=true;
   end;
 
@@ -2496,13 +2747,15 @@ Begin
         
       End Else
       If Keyboard.KeyPressed Then Begin
+        
         Ch := Keyboard.ReadKey;
-
+        playkeystrokefx(ch);
         Case Ch of
           #00 : Begin
                 Ch := Keyboard.ReadKey;
                 Case Ch of
-              KeyALTC : DoASCIIChar;
+              KeyALTC : KeyboardCopy2Clipboard;
+              KeyALTA : DoASCIIChar;
                   #25 : stopmusic;
                   #50 : EditMacros;
                   #59 : ExecuteMacro(1);
@@ -2516,7 +2769,7 @@ Begin
                   #67 : ExecuteMacro(9);
                   #68 : ExecuteMacro(0);
                   //#5  : emoticons; 
-                  KeyAltd: Begin
+              KeyAltj : Begin
                           Screen.CaptureFile := not Screen.CaptureFile;
                           If Screen.CaptureFile Then Begin
                               Screen.CaptureFilename := GetSaveFileName(' Save Capture ',strReplace(Dial.Name,' ','_')+'.ans');
@@ -2537,7 +2790,7 @@ Begin
                           Screen.PutScreenImage(Image);
                           Screen.CursorXY(Oldx,Oldy);
                         End;
-              KeyAltS : DrawStatus(true);
+              KeyAltD : DrawStatus(true);
                   #18 : DoEditEntry;
                   #20 : DoTransfers;
                   #35 : Begin
@@ -2567,7 +2820,7 @@ Begin
                   #80 : Client.WriteStr(#27 + '[B');
                   #81 : Client.WriteStr(#27 + '[U');
                   #83 : Client.WriteStr(#127);
-              keyALTA : SaveScreen;
+              keyALTS : SaveScreen;
               KeyALTR : FindRegExs;
                   #49 : SaveScreenNoDialog; //alt-n
               #17 : AutoWriteText(Client);
@@ -2809,48 +3062,6 @@ Var
 
     Inc (A);
     GetChar := Buffer[A];
-  End;
-
-  Function Ansi_Color (B : Byte) : String;
-  Var
-    S : String;
-  Begin
-    S          := '';
-    Ansi_Color := '';
-
-    Case B of
-      00: S := #27 + '[0;30m';
-      01: S := #27 + '[0;34m';
-      02: S := #27 + '[0;32m';
-      03: S := #27 + '[0;36m';
-      04: S := #27 + '[0;31m';
-      05: S := #27 + '[0;35m';
-      06: S := #27 + '[0;33m';
-      07: S := #27 + '[0;37m';
-      08: S := #27 + '[1;30m';
-      09: S := #27 + '[1;34m';
-      10: S := #27 + '[1;32m';
-      11: S := #27 + '[1;36m';
-      12: S := #27 + '[1;31m';
-      13: S := #27 + '[1;35m';
-      14: S := #27 + '[1;33m';
-      15: S := #27 + '[1;37m';
-    End;
-
-    If B in [00..07] Then B := (Screen.TextAttr SHR 4) and 7 + 16;
-
-    Case B of
-      16: S := S + #27 + '[40m';
-      17: S := S + #27 + '[44m';
-      18: S := S + #27 + '[42m';
-      19: S := S + #27 + '[46m';
-      20: S := S + #27 + '[41m';
-      21: S := S + #27 + '[45m';
-      22: S := S + #27 + '[43m';
-      23: S := S + #27 + '[47m';
-    End;
-
-    Ansi_Color := S;
   End;
 
   Procedure OutStr (S: String);
@@ -3650,12 +3861,44 @@ Var
   Dial : PhoneRec;
   Book : PhoneBookRec;
   x    : Byte;
+  tempstr :  AnsiString;
 Begin
   if fileexist(param1) then ReadDoor(param1)
     else if fileexist(param2) then ReadDoor(param2);
   LastPath := XferPath;
-  Screen.SetWindowTitle('Blocker');
+  Screen.SetWindowTitle('Blocker '+version);
   appdir:=dirslash(justpath(paramstr(0)));
+  screen.writeline('[] BASS');
+  //Initialize BASS library
+  if Hi(BASS_GetVersion) <> BASSVERSION then screen.writeline('An incorrect version of BASS.DLL was loaded');
+  
+  if not BASS_Init(-1, 44100, 0, 0, nil) then begin
+    screen.writeline('BASS Library not initialized. No sound effects!');
+    BASSLoaded:=False;
+  end else begin
+    screen.writeline('BASS Library initialized!');
+    BASSLoaded:=True;
+  end;
+  
+  //load keystroke sound fxs
+  try
+    tempstr:=appdir+'fx'+pathsep+'skey.wav';
+    keystroke_sound[0]:=BASS_StreamCreateFile(False, pchar(tempstr), 0, 0, 0 {$IFDEF UNICODE} or BASS_UNICODE {$ENDIF});
+    tempstr:=appdir+'fx'+pathsep+'tkey.wav';
+    keystroke_sound[1]:=BASS_StreamCreateFile(False, pchar(tempstr), 0, 0, 0 {$IFDEF UNICODE} or BASS_UNICODE {$ENDIF});
+    tempstr:=appdir+'fx'+pathsep+'lkey.wav';
+    keystroke_sound[2]:=BASS_StreamCreateFile(False, pchar(tempstr), 0, 0, 0 {$IFDEF UNICODE} or BASS_UNICODE {$ENDIF});
+    tempstr:=appdir+'fx'+pathsep+'ekey.wav';
+    keystroke_sound[3]:=BASS_StreamCreateFile(False, pchar(tempstr), 0, 0, 0 {$IFDEF UNICODE} or BASS_UNICODE {$ENDIF});
+    tempstr:=appdir+'fx'+pathsep+'akey.wav';
+    keystroke_sound[4]:=BASS_StreamCreateFile(False, pchar(tempstr), 0, 0, 0 {$IFDEF UNICODE} or BASS_UNICODE {$ENDIF});
+    tempstr:=appdir+'fx'+pathsep+'enterkey.wav';
+    keystroke_enter:=BASS_StreamCreateFile(False, pchar(tempstr), 0, 0, 0 {$IFDEF UNICODE} or BASS_UNICODE {$ENDIF});
+    tempstr:=appdir+'fx'+pathsep+'beep.wav';
+    beep_sound:=BASS_StreamCreateFile(False, pchar(tempstr), 0, 0, 0 {$IFDEF UNICODE} or BASS_UNICODE {$ENDIF});
+  except
+    pref.soundfx:=false;
+  end;
   
   //bookfile:=appdir+'blocker.bbs';
   bookfile:=pref.bookfile;
@@ -3665,6 +3908,7 @@ Begin
     IsBookLoaded := True;
   End else Begin*)
     InitializeBook(Book);
+    BBSDialed:=GetNewRecord;
     IsBookLoaded := False;
   //End;
   LoadMacros;
@@ -3702,14 +3946,22 @@ Begin
       Sysop     := '';
       Validated := 0;
       Comment   := 'Used from Cmd.Line';
+      ModemFx   := True;
+      KeystrokeFX := True;
+      ondial    :='';
+      onhangup  :='';
     End;
     
     TelnetClient(Book, Dial);
   end else begin
     Repeat
       If Not GetTerminalEntry(Book, Dial) Then Break;
-
+      BBSDialed:=Dial;
+      if not fileexist(appdir+'fx'+pathsep+'modem.wav') then bbsdialed.modemfx:=false;
+      playmodem;
+      if BBSDialed.OnDial<>'' then fpsystem(MCI2Str(BBSDialed.OnDial,BBSDialed));
       TelnetClient(Book, Dial);
+      if BBSDialed.OnHangUp<>'' then fpsystem(MCI2Str(BBSDialed.OnHangUp,BBSDialed));
     Until False;
   End;
   WriteBook(Book,BookFile);
@@ -3717,6 +3969,7 @@ Begin
   Queue.Clear;
   Queue.Free;
   Screen.clearScreen;
+  If BASSLoaded then BASS_Free();
 End;
 
 End.

@@ -19,11 +19,11 @@
 [2]
 	name=Another Droid BBS
 	address=andr01d.zapto.org:9999
-	user=xqtr
-	pass=eu106340001
+	user=
+	pass=
 	statusbar=0
 	music=0
-	last=1601752542
+	last=
 	added=0
 	lastedit=0
 	calls=96
@@ -31,17 +31,17 @@
 	software=Mystic BBS
 	comment=
 	rating=10
-	validated=1601752542
+	validated=
 	flags=
 
 [3]
 	name=MysticIsland
 	address=mysticisland.strangled.net
-	user=xqtr
-	pass=13467901
+	user=
+	pass=
 	statusbar=0
 	music=0
-	last=1561326436
+	last=
 	added=0
 	lastedit=0
 	calls=15
@@ -49,7 +49,7 @@
 	software=
 	comment=
 	rating=0
-	validated=1561326436
+	validated=
 	flags=
 
 [4]

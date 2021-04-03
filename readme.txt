@@ -12,7 +12,7 @@
    ;                                                                         ;
    + --- --  -   .     -        ---    ---    ---        -     .    - -- --- ´
    :                                                                         :
-   |                               Blocker v2.11                             |
+   |                               Blocker v2.30                             |
    :                                                                         :
    + --- --  -   .     -        ---    ---    ---        -     .    - -- --- ´
    | ._          SoftWare         Oper.System      Type                      |
@@ -78,6 +78,9 @@
     + Custom StatusBar...
     + Zmodem Download
     + Regular Expressions
+    + Copy Text with Cursor Keys
+    + Modem and Keystrokes Sound FXs
+    + OnConnect & OnDisconnect Events  
       and more...
       
       
@@ -104,6 +107,13 @@
    FSX, Dore, Zero and more... and also get the full source code at:
             
              https://github.com/xqtr/blocker_bbs_telnet_client
+             
+    The binary there is for Linux 64B but it can also compile under 32 bits 
+    and Raspberry Pi / Raspbian. You will need FreePascal to compile the code.
+    
+    Also download the BASS library and place the libbass.so file under:
+                  
+                                    /usr/lib
 
    
 
@@ -120,10 +130,6 @@
    the app, with the .INI configuration file and also how to enable the music
    feature.
    
-   To play track music, i suggest to get a copy of XMP player at:
-   
-                          http://xmp.sourceforge.net/
-   
    
 
    + --- --  -   .     -        ---    ---    ---        -     .    - -- --- ´
@@ -139,11 +145,17 @@
      `  + First Release
     .:. September 2020
      `  + 2.1 Release
-          - added zmodem support
-          - regular expressions mechanism
-          - updated the bbs list downloader script
-          - added node-finder script
-          - minor fixes
+          + added zmodem support
+          + regular expressions mechanism
+          + updated the bbs list downloader script
+          + added node-finder script
+          + minor fixes
+    .:. April 2021
+    `  + 2.3 Release
+          + OnDisconnect / OnConnect Events added
+          + Modem and Keystrokes FXs added
+          + Copy/Paste with keyboard mechanism added
+          - Minor bug fixes
         
           
    

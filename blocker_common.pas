@@ -40,6 +40,9 @@ Function ShowMsgBox       (BoxType: Byte; Str: String) : Boolean;
 Function GetStr           (Header, Text, Def: String; Len, MaxLen: Byte) : String;
 Function GetCommandOption (StartY: Byte; CmdStr: String) : Char;
 Function GetChar : Byte;
+Function min(a,b:byte):byte;
+Function max(a,b:byte):byte;
+Function DiffANSI2Str(Oldattr,attr:byte):string;
 
 {$I RECORDS.PAS}
 
@@ -55,6 +58,53 @@ Var
 Implementation
 
 Uses blocker_term;
+
+Function DiffANSI2Str(Oldattr,attr:byte):string;
+var
+  oldfg,oldbg:byte;
+  fg,bg:byte;
+  AnsiTable : String[8] = '04261537';
+  res:string = '';
+  semi:string[1];
+Begin
+  DiffANSI2Str:='';
+  if oldattr = attr then exit;
+
+  semi:='';
+  res:=#27+'[';
+  fg := attr mod 16;
+  bg := attr shr 4;
+  oldfg := oldattr mod 16;
+  oldbg := oldattr shr 4;
+  
+  if oldfg<>fg then begin
+    semi:=';';
+    if fg>7 then begin
+      res:=res+'1;';
+      fg:=fg-8;
+    end else res:=res+'0;';
+    res:=res+'3'+AnsiTable[fg+1];
+  end;
+  
+  if bg>7 then bg:=bg-7;
+  
+  if oldbg=oldfg then
+    res:=res+'m'
+  else  
+    res:=res+semi+'4'+AnsiTable[bg+1]+'m';
+    
+  DiffANSI2Str:=res;
+end;
+
+Function min(a,b:byte):byte;
+begin
+  if a<=b then min:=a else min:=b;
+end;
+
+Function max(a,b:byte):byte;
+begin
+  if a>=b then max:=a else max:=b;
+end;
 
 Function GetChar : Byte;
 Var

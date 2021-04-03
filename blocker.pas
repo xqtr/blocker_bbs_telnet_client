@@ -96,6 +96,7 @@ Begin
        
        play:=ini.readstring('music','play','');
        stop:=ini.readstring('music','stop','');
+       soundfx:=ini.readbool('general','soundfx',false);
      end;
      
   Finally
@@ -109,9 +110,6 @@ var
 Begin
   
   ApplicationInit;
-  
-  
-  
   if paramstr(1)<>'' then s1:=paramstr(1);
   if paramstr(2)<>'' then s2:=paramstr(2);
   Terminal(paramstr(1),paramstr(2))
