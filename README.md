@@ -3,6 +3,8 @@ Telnet Client for use with ANSI BBSes
 
 This Application is based on Nodespy Code ver1.10, written for Mystic BBS, By James Coyle. The original code released under GPL3, so the same applies here.
 
+Demo:
+https://www.youtube.com/watch?v=PBEzEV-5oRA
 
 Blocker Features:
 - Full ANSI Support for BBSes
